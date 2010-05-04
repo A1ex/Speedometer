@@ -30,16 +30,23 @@ public class Speed extends javax.swing.JFrame  implements KeyListener {
     public double y0=215;
     public double y0r=215;
     public double x=354;
-    public double xr=64;
+//    public double xr=64;      //Sunt comentate valorile xr si yr pt turatie la 0(motor oprit)
     public double y=328;
-    public double yr=318;
+//    public double yr=318;
+    public double xr=34;
+    public double yr=274;
     public double v=0;
     public double turatie=0;
     public boolean s=true,d=false;
     public double pas1=1;                                   //pas1/pas2 pt accelerare/decelerare vitezometru
     public double pas2=1;                                   //pas3/pas4 pt accelerare/decelerare turometru
     public double pas3=1;
-    public double pas4=1;
+    public double pas4=3;
+    public int prag1=0;                                     //Praguri pentru actualizarea turatiei
+    public int prag2=0;
+    public int prag3=0;
+    public int prag4=0;
+    public int prag5=0;
     public double i=1;
     public int viteza=1;
     public int zona1=1;                                     //zona1 si zona2 pt vitezometru (jos/sus)
@@ -59,8 +66,9 @@ public class Speed extends javax.swing.JFrame  implements KeyListener {
         public void actionPerformed(ActionEvent actionEvent) {
             calculViteza();
             calculTuratie();
+            actualizareTuratie();
             decelerareV();
-//            decelerareR();
+            decelerareR();
             jLabel2.setText(Integer.toString((int)v));
             double v2=v*1.6;
             jLabel3.setText(Integer.toString((int)v2));
@@ -73,22 +81,22 @@ public class Speed extends javax.swing.JFrame  implements KeyListener {
 //-----------------------------------------------------------------------------------
 //-----------------------------------------------------------------------------------
     public void setareTreapta(){
-        if (v<30)
-            viteza=1;
+        if ((prag1==1)&&(prag2==0)&&(prag3==0)&&(prag4==0)&&(prag5==0))
+            viteza=2;
         else
-            if(v<60)
-                viteza=2;
+            if((prag1==1)&&(prag2==1)&&(prag3==0)&&(prag4==0)&&(prag5==0))
+                viteza=3;
             else
-                if(v<80)
-                    viteza=3;
+                if((prag1==1)&&(prag2==1)&&(prag3==1)&&(prag4==0)&&(prag5==0))
+                    viteza=4;
                 else
-                    if(v<100)
-                        viteza=4;
+                    if((prag1==1)&&(prag2==1)&&(prag3==1)&&(prag4==1)&&(prag5==0))
+                        viteza=5;
                     else
-                        if(v<120)
-                            viteza=5;
+                        if((prag1==1)&&(prag2==1)&&(prag3==1)&&(prag4==1)&&(prag5==1))
+                        viteza=6;
                         else
-                            viteza=6;
+                            viteza=1;
     }
 //-----------------------------------------------------------------------------------
 //-----------------------------------------------------------------------------------
@@ -111,6 +119,8 @@ public class Speed extends javax.swing.JFrame  implements KeyListener {
                 v=0.00000267795*Math.pow(y,3)-0.00170627*Math.pow(y,2)+0.551114*y+52.2706;
         if ((x==354)&&(zona1==1))
             v=0;
+        if (v<0)
+          v=0;
     }
 //-----------------------------------------------------------------------------------
 //-----------------------------------------------------------------------------------
@@ -118,7 +128,7 @@ public class Speed extends javax.swing.JFrame  implements KeyListener {
         if (yr<115 && xr>90)                //Daca e in zona de turatie 4000+
             turatie=0.000305*Math.pow(xr,3)-0.165550*Math.pow(xr,2)+43.551051*xr+1125.570795;
         else                                //Daca e in zona de turatie 4000-
-            turatie=-0.000239*Math.pow(yr,3)+0.138437*Math.pow(yr,2)-41.005076*yr+6748.5;
+            turatie=-0.000290*Math.pow(yr,3)+0.171951*Math.pow(yr,2)-47.829050*yr+7144.829871;
         if (turatie<100)
             turatie=0;
         System.out.print(" turatie=");System.out.print(turatie);
@@ -129,25 +139,25 @@ public class Speed extends javax.swing.JFrame  implements KeyListener {
         if((zona2==1)&&((int)y>=185)){                                      //Scoate din zona2
             zona2=0;
         }
-        if ((zona1==1)&&((int)y<=245)){                                     //Scoate din zona1
+        if ((zona1==1)&&((int)y<=240)){                                     //Scoate din zona1
             zona1=0;
         }
     }
 //-----------------------------------------------------------------------------------
 //-----------------------------------------------------------------------------------
     public void setareZoneR(){
-        if ((zona4==1)&&((int)yr>=185)&&(yr!=210)){                 //Schimba zona4 cu zona3
+        if ((zona4==1)&&((int)yr>=185)&&(yr!=210)){                 //Scoate din zona4
             zona4=0;
         }
         else
-            if ((zona3==1)&&((int)yr<=245)&&(yr!=210)) {           //Schimba zona4 cu zona3
+            if ((zona3==1)&&((int)yr<=245)&&(yr!=210)) {           //Scoate in zona 3
                 zona3=0;
             }
     }
 //-----------------------------------------------------------------------------------
 //-----------------------------------------------------------------------------------
     public void calculCoordonateUV(){
-        if (x<=304){                                            //Daca intra in zona mijloc stanga vitezometru
+        if ((x<=304)&&(zona1==0)&&(zona2==0)){                                            //Daca intra in zona mijloc stanga vitezometru
                 y=y-3;
                 if (y<185){
                     zona2=1;
@@ -156,9 +166,9 @@ public class Speed extends javax.swing.JFrame  implements KeyListener {
                 }
         }
         else
-            if (x>=596){                                        //Daca intra in zona mijloc dreapta vitezometru
-                y=y+3;
-                if (y>245){
+            if ((x>=590)&&(zona2==0)&&(zona1==0)){                                        //Daca intra in zona mijloc dreapta vitezometru
+                y=y+2;
+                if (y>240){
                     zona1=1;
                     x=595;
                     y=Math.sqrt(Math.abs(22050-Math.pow((x-x0),2)))+y0;
@@ -235,23 +245,23 @@ public class Speed extends javax.swing.JFrame  implements KeyListener {
 //-----------------------------------------------------------------------------------
 //-----------------------------------------------------------------------------------
     public void calculCoordonateDR(){
-        if (turatie>0){                         //Sa nu depaseasca valoarea minima de turatii
+        if (turatie>1000){                         //Sa nu depaseasca valoarea minima de turatii
             if (yr==210)
                 zona3=1;
             if (zona3==1){                                                      //Daca e in zona jos turometru
-                xr=xr+pas3;
+                xr=xr+4;
                 yr=Math.sqrt(Math.abs(22050-Math.pow((xr-x0r),2)))+y0r;
             }
             else
-                if (zona4==1){                                                  //Daca e in zona sus turometru
-                    xr=xr-pas3;
+                if (zona4==1){                                   //Daca e in zona sus turometru                    
+                    xr=xr-4;
                     yr=(-1)*Math.sqrt(Math.abs(22050-Math.pow((xr-x0r),2)))+y0r;
                 }
                 else{
-                    if (yr>220){
-                        xr=xr+pas3;
+                    if (yr>220){                        
+                        xr=xr+4;
                         yr=Math.sqrt(Math.abs(22050-Math.pow((xr-x0r),2)))+y0r;
-                        zona3=1;
+                        zona3=1;                       
                     }
                     else
                         yr=210;
@@ -320,8 +330,8 @@ public class Speed extends javax.swing.JFrame  implements KeyListener {
 //-----------------------------------------------------------------------------------
 //-----------------------------------------------------------------------------------
     public void decelerareR(){
-        if (yr<328){
-            if ((zona3==1)&&(xr+pas4>20)){                  //Daca e in zona jos turometru
+        if (turatie>1000){
+            if (zona3==1){                  //Daca e in zona jos turometru               
                 xr=xr+pas4;
                 yr=Math.sqrt(Math.abs(22050-Math.pow((xr-x0r),2)))+y0r;
                 try {
@@ -330,10 +340,10 @@ public class Speed extends javax.swing.JFrame  implements KeyListener {
                     Logger.getLogger(Speed.class.getName()).log(Level.SEVERE, null, ex);
                 }
                 repaint();
-                setareZoneR();
+                setareZoneR();                
             }
             else                                            //Daca e in zona sus turometru
-                if ((zona4==1)&&(xr-pas4>20)){
+                if (zona4==1){
                     xr=xr-pas4;
                     yr=(-1)*Math.sqrt(Math.abs(22050-Math.pow((xr-x0r),2)))+y0r;
                     try {
@@ -344,6 +354,12 @@ public class Speed extends javax.swing.JFrame  implements KeyListener {
                     repaint();
                     setareZoneR();
                 }
+                else{
+                    xr=xr+pas4;
+                    yr=Math.sqrt(Math.abs(22050-Math.pow((xr-x0r),2)))+y0r;
+                    if (yr>220)                      
+                        zona3=1;                    
+                }
         }
     }
 
@@ -353,17 +369,81 @@ public class Speed extends javax.swing.JFrame  implements KeyListener {
         if ((int)v<60)                      //Setare pasi vitezometru
             pas1=2;
          else
-            pas1=1;
-        if (viteza==1)                      //Setare pasi turometru
-            if ((int)v<=25){
-                pas3=5;
-                pas4=5;
-            }
-            else{
-                pas3=-10;
-            }
-        if (viteza==2)
+            if ((int)v<90)
+                pas1=1;
+            else
+                pas1=0.5;
+        if (turatie<3000)                      //Setare pas crestere turatii functie de valoarea turatiei
+            pas3=5;
+        if (turatie>3000)
+            pas3=4;
+        if (turatie>4000)
             pas3=3;
+        if (turatie>5000)
+            pas3=2;
+        if (turatie>5500)
+            pas3=1.5;
+        if (turatie>6000)
+            pas3=1;
+    }
+//-----------------------------------------------------------------------------------
+//-----------------------------------------------------------------------------------
+    public void actualizareTuratie(){               //Actualizam pragurile de turatie
+        if ((prag1==0)&&(turatie>4000)){            //Ducem turatia la 2000 daca depaseste prima
+            prag1=1;                                // oara 4000 (aplicare prag 1)
+            xr=22;
+            yr=210;
+            zona3=0;
+            zona4=0;
+            turatie=1998;            
+        }
+        if ((prag2==0)&&(turatie>5000)){            //Ducem turatia la 2535 daca depaseste prima
+            prag2=1;                                // oara 5000 (aplicare prag 2)
+            xr=28;
+            yr=171;
+            zona3=0;
+            zona4=1;
+            turatie=2535;
+        }
+        if ((prag3==0)&&(turatie>6000)){            //Ducem turatia la 3056 daca depaseste prima
+            prag3=1;                                // oara 6000 (aplicare prag 3)
+            xr=76;
+            yr=100;
+            zona3=0;
+            zona4=1;
+            turatie=3790;
+        }
+        if ((prag4==0)&&(turatie>6300)){
+            prag4=1;
+            xr=137;
+            yr=70;
+            zona3=0;
+            zona4=1;
+            turatie=4769;
+        }
+        if ((prag5==0)&&(turatie>6500)){
+            prag5=1;
+            xr=155;
+            yr=67;
+            zona3=0;
+            zona4=1;
+            turatie=5034;
+        }
+         if ((prag5==1)&&(v<100))
+            prag5=0;
+        if ((prag4==1)&&(v<90))
+            prag4=0;
+        if ((prag3==1)&&(v<70))
+            prag3=0;
+        if ((prag2==1)&&(v<40))             //Reseteaza prag2 daca viteza scade sub 40Mph
+            prag2=0;
+        if ((prag1==1)&&(v<15))             //Reseteaza prag1 daca viteza scade sub 20Mph
+            prag1=0;
+        if (turatie<=1000){
+            xr=34;
+            yr=274;
+            turatie=1000;
+        }
     }
 //-----------------------------------------------------------------------------------
 //-----------------------------------------------------------------------------------
@@ -394,7 +474,7 @@ public class Speed extends javax.swing.JFrame  implements KeyListener {
         System.out.print("  xr=");System.out.print(xr);
         System.out.print("  yr=");System.out.print((int)yr);
 //        System.out.print("  z1=");System.out.print(zona1);                  //Afisare zone
-//        System.out.print("  z2=");System.out.print(zona2);
+//        System.out.print("  z2=");System.out.println(zona2);
         System.out.print("  z3=");System.out.print(zona3);
         System.out.print("  z4=");System.out.println(zona4);
     }
