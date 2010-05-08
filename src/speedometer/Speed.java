@@ -16,6 +16,8 @@ import java.awt.event.*;
 import javax.swing.Timer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.ImageIcon;
+import javax.swing.Icon;
 
 /**
  *
@@ -54,6 +56,11 @@ public class Speed extends javax.swing.JFrame  implements KeyListener {
     public int zona3=1;                                     //zona3 si zona4 pt turometru (jos/sus)
     public int zona4=0;
     public boolean pornit=false;
+//    ImageIcon butonverde =new ImageIcon("buttongreen.jpg");
+//    ImageIcon butonrosu =new ImageIcon("buttonred.jpg");
+    Icon butonverde,butonrosu;
+
+
 
 //-----------------------------------------------------------------------------------
 //-----------------------------------------------------------------------------------
@@ -61,6 +68,8 @@ public class Speed extends javax.swing.JFrame  implements KeyListener {
         initComponents();
         addKeyListener(this);
         t.start();
+        butonverde=Buton2.getIcon();
+        butonrosu=Buton1.getIcon();
     }
 //-----------------------------------------------------------------------------------
 //-----------------------------------------------------------------------------------
@@ -555,7 +564,9 @@ public class Speed extends javax.swing.JFrame  implements KeyListener {
         jLabel8 = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
         butonStart = new javax.swing.JLabel();
+        Buton1 = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
+        Buton2 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
@@ -571,13 +582,13 @@ public class Speed extends javax.swing.JFrame  implements KeyListener {
         jLabel4.setBounds(450, 280, 60, 30);
         jLayeredPane1.add(jLabel4, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
-        jLabel3.setFont(new java.awt.Font("Times New Roman", 1, 24));
+        jLabel3.setFont(new java.awt.Font("Times New Roman", 1, 24)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(255, 204, 0));
         jLabel3.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         jLabel3.setBounds(400, 310, 60, 30);
         jLayeredPane1.add(jLabel3, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
-        jLabel5.setFont(new java.awt.Font("Times New Roman", 1, 24));
+        jLabel5.setFont(new java.awt.Font("Times New Roman", 1, 24)); // NOI18N
         jLabel5.setText("Km/h");
         jLabel5.setBounds(450, 310, 60, 30);
         jLayeredPane1.add(jLabel5, javax.swing.JLayeredPane.DEFAULT_LAYER);
@@ -605,22 +616,28 @@ public class Speed extends javax.swing.JFrame  implements KeyListener {
         jLabel9.setBounds(180, 280, 60, 30);
         jLayeredPane1.add(jLabel9, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
-        butonStart.setBackground(new java.awt.Color(0, 0, 0));
         butonStart.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        butonStart.setForeground(new java.awt.Color(51, 255, 51));
         butonStart.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         butonStart.setText("Start Engine");
-        butonStart.addMouseListener(new java.awt.event.MouseAdapter() {
+        butonStart.setBounds(40, 350, 110, 30);
+        jLayeredPane1.add(butonStart, javax.swing.JLayeredPane.DEFAULT_LAYER);
+
+        Buton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/speedometer/buttonred.jpeg"))); // NOI18N
+        Buton1.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                StartStopEngine(evt);
+                ApasareStartStop(evt);
             }
         });
-        butonStart.setBounds(0, 360, 110, 30);
-        jLayeredPane1.add(butonStart, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        Buton1.setBounds(10, 350, 30, 30);
+        jLayeredPane1.add(Buton1, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/speedometer/Speedometer 4_modif.jpg"))); // NOI18N
         jLabel1.setBounds(0, 0, 617, 390);
         jLayeredPane1.add(jLabel1, javax.swing.JLayeredPane.DEFAULT_LAYER);
+
+        Buton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/speedometer/buttongreen.jpg"))); // NOI18N
+        Buton2.setBounds(170, 350, 30, 30);
+        jLayeredPane1.add(Buton2, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -636,23 +653,25 @@ public class Speed extends javax.swing.JFrame  implements KeyListener {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void StartStopEngine(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_StartStopEngine
-        // TODO add your handling code here:
+    private void ApasareStartStop(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ApasareStartStop
+        // TODO add your handling code here:        
         if (pornit==false){
-            turatie=1000;
-            xr=34;
-            yr=274;
-            repaint();
+            if (turatie<1000){
+                turatie=1000;
+                xr=34;
+                yr=274;
+                repaint();
+            }
             butonStart.setText("Stop Engine");
-            butonStart.setForeground(Color.red);
             pornit=true;
+            Buton1.setIcon(butonverde);
         }
-        else{            
+        else{
             butonStart.setText("Start Engine");
-            butonStart.setForeground(Color.getHSBColor(120,80,100));
             pornit=false;
+            Buton1.setIcon(butonrosu);
         }
-    }//GEN-LAST:event_StartStopEngine
+    }//GEN-LAST:event_ApasareStartStop
 
 //        turatie=1000;                 //Cod pentru metoda idleRevmeter
 //        xr=34;
@@ -660,6 +679,8 @@ public class Speed extends javax.swing.JFrame  implements KeyListener {
 //        repaint();
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel Buton1;
+    private javax.swing.JLabel Buton2;
     private javax.swing.JLabel butonStart;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
