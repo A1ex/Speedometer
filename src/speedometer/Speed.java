@@ -16,7 +16,6 @@ import java.awt.event.*;
 import javax.swing.Timer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.ImageIcon;
 import javax.swing.Icon;
 
 /**
@@ -61,6 +60,7 @@ public class Speed extends javax.swing.JFrame  implements KeyListener {
     Icon butonverde,butonrosu;
     public boolean crescutturatie=false;
     public boolean idle=false;
+
 
 
 
@@ -245,17 +245,17 @@ public class Speed extends javax.swing.JFrame  implements KeyListener {
          if (xr<270){                               //Sa nu depaseasca valoarea maxima de turatii
              if (yr==210)
                  zona4=1;
-             if (zona3==1){                                                     //Daca e in zona jos turometru
+             if ((zona3==1)&&(xr-pas3>20)){                                                     //Daca e in zona jos turometru
                 xr=xr-pas3;
                 yr=Math.sqrt(Math.abs(22050-Math.pow((xr-x0r),2)))+y0r;
             }
             else
-                if (zona4==1){                                                   //Daca e in zona sus turometru
+                if ((zona4==1)&&(xr+pas3>20)){                                                   //Daca e in zona sus turometru
                     xr=xr+pas3;
                     yr=(-1)*Math.sqrt(Math.abs(22050-Math.pow((xr-x0r),2)))+y0r;
                 }
                 else{
-                    if (yr<200){
+                    if ((yr<200)&&(xr+pas3>20)){
                         xr=xr+pas3;
                         yr=(-1)*Math.sqrt(Math.abs(22050-Math.pow((xr-x0r),2)))+y0r;
                         zona4=1;
@@ -354,7 +354,6 @@ public class Speed extends javax.swing.JFrame  implements KeyListener {
 //-----------------------------------------------------------------------------------
     public void decelerareR(){
         if (((turatie>1000)&&pornit)||((turatie>0)&&(pornit==false))){
-            System.out.println("decelereaza");
             if (zona3==1){                  //Daca e in zona jos turometru               
                 xr=xr+pas4;
                 yr=Math.sqrt(Math.abs(22050-Math.pow((xr-x0r),2)))+y0r;
@@ -479,8 +478,7 @@ public class Speed extends javax.swing.JFrame  implements KeyListener {
 //-----------------------------------------------------------------------------------
     @SuppressWarnings("static-access")
     public void cresteTuratieLaPornire(){
-            System.out.println(turatie);
-            xr=xr-4;
+            xr=xr-5;
             yr=Math.sqrt(Math.abs(22050-Math.pow((xr-x0r),2)))+y0r;            
             try {
                     Thread.sleep(50);
@@ -499,24 +497,39 @@ public class Speed extends javax.swing.JFrame  implements KeyListener {
      public void paint(Graphics g) {
         super.paint(g);
         Graphics2D g2=(Graphics2D)g;
+        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
+                            RenderingHints.VALUE_ANTIALIAS_ON);
+        
+
         g2.setColor(Color.orange);
 	g2.setStroke(new BasicStroke(4));
 
-	g2.drawLine((int)x0, (int)y0, (int)x, (int)y);
+	g2.drawLine((int)x0, (int)y0, (int)x, (int)y);          //Desenare ac vitezometru
         g2.drawLine((int)x0-1, (int)y0-1, (int)x, (int)y);
         g2.drawLine((int)x0+1, (int)y0+1, (int)x, (int)y);
         g2.drawLine((int)x0+1, (int)y0-1, (int)x, (int)y);
         g2.drawLine((int)x0-1, (int)y0+1, (int)x, (int)y);
 
         
-        g2.drawLine((int)x0r, (int)y0r, (int)xr, (int)yr);
+        g2.drawLine((int)x0r, (int)y0r, (int)xr, (int)yr);      //Desenare ac turometru
         g2.drawLine((int)x0r-1, (int)y0r-1, (int)xr, (int)yr);
         g2.drawLine((int)x0r+1, (int)y0r+1, (int)xr, (int)yr);
         g2.drawLine((int)x0r+1, (int)y0r-1, (int)xr, (int)yr);
         g2.drawLine((int)x0r-1, (int)y0r+1, (int)xr, (int)yr);
+
+        
+//        int xPoints[]={(int)(x0r-2),(int)(x0r+2),(int)xr,(int)(x0r-2)};   //Desenare poligon (mai complicat)
+//        int yPoints[]={(int)(y0r-2),(int)(y0r+2),(int)yr,(int)(y0r-2)};
+//        g2.setStroke(new BasicStroke(3));
+//        g2.drawPolygon(xPoints, yPoints, 3);
+//        g2.drawPolyline(xPoints, yPoints, 4);
+
+
 //        g2.setColor(Color.black);
 //        g2.fillOval(435, 200, 30, 30);                        //Deseneaza un cerc negru in mijl vitezometrului
 //        System.out.print("  x=");System.out.print(x);                     //Afisare coordonate varf ace
+
+        
 //        System.out.print("  y=");System.out.print((int)y);
 //        System.out.print(" turatie=");System.out.print(turatie);
 //        System.out.print(" viteza=");System.out.print((int)v);
@@ -553,7 +566,7 @@ public class Speed extends javax.swing.JFrame  implements KeyListener {
         }
         if (tasta==KeyEvent.VK_UP){        //Daca se apasa sageata sus
             idle=false;
-            if (pornit){
+            if (pornit&&(crescutturatie)){
                     if (v<140){
                     calculCoordonateUV();
                     setareZoneV();
