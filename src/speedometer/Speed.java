@@ -16,6 +16,8 @@ import java.awt.event.*;
 import javax.swing.Timer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.ImageIcon;
+import javax.swing.Icon;
 
 /**
  *
@@ -23,18 +25,18 @@ import java.util.logging.Logger;
  */
 //-----------------------------------------------------------------------------------
 //-----------------------------------------------------------------------------------
-public class Speed extends javax.swing.JFrame implements KeyListener {
+public class Speed extends javax.swing.JFrame  implements KeyListener {
 
     public double x0=450;
     public double x0r=170;
     public double y0=215;
     public double y0r=215;
     public double x=354;
-//    public double xr=64;      //Sunt comentate valorile xr si yr pt turatie la 0(motor oprit)
+    public double xr=64;      
     public double y=328;
-//    public double yr=318;
-    public double xr=34;
-    public double yr=274;
+    public double yr=318;
+//    public double xr=34;          //Sunt comentate valorile xr si yr pt turatie la 1000(motor pornit)
+//    public double yr=274;
     public double v=0;
     public double turatie=0;
     public boolean s=true,d=false;
@@ -48,67 +50,76 @@ public class Speed extends javax.swing.JFrame implements KeyListener {
     public int prag4=0;
     public int prag5=0;
     public double i=1;
-    public int viteza=1;
+    public int viteza=0;
     public int zona1=1;                                     //zona1 si zona2 pt vitezometru (jos/sus)
     public int zona2=0;
     public int zona3=1;                                     //zona3 si zona4 pt turometru (jos/sus)
     public int zona4=0;
-//    Graphics bufferGraphics;
-//    Image offscreen;
-//    Dimension dim;
+    public boolean pornit=false;
+//    ImageIcon butonverde =new ImageIcon("buttongreen.jpg");
+//    ImageIcon butonrosu =new ImageIcon("buttonred.jpg");
+    Icon butonverde,butonrosu;
+    public boolean crescutturatie=false;
+    public boolean idle=false;
+
+
+
 //-----------------------------------------------------------------------------------
 //-----------------------------------------------------------------------------------
     public Speed() {
         initComponents();
-//        dim = getSize();
-//        offscreen = createImage(dim.width,dim.height);
-//        bufferGraphics =offscreen.getGraphics();
         addKeyListener(this);
-        t.start();    
+        t.start();
+        butonverde=Buton2.getIcon();
+        butonrosu=Buton1.getIcon();
     }
 //-----------------------------------------------------------------------------------
 //-----------------------------------------------------------------------------------
     ActionListener actionListener = new ActionListener() {
         public void actionPerformed(ActionEvent actionEvent) {
+//            System.out.println(crescutturatie);
+//            System.out.print(turatie);
+//            System.out.println(idle);
+            if ((crescutturatie==false)&&(pornit==true)&&(turatie<1000))
+                cresteTuratieLaPornire();
             calculViteza();
             calculTuratie();
             actualizareTuratie();
             decelerareV();
-            decelerareR();
+            if ((crescutturatie)||(pornit==false))
+                decelerareR();
             jLabel2.setText(Integer.toString((int)v));
             double v2=v*1.6;
             jLabel3.setText(Integer.toString((int)v2));
             setareTreapta();
             jLabel7.setText(Integer.toString(viteza));
-            jLabel8.setText(Integer.toString((int)turatie));
+            jLabel8.setText(Integer.toString((int)turatie));            
         }        
     };    
-    Timer t=new Timer(10,actionListener);
-//-----------------------------------------------------------------------------------
-//-----------------------------------------------------------------------------------
-//    @Override
-//   public void update (Graphics g) {
-//      paint(g);
-//}
+    Timer t=new Timer(10,actionListener);    
 //-----------------------------------------------------------------------------------
 //-----------------------------------------------------------------------------------
     public void setareTreapta(){
-        if ((prag1==1)&&(prag2==0)&&(prag3==0)&&(prag4==0)&&(prag5==0))
-            viteza=2;
-        else
-            if((prag1==1)&&(prag2==1)&&(prag3==0)&&(prag4==0)&&(prag5==0))
-                viteza=3;
+        if (pornit==false)
+            viteza=0;
+        else{
+            if ((prag1==1)&&(prag2==0)&&(prag3==0)&&(prag4==0)&&(prag5==0))
+                viteza=2;
             else
-                if((prag1==1)&&(prag2==1)&&(prag3==1)&&(prag4==0)&&(prag5==0))
-                    viteza=4;
+                if((prag1==1)&&(prag2==1)&&(prag3==0)&&(prag4==0)&&(prag5==0))
+                    viteza=3;
                 else
-                    if((prag1==1)&&(prag2==1)&&(prag3==1)&&(prag4==1)&&(prag5==0))
-                        viteza=5;
+                    if((prag1==1)&&(prag2==1)&&(prag3==1)&&(prag4==0)&&(prag5==0))
+                        viteza=4;
                     else
-                        if((prag1==1)&&(prag2==1)&&(prag3==1)&&(prag4==1)&&(prag5==1))
-                        viteza=6;
+                        if((prag1==1)&&(prag2==1)&&(prag3==1)&&(prag4==1)&&(prag5==0))
+                            viteza=5;
                         else
-                            viteza=1;
+                            if((prag1==1)&&(prag2==1)&&(prag3==1)&&(prag4==1)&&(prag5==1))
+                            viteza=6;
+                            else
+                                viteza=1;
+            }
     }
 //-----------------------------------------------------------------------------------
 //-----------------------------------------------------------------------------------
@@ -140,10 +151,11 @@ public class Speed extends javax.swing.JFrame implements KeyListener {
         if (yr<115 && xr>90)                //Daca e in zona de turatie 4000+
             turatie=0.000305*Math.pow(xr,3)-0.165550*Math.pow(xr,2)+43.551051*xr+1125.570795;
         else                                //Daca e in zona de turatie 4000-
-            turatie=-0.000290*Math.pow(yr,3)+0.171951*Math.pow(yr,2)-47.829050*yr+7144.829871;
-        if (turatie<100)
-            turatie=0;        
+            turatie=-0.000290*Math.pow(yr,3)+0.171951*Math.pow(yr,2)-47.829050*yr+7144.829871;       
     }
+//-----------------------------------------------------------------------------------
+//-----------------------------------------------------------------------------------
+
 //-----------------------------------------------------------------------------------
 //-----------------------------------------------------------------------------------
     public void setareZoneV(){
@@ -264,7 +276,7 @@ public class Speed extends javax.swing.JFrame implements KeyListener {
                 yr=Math.sqrt(Math.abs(22050-Math.pow((xr-x0r),2)))+y0r;
             }
             else
-                if (zona4==1){                                   //Daca e in zona sus turometru                    
+                if (zona4==1){                                                  //Daca e in zona sus turometru
                     xr=xr-4;
                     yr=(-1)*Math.sqrt(Math.abs(22050-Math.pow((xr-x0r),2)))+y0r;
                 }
@@ -341,7 +353,8 @@ public class Speed extends javax.swing.JFrame implements KeyListener {
 //-----------------------------------------------------------------------------------
 //-----------------------------------------------------------------------------------
     public void decelerareR(){
-        if (turatie>1000){
+        if (((turatie>1000)&&pornit)||((turatie>0)&&(pornit==false))){
+            System.out.println("decelereaza");
             if (zona3==1){                  //Daca e in zona jos turometru               
                 xr=xr+pas4;
                 yr=Math.sqrt(Math.abs(22050-Math.pow((xr-x0r),2)))+y0r;
@@ -371,9 +384,8 @@ public class Speed extends javax.swing.JFrame implements KeyListener {
                     if (yr>220)                      
                         zona3=1;                    
                 }
-        }
+        }   
     }
-
 //-----------------------------------------------------------------------------------
 //-----------------------------------------------------------------------------------
     public void setarePasi(){
@@ -402,19 +414,19 @@ public class Speed extends javax.swing.JFrame implements KeyListener {
     public void actualizareTuratie(){               //Actualizam pragurile de turatie
         if ((prag1==0)&&(turatie>4000)){            //Ducem turatia la 2000 daca depaseste prima
             prag1=1;                                // oara 4000 (aplicare prag 1)
-            xr=27;
-            yr=174;
+            xr=22;
+            yr=210;
             zona3=0;
-            zona4=1;
-            turatie=2486;
+            zona4=0;
+            turatie=1998;            
         }
         if ((prag2==0)&&(turatie>5000)){            //Ducem turatia la 2535 daca depaseste prima
             prag2=1;                                // oara 5000 (aplicare prag 2)
-            xr=50;
-            yr=127;
+            xr=28;
+            yr=171;
             zona3=0;
             zona4=1;
-            turatie=3240;
+            turatie=2535;
         }
         if ((prag3==0)&&(turatie>6000)){            //Ducem turatia la 3056 daca depaseste prima
             prag3=1;                                // oara 6000 (aplicare prag 3)
@@ -450,29 +462,46 @@ public class Speed extends javax.swing.JFrame implements KeyListener {
             prag2=0;
         if ((prag1==1)&&(v<15))             //Reseteaza prag1 daca viteza scade sub 20Mph
             prag1=0;
-        if (turatie<=1000){
+        if ((turatie>=1000)&&pornit)
+            crescutturatie=true;
+        if ((crescutturatie==true)&&(turatie<1000)&&(pornit==true))
+            turatie=1000;
+        if ((pornit==false)&&(turatie<0))
+            turatie=0;
+        if (pornit &&(turatie<=1000)&&crescutturatie&&(idle==false)){
             xr=34;
             yr=274;
-            turatie=1000;
+            repaint();
+            idle=true;
         }
     }
 //-----------------------------------------------------------------------------------
 //-----------------------------------------------------------------------------------
-//    @Override
-//    @SuppressWarnings("static-access")
+    @SuppressWarnings("static-access")
+    public void cresteTuratieLaPornire(){
+            System.out.println(turatie);
+            xr=xr-4;
+            yr=Math.sqrt(Math.abs(22050-Math.pow((xr-x0r),2)))+y0r;            
+            try {
+                    Thread.sleep(50);
+                } catch (InterruptedException ex) {
+                    Logger.getLogger(Speed.class.getName()).log(Level.SEVERE, null, ex);
+                }            
+            repaint();
+            setareZoneR();
+        if (turatie>=1000)
+            crescutturatie=true;
+    }
+//-----------------------------------------------------------------------------------
+//-----------------------------------------------------------------------------------
     @Override
+    @SuppressWarnings("static-access")
      public void paint(Graphics g) {
-        
         super.paint(g);
-//        Graphics2D g2=(Graphics2D) bufferGraphics;
-        Graphics2D g2=(Graphics2D) g;
-
+        Graphics2D g2=(Graphics2D)g;
         g2.setColor(Color.orange);
 	g2.setStroke(new BasicStroke(4));
-        //Sterge tot ce a fost desenat inainte
-//        g2.clearRect(0,0,dim.width,dim.width);
 
-        
 	g2.drawLine((int)x0, (int)y0, (int)x, (int)y);
         g2.drawLine((int)x0-1, (int)y0-1, (int)x, (int)y);
         g2.drawLine((int)x0+1, (int)y0+1, (int)x, (int)y);
@@ -485,25 +514,75 @@ public class Speed extends javax.swing.JFrame implements KeyListener {
         g2.drawLine((int)x0r+1, (int)y0r+1, (int)xr, (int)yr);
         g2.drawLine((int)x0r+1, (int)y0r-1, (int)xr, (int)yr);
         g2.drawLine((int)x0r-1, (int)y0r+1, (int)xr, (int)yr);
-        g2.setColor(Color.black);
-//        g2.fillOval(435, 200, 30, 30);
-//        System.out.print("  x=");System.out.print(x);                       //Afisare coordonate varf ace
+//        g2.setColor(Color.black);
+//        g2.fillOval(435, 200, 30, 30);                        //Deseneaza un cerc negru in mijl vitezometrului
+//        System.out.print("  x=");System.out.print(x);                     //Afisare coordonate varf ace
 //        System.out.print("  y=");System.out.print((int)y);
-        System.out.print(" turatie=");System.out.print(turatie);
-        System.out.print("  xr=");System.out.print(xr);
-        System.out.print("  yr=");System.out.print((int)yr);
+//        System.out.print(" turatie=");System.out.print(turatie);
+//        System.out.print(" viteza=");System.out.print((int)v);
+//        System.out.print("  xr=");System.out.print(xr);
+//        System.out.print("  yr=");System.out.print((int)yr);
 //        System.out.print("  z1=");System.out.print(zona1);                  //Afisare zone
 //        System.out.print("  z2=");System.out.println(zona2);
-        System.out.print("  z3=");System.out.print(zona3);
-        System.out.print("  z4=");System.out.println(zona4);
-
-        
-        
-//         g.drawImage(offscreen,0,0,this);
-        
+//        System.out.print("  z3=");System.out.print(zona3);
+//        System.out.print("  z4=");System.out.println(zona4);
     }
 //-----------------------------------------------------------------------------------
-//-----------------------------------------------------------------------------------   
+//-----------------------------------------------------------------------------------
+        //-----------------------------------------------------------------------------------
+//-----------------------------------------------------------------------------------
+    public void keyTyped(KeyEvent e) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+//-----------------------------------------------------------------------------------
+//-----------------------------------------------------------------------------------
+     public void keyPressed(KeyEvent e) {
+         int tasta;
+         tasta=e.getKeyCode();
+         setarePasi();
+         if (tasta==KeyEvent.VK_DOWN){     //Daca se apasa sageata jos          
+            if (v>0){
+                calculCoordonateDV();
+                setareZoneV();
+            }
+            if (turatie>1000){
+                calculCoordonateDR();
+                setareZoneR();
+                repaint();
+            }
+        }
+        if (tasta==KeyEvent.VK_UP){        //Daca se apasa sageata sus
+            idle=false;
+            if (pornit){
+                    if (v<140){
+                    calculCoordonateUV();
+                    setareZoneV();
+                }
+                calculCoordonateUR();
+                setareZoneR();
+                repaint();
+                
+            }
+        }
+    }
+//-----------------------------------------------------------------------------------
+//-----------------------------------------------------------------------------------
+    public void keyReleased(KeyEvent e) {
+    }
+//-----------------------------------------------------------------------------------
+//-----------------------------------------------------------------------------------
+    public static void main(String args[]) {
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                new Speed().setVisible(true);
+
+            }
+        }
+        );
+    }
+//-----------------------------------------------------------------------------------
+//-----------------------------------------------------------------------------------
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -517,13 +596,13 @@ public class Speed extends javax.swing.JFrame implements KeyListener {
         jLabel7 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
+        butonStart = new javax.swing.JLabel();
+        Buton1 = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
+        Buton2 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
-
-        jLayeredPane1.setDebugGraphicsOptions(javax.swing.DebugGraphics.NONE_OPTION);
-        jLayeredPane1.setDoubleBuffered(true);
 
         jLabel2.setFont(new java.awt.Font("Times New Roman", 1, 24));
         jLabel2.setForeground(new java.awt.Color(255, 204, 0));
@@ -536,13 +615,13 @@ public class Speed extends javax.swing.JFrame implements KeyListener {
         jLabel4.setBounds(450, 280, 60, 30);
         jLayeredPane1.add(jLabel4, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
-        jLabel3.setFont(new java.awt.Font("Times New Roman", 1, 24));
+        jLabel3.setFont(new java.awt.Font("Times New Roman", 1, 24)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(255, 204, 0));
         jLabel3.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         jLabel3.setBounds(400, 310, 60, 30);
         jLayeredPane1.add(jLabel3, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
-        jLabel5.setFont(new java.awt.Font("Times New Roman", 1, 24));
+        jLabel5.setFont(new java.awt.Font("Times New Roman", 1, 24)); // NOI18N
         jLabel5.setText("Km/h");
         jLabel5.setBounds(450, 310, 60, 30);
         jLayeredPane1.add(jLabel5, javax.swing.JLayeredPane.DEFAULT_LAYER);
@@ -570,11 +649,28 @@ public class Speed extends javax.swing.JFrame implements KeyListener {
         jLabel9.setBounds(180, 280, 60, 30);
         jLayeredPane1.add(jLabel9, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
+        butonStart.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        butonStart.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        butonStart.setText("Start Engine");
+        butonStart.setBounds(40, 350, 110, 30);
+        jLayeredPane1.add(butonStart, javax.swing.JLayeredPane.DEFAULT_LAYER);
+
+        Buton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/speedometer/buttonred.jpeg"))); // NOI18N
+        Buton1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                ApasareStartStop(evt);
+            }
+        });
+        Buton1.setBounds(10, 350, 30, 30);
+        jLayeredPane1.add(Buton1, javax.swing.JLayeredPane.DEFAULT_LAYER);
+
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/speedometer/Speedometer 4_modif.jpg"))); // NOI18N
-        jLabel1.setDebugGraphicsOptions(javax.swing.DebugGraphics.BUFFERED_OPTION);
-        jLabel1.setDoubleBuffered(true);
         jLabel1.setBounds(0, 0, 617, 390);
         jLayeredPane1.add(jLabel1, javax.swing.JLayeredPane.DEFAULT_LAYER);
+
+        Buton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/speedometer/buttongreen.jpg"))); // NOI18N
+        Buton2.setBounds(170, 350, 30, 30);
+        jLayeredPane1.add(Buton2, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -590,20 +686,26 @@ public class Speed extends javax.swing.JFrame implements KeyListener {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-//-----------------------------------------------------------------------------------
-//-----------------------------------------------------------------------------------
-    public static void main(String args[]) {
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new Speed().setVisible(true);
-            }
+    private void ApasareStartStop(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ApasareStartStop
+     
+        if (pornit==false){                         //Daca se porneste motorul
+            butonStart.setText("Stop Engine");
+            pornit=true;
+            Buton1.setIcon(butonverde);
+            viteza=1;
         }
-        );
-    }
-//-----------------------------------------------------------------------------------
-//-----------------------------------------------------------------------------------
+        else{                                       //Daca se opreste motorul
+            butonStart.setText("Start Engine");
+            pornit=false;
+            Buton1.setIcon(butonrosu);
+            crescutturatie=false;
+        }
+    }//GEN-LAST:event_ApasareStartStop
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel Buton1;
+    private javax.swing.JLabel Buton2;
+    private javax.swing.JLabel butonStart;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -615,39 +717,5 @@ public class Speed extends javax.swing.JFrame implements KeyListener {
     private javax.swing.JLabel jLabel9;
     private javax.swing.JLayeredPane jLayeredPane1;
     // End of variables declaration//GEN-END:variables
-
-//-----------------------------------------------------------------------------------
-//-----------------------------------------------------------------------------------
-    public void keyTyped(KeyEvent e) {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-//-----------------------------------------------------------------------------------
-//-----------------------------------------------------------------------------------
-     public void keyPressed(KeyEvent e) {
-         int tasta;
-         tasta=e.getKeyCode();
-         setarePasi();
-         if (tasta==KeyEvent.VK_DOWN){     //Daca se apasa sageata sus
-            if (v>0){
-                calculCoordonateDV();
-                setareZoneV();
-            }
-            calculCoordonateDR();
-            setareZoneR();
-            repaint();
-        }
-        if (tasta==KeyEvent.VK_UP){        //Daca se apasa sageata jos
-            if (v<140){
-                calculCoordonateUV();
-                setareZoneV();
-            }
-            calculCoordonateUR();
-            setareZoneR();
-            repaint();
-        }
-    }
-//-----------------------------------------------------------------------------------
-//-----------------------------------------------------------------------------------
-    public void keyReleased(KeyEvent e) {
-    }
 }
+
