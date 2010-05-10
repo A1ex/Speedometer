@@ -32,19 +32,11 @@ public class Speed extends javax.swing.JFrame  implements KeyListener {
     public double y0=215;
     public double y0r=215;
     public double x=354;
-<<<<<<< HEAD
     public double xr=64;      
     public double y=328;
     public double yr=318;
 //    public double xr=34;          //Sunt comentate valorile xr si yr pt turatie la 1000(motor pornit)
 //    public double yr=274;
-=======
-    public double xr=64;      //Sunt comentate valorile xr si yr pt turatie la 1000(motor pornit)
-    public double y=328;
-    public double yr=318;
-//    public double xr=34;
-//    public double yr=290;
->>>>>>> cfc583f33fe100771dd04b65addd27cd71858834
     public double v=0;
     public double turatie=0;
     public boolean s=true,d=false;
@@ -67,11 +59,8 @@ public class Speed extends javax.swing.JFrame  implements KeyListener {
 //    ImageIcon butonverde =new ImageIcon("buttongreen.jpg");
 //    ImageIcon butonrosu =new ImageIcon("buttonred.jpg");
     Icon butonverde,butonrosu;
-<<<<<<< HEAD
     public boolean crescutturatie=false;
     public boolean idle=false;
-=======
->>>>>>> cfc583f33fe100771dd04b65addd27cd71858834
 
 
 
@@ -365,10 +354,7 @@ public class Speed extends javax.swing.JFrame  implements KeyListener {
 //-----------------------------------------------------------------------------------
     public void decelerareR(){
         if (((turatie>1000)&&pornit)||((turatie>0)&&(pornit==false))){
-<<<<<<< HEAD
             System.out.println("decelereaza");
-=======
->>>>>>> cfc583f33fe100771dd04b65addd27cd71858834
             if (zona3==1){                  //Daca e in zona jos turometru               
                 xr=xr+pas4;
                 yr=Math.sqrt(Math.abs(22050-Math.pow((xr-x0r),2)))+y0r;
@@ -476,7 +462,6 @@ public class Speed extends javax.swing.JFrame  implements KeyListener {
             prag2=0;
         if ((prag1==1)&&(v<15))             //Reseteaza prag1 daca viteza scade sub 20Mph
             prag1=0;
-<<<<<<< HEAD
         if ((turatie>=1000)&&pornit)
             crescutturatie=true;
         if ((crescutturatie==true)&&(turatie<1000)&&(pornit==true))
@@ -484,20 +469,14 @@ public class Speed extends javax.swing.JFrame  implements KeyListener {
         if ((pornit==false)&&(turatie<0))
             turatie=0;
         if (pornit &&(turatie<=1000)&&crescutturatie&&(idle==false)){
-=======
-        if ((turatie<=1000)&&pornit){
->>>>>>> cfc583f33fe100771dd04b65addd27cd71858834
             xr=34;
             yr=274;
             repaint();
             idle=true;
         }
-        if ((pornit==false)&&(turatie<0))
-            turatie=0;
     }
 //-----------------------------------------------------------------------------------
 //-----------------------------------------------------------------------------------
-<<<<<<< HEAD
     @SuppressWarnings("static-access")
     public void cresteTuratieLaPornire(){
             System.out.println(turatie);
@@ -515,8 +494,6 @@ public class Speed extends javax.swing.JFrame  implements KeyListener {
     }
 //-----------------------------------------------------------------------------------
 //-----------------------------------------------------------------------------------
-=======
->>>>>>> cfc583f33fe100771dd04b65addd27cd71858834
     @Override
     @SuppressWarnings("static-access")
      public void paint(Graphics g) {
@@ -538,7 +515,6 @@ public class Speed extends javax.swing.JFrame  implements KeyListener {
         g2.drawLine((int)x0r+1, (int)y0r-1, (int)xr, (int)yr);
         g2.drawLine((int)x0r-1, (int)y0r+1, (int)xr, (int)yr);
 //        g2.setColor(Color.black);
-<<<<<<< HEAD
 //        g2.fillOval(435, 200, 30, 30);                        //Deseneaza un cerc negru in mijl vitezometrului
 //        System.out.print("  x=");System.out.print(x);                     //Afisare coordonate varf ace
 //        System.out.print("  y=");System.out.print((int)y);
@@ -550,19 +526,6 @@ public class Speed extends javax.swing.JFrame  implements KeyListener {
 //        System.out.print("  z2=");System.out.println(zona2);
 //        System.out.print("  z3=");System.out.print(zona3);
 //        System.out.print("  z4=");System.out.println(zona4);
-=======
-//        g2.fillOval(435, 200, 30, 30);
-//        System.out.print("  x=");System.out.print(x);                       //Afisare coordonate varf ace
-//        System.out.print("  y=");System.out.print((int)y);
-        System.out.print(" turatie=");System.out.print(turatie);
-        System.out.print(" viteza=");System.out.print((int)v);
-        System.out.print("  xr=");System.out.print(xr);
-        System.out.print("  yr=");System.out.print((int)yr);
-//        System.out.print("  z1=");System.out.print(zona1);                  //Afisare zone
-//        System.out.print("  z2=");System.out.println(zona2);
-        System.out.print("  z3=");System.out.print(zona3);
-        System.out.print("  z4=");System.out.println(zona4);
->>>>>>> cfc583f33fe100771dd04b65addd27cd71858834
     }
 //-----------------------------------------------------------------------------------
 //-----------------------------------------------------------------------------------
@@ -589,10 +552,7 @@ public class Speed extends javax.swing.JFrame  implements KeyListener {
             }
         }
         if (tasta==KeyEvent.VK_UP){        //Daca se apasa sageata sus
-<<<<<<< HEAD
             idle=false;
-=======
->>>>>>> cfc583f33fe100771dd04b65addd27cd71858834
             if (pornit){
                     if (v<140){
                     calculCoordonateUV();
@@ -609,7 +569,6 @@ public class Speed extends javax.swing.JFrame  implements KeyListener {
 //-----------------------------------------------------------------------------------
     public void keyReleased(KeyEvent e) {
     }
-<<<<<<< HEAD
 //-----------------------------------------------------------------------------------
 //-----------------------------------------------------------------------------------
     public static void main(String args[]) {
@@ -617,17 +576,6 @@ public class Speed extends javax.swing.JFrame  implements KeyListener {
             public void run() {
                 new Speed().setVisible(true);
 
-=======
-
-
-//-----------------------------------------------------------------------------------
-//-----------------------------------------------------------------------------------
-    public static void main(String args[]) {
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new Speed().setVisible(true);
-
->>>>>>> cfc583f33fe100771dd04b65addd27cd71858834
             }
         }
         );
@@ -739,7 +687,6 @@ public class Speed extends javax.swing.JFrame  implements KeyListener {
     }// </editor-fold>//GEN-END:initComponents
 
     private void ApasareStartStop(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ApasareStartStop
-<<<<<<< HEAD
      
         if (pornit==false){                         //Daca se porneste motorul
             butonStart.setText("Stop Engine");
@@ -754,31 +701,6 @@ public class Speed extends javax.swing.JFrame  implements KeyListener {
             crescutturatie=false;
         }
     }//GEN-LAST:event_ApasareStartStop
-=======
-        // TODO add your handling code here:        
-        if (pornit==false){
-            if (turatie<1000){
-                turatie=1000;
-                xr=34;
-                yr=274;
-                repaint();
-            }
-            butonStart.setText("Stop Engine");
-            pornit=true;
-            Buton1.setIcon(butonverde);
-        }
-        else{
-            butonStart.setText("Start Engine");
-            pornit=false;
-            Buton1.setIcon(butonrosu);
-        }
-    }//GEN-LAST:event_ApasareStartStop
-
-//        turatie=1000;                 //Cod pentru metoda idleRevmeter
-//        xr=34;
-//        yr=274;
-//        repaint();
->>>>>>> cfc583f33fe100771dd04b65addd27cd71858834
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel Buton1;
