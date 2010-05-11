@@ -667,7 +667,6 @@ public class Speed extends javax.swing.JFrame  implements KeyListener {
         usi = new javax.swing.JLabel();
         centura = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
-        Buton2 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
@@ -717,13 +716,13 @@ public class Speed extends javax.swing.JFrame  implements KeyListener {
         jLabel9.setBounds(180, 260, 60, 30);
         jLayeredPane1.add(jLabel9, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
-        butonStart.setFont(new java.awt.Font("Tahoma", 1, 14));
+        butonStart.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         butonStart.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         butonStart.setText("Start Engine");
         butonStart.setBounds(40, 350, 110, 30);
         jLayeredPane1.add(butonStart, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
-        Buton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/speedometer/buttonred.jpeg"))); // NOI18N
+        Buton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/speedometer/buttonred.jpg"))); // NOI18N
         Buton1.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 ApasareStartStop(evt);
@@ -780,10 +779,6 @@ public class Speed extends javax.swing.JFrame  implements KeyListener {
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/speedometer/Speedometer 4_modif.jpg"))); // NOI18N
         jLabel1.setBounds(0, 0, 617, 390);
         jLayeredPane1.add(jLabel1, javax.swing.JLayeredPane.DEFAULT_LAYER);
-
-        Buton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/speedometer/buttongreen.jpg"))); // NOI18N
-        Buton2.setBounds(170, 350, 30, 30);
-        jLayeredPane1.add(Buton2, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -890,7 +885,6 @@ public class Speed extends javax.swing.JFrame  implements KeyListener {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel Buton1;
-    private javax.swing.JLabel Buton2;
     private javax.swing.JLabel baterie;
     private javax.swing.JLabel butonStart;
     private javax.swing.JLabel centura;
