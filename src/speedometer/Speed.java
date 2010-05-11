@@ -747,6 +747,9 @@ public class Speed extends javax.swing.JFrame  implements KeyListener {
             Buton1.setIcon(butonrosu);
             crescutturatie=false;
         }
+        SensorAlarm alarm = new SensorAlarm();
+        if (pornit)
+            alarm.StartEngine();
     }//GEN-LAST:event_ApasareStartStop
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
