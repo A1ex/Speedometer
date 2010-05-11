@@ -58,10 +58,11 @@ public class Speed extends javax.swing.JFrame  implements KeyListener {
     public int zona2=0;
     public int zona3=1;                                     //zona3 si zona4 pt turometru (jos/sus)
     public int zona4=0;
-    public boolean pornit=false,alarmaBaterie=false;
+    public boolean pornit=false;
+    public boolean alarmaBaterie=false,alarmaPompa=false,alarmaUlei=false,alarmaUsi=false,alarmaCentura;
 //    ImageIcon butonverde =new ImageIcon("buttongreen.jpg");
 //    ImageIcon butonrosu =new ImageIcon("buttonred.jpg");
-    Icon butonverde,butonrosu,baterierosie,bateriegri;
+    Icon butonverde,butonrosu,baterierosie,bateriegri,pompagri,pomparosie,uleigri,uleirosie,usigri,usirosie,centuragri,centurarosie;
     public boolean crescutturatie=false;
     public boolean idle=false;
     BufferedImage bi = new BufferedImage(5, 5, BufferedImage.TYPE_INT_RGB);
@@ -81,6 +82,14 @@ public class Speed extends javax.swing.JFrame  implements KeyListener {
         butonrosu = new ImageIcon("images/buttonred.jpg");
         baterierosie=new ImageIcon("images/battery_red.jpg");
         bateriegri=new ImageIcon("images/battery_gray.jpg");
+        pompagri=new ImageIcon("images/pump_gray.jpg");
+        pomparosie=new ImageIcon("images/pump_red.jpg");
+        uleigri=new ImageIcon("images/oil_gray.jpg");
+        uleirosie=new ImageIcon("images/oil_red.jpg");
+        usigri=new ImageIcon("images/doors_gray.jpg");
+        usirosie=new ImageIcon("images/doors_red.jpg");
+        centuragri=new ImageIcon("images/seatbelt_gray.jpg");
+        centurarosie=new ImageIcon("images/seatbelt_red.jpg");
     }
 //-----------------------------------------------------------------------------------
 //-----------------------------------------------------------------------------------
@@ -653,9 +662,10 @@ public class Speed extends javax.swing.JFrame  implements KeyListener {
         butonStart = new javax.swing.JLabel();
         Buton1 = new javax.swing.JLabel();
         baterie = new javax.swing.JLabel();
-        jLabel11 = new javax.swing.JLabel();
-        jLabel12 = new javax.swing.JLabel();
-        jLabel13 = new javax.swing.JLabel();
+        pompa = new javax.swing.JLabel();
+        ulei = new javax.swing.JLabel();
+        usi = new javax.swing.JLabel();
+        centura = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
         Buton2 = new javax.swing.JLabel();
 
@@ -731,17 +741,41 @@ public class Speed extends javax.swing.JFrame  implements KeyListener {
         baterie.setBounds(200, 340, 40, 39);
         jLayeredPane1.add(baterie, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
-        jLabel11.setIcon(new javax.swing.ImageIcon(getClass().getResource("/speedometer/pump_gray.jpg"))); // NOI18N
-        jLabel11.setBounds(250, 340, 40, 40);
-        jLayeredPane1.add(jLabel11, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        pompa.setIcon(new javax.swing.ImageIcon(getClass().getResource("/speedometer/pump_gray.jpg"))); // NOI18N
+        pompa.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                AlarmaPompa(evt);
+            }
+        });
+        pompa.setBounds(250, 340, 40, 40);
+        jLayeredPane1.add(pompa, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
-        jLabel12.setIcon(new javax.swing.ImageIcon(getClass().getResource("/speedometer/oil_gray.jpg"))); // NOI18N
-        jLabel12.setBounds(300, 340, 40, 39);
-        jLayeredPane1.add(jLabel12, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        ulei.setIcon(new javax.swing.ImageIcon(getClass().getResource("/speedometer/oil_gray.jpg"))); // NOI18N
+        ulei.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                AlarmaUlei(evt);
+            }
+        });
+        ulei.setBounds(300, 340, 40, 39);
+        jLayeredPane1.add(ulei, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
-        jLabel13.setIcon(new javax.swing.ImageIcon(getClass().getResource("/speedometer/doors_gray.jpg"))); // NOI18N
-        jLabel13.setBounds(350, 340, 40, 39);
-        jLayeredPane1.add(jLabel13, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        usi.setIcon(new javax.swing.ImageIcon(getClass().getResource("/speedometer/doors_gray.jpg"))); // NOI18N
+        usi.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                AlarmaUsi(evt);
+            }
+        });
+        usi.setBounds(350, 340, 40, 39);
+        jLayeredPane1.add(usi, javax.swing.JLayeredPane.DEFAULT_LAYER);
+
+        centura.setIcon(new javax.swing.ImageIcon(getClass().getResource("/speedometer/seatbelt_gray.jpg"))); // NOI18N
+        centura.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                AlarmaCentura(evt);
+            }
+        });
+        centura.setBounds(400, 340, 40, 40);
+        jLayeredPane1.add(centura, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/speedometer/Speedometer 4_modif.jpg"))); // NOI18N
         jLabel1.setBounds(0, 0, 617, 390);
@@ -798,15 +832,69 @@ public class Speed extends javax.swing.JFrame  implements KeyListener {
         }
     }//GEN-LAST:event_AlarmaBaterie
 
+    private void AlarmaPompa(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_AlarmaPompa
+        // TODO add your handling code here:
+        if (alarmaPompa){
+            pompa.setIcon(pompagri);
+            alarmaPompa=false;
+        }
+        else{
+            SensorAlarm alarm = new SensorAlarm();
+            pompa.setIcon(pomparosie);
+            alarmaPompa=true;
+            alarm.PumpAlarm();
+        }
+    }//GEN-LAST:event_AlarmaPompa
+
+    private void AlarmaUlei(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_AlarmaUlei
+        // TODO add your handling code here:
+        if (alarmaUlei){
+            ulei.setIcon(uleigri);
+            alarmaUlei=false;
+        }
+        else{
+            SensorAlarm alarm = new SensorAlarm();
+            ulei.setIcon(uleirosie);
+            alarmaUlei=true;
+            alarm.OilAlarm();
+        }
+    }//GEN-LAST:event_AlarmaUlei
+
+    private void AlarmaUsi(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_AlarmaUsi
+        // TODO add your handling code here:
+        if (alarmaUsi){
+            usi.setIcon(usigri);
+            alarmaUsi=false;
+        }
+        else{
+            SensorAlarm alarm = new SensorAlarm();
+            usi.setIcon(usirosie);
+            alarmaUsi=true;
+            alarm.DoorsAlarm();
+        }
+    }//GEN-LAST:event_AlarmaUsi
+
+    private void AlarmaCentura(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_AlarmaCentura
+        // TODO add your handling code here:
+        if (alarmaCentura){
+            centura.setIcon(centuragri);
+            alarmaCentura=false;
+        }
+        else{
+            SensorAlarm alarm = new SensorAlarm();
+            centura.setIcon(centurarosie);
+            alarmaCentura=true;
+            alarm.SeatbeltAlarm();
+        }
+    }//GEN-LAST:event_AlarmaCentura
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel Buton1;
     private javax.swing.JLabel Buton2;
     private javax.swing.JLabel baterie;
     private javax.swing.JLabel butonStart;
+    private javax.swing.JLabel centura;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel11;
-    private javax.swing.JLabel jLabel12;
-    private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -816,6 +904,9 @@ public class Speed extends javax.swing.JFrame  implements KeyListener {
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JLayeredPane jLayeredPane1;
+    private javax.swing.JLabel pompa;
+    private javax.swing.JLabel ulei;
+    private javax.swing.JLabel usi;
     // End of variables declaration//GEN-END:variables
 }
 

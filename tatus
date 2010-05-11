@@ -1,0 +1,72 @@
+[33mcommit 9858786c63106ca3ae18f67e372faf4ab61cffea[m
+Author: A1ex <popescu.m.alexandru@gmail.com>
+Date:   Tue May 11 16:40:00 2010 +0300
+
+    added alarm pictures
+
+[33mcommit ed1d795f11aafbaff526a9087ecd9e043bee5cc8[m
+Author: A1ex <popescu.m.alexandru@gmail.com>
+Date:   Tue May 11 13:32:57 2010 +0300
+
+    added SensorAlarm class
+
+[33mcommit b525df6975bb7ee67ad6cba4bc670b3f58af97ff[m
+Author: A1ex <popescu.m.alexandru@gmail.com>
+Date:   Tue May 11 11:06:22 2010 +0300
+
+    small frame changes
+
+[33mcommit 5ae563377e33ba819501294e97b54a13654bd2c8[m
+Author: A1ex <popescu.m.alexandru@gmail.com>
+Date:   Mon May 10 11:08:02 2010 +0300
+
+    more accurate rendering
+
+[33mcommit 31a41b05e460113d7d05668afd5aca353b6a51a3[m
+Author: A1ex <popescu.m.alexandru@gmail.com>
+Date:   Mon May 10 08:21:27 2010 +0300
+
+    addition
+
+[33mcommit 986ffffcffca5d0a63aec3e3665e3f01a76cff36[m
+Merge: ac66a24 cfc583f
+Author: A1ex <popescu.m.alexandru@gmail.com>
+Date:   Mon May 10 07:32:04 2010 +0300
+
+    repeted commit
+
+[33mcommit ac66a248d085d4e1396c8eeb7a2ae2a6b64bc53e[m
+Author: A1ex <popescu.m.alexandru@gmail.com>
+Date:   Mon May 10 07:29:57 2010 +0300
+
+    working start/stop engine button
+
+[33mcommit cfc583f33fe100771dd04b65addd27cd71858834[m
+Author: A1ex <Administrator@.(none)>
+Date:   Sat May 8 18:19:54 2010 +0300
+
+    improved start/stop engine button
+
+[33mcommit d7982bb3b8acb48c405cffcea20fe2fa5470d7a8[m
+Author: A1ex <Administrator@.(none)>
+Date:   Sat May 8 12:26:20 2010 +0300
+
+    added start/stop engine button
+
+[33mcommit 0edb59c9aa7af0cbe65a2b7cbf7840a495572d0d[m
+Author: A1ex <popescu.m.alexandru@gmail.com>
+Date:   Thu May 6 21:39:39 2010 +0300
+
+    firs attempt with using double buffering (fail- code is commented)
+
+[33mcommit d5d773e180c8e7b1e80016d66ffcffa4604877ee[m
+Author: unknown <UserXP@.(none)>
+Date:   Tue May 4 15:37:49 2010 +0200
+
+    first commit from asus
+
+[33mcommit 2796cfb8d990b4d1f2f0162a880c1a09d16c9ca7[m
+Author: A1ex <popescu.m.alexandru@gmail.com>
+Date:   Sun Apr 25 17:40:03 2010 +0300
+
+    working revmeter needle + value
