@@ -666,7 +666,8 @@ public class Speed extends javax.swing.JFrame  implements KeyListener {
         ulei = new javax.swing.JLabel();
         usi = new javax.swing.JLabel();
         centura = new javax.swing.JLabel();
-        jLabel1 = new javax.swing.JLabel();
+        fuelIndicator = new javax.swing.JLabel();
+        background = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
@@ -674,49 +675,49 @@ public class Speed extends javax.swing.JFrame  implements KeyListener {
         jLabel2.setFont(new java.awt.Font("Times New Roman", 1, 24));
         jLabel2.setForeground(new java.awt.Color(255, 204, 0));
         jLabel2.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        jLabel2.setBounds(400, 260, 60, 30);
+        jLabel2.setBounds(400, 270, 60, 30);
         jLayeredPane1.add(jLabel2, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         jLabel4.setFont(new java.awt.Font("Times New Roman", 1, 24));
         jLabel4.setText("M/h");
-        jLabel4.setBounds(450, 260, 60, 30);
+        jLabel4.setBounds(450, 270, 60, 30);
         jLayeredPane1.add(jLabel4, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
-        jLabel3.setFont(new java.awt.Font("Times New Roman", 1, 24));
+        jLabel3.setFont(new java.awt.Font("Times New Roman", 1, 24)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(255, 204, 0));
         jLabel3.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        jLabel3.setBounds(400, 290, 60, 30);
+        jLabel3.setBounds(400, 300, 60, 30);
         jLayeredPane1.add(jLabel3, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         jLabel5.setFont(new java.awt.Font("Times New Roman", 1, 24));
         jLabel5.setText("Km/h");
-        jLabel5.setBounds(450, 290, 60, 30);
+        jLabel5.setBounds(450, 300, 60, 30);
         jLayeredPane1.add(jLabel5, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         jLabel6.setFont(new java.awt.Font("Times New Roman", 1, 24));
         jLabel6.setText("Gear");
-        jLabel6.setBounds(180, 290, 60, 30);
+        jLabel6.setBounds(180, 300, 60, 30);
         jLayeredPane1.add(jLabel6, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         jLabel7.setFont(new java.awt.Font("Times New Roman", 1, 24));
         jLabel7.setForeground(new java.awt.Color(255, 204, 0));
         jLabel7.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        jLabel7.setBounds(120, 290, 60, 30);
+        jLabel7.setBounds(120, 300, 60, 30);
         jLayeredPane1.add(jLabel7, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         jLabel8.setFont(new java.awt.Font("Times New Roman", 1, 24));
         jLabel8.setForeground(new java.awt.Color(255, 204, 0));
         jLabel8.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        jLabel8.setBounds(120, 260, 60, 30);
+        jLabel8.setBounds(120, 270, 60, 30);
         jLayeredPane1.add(jLabel8, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         jLabel9.setFont(new java.awt.Font("Times New Roman", 1, 24));
         jLabel9.setText("Revs");
         jLabel9.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        jLabel9.setBounds(180, 260, 60, 30);
+        jLabel9.setBounds(180, 270, 60, 30);
         jLayeredPane1.add(jLabel9, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
-        butonStart.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        butonStart.setFont(new java.awt.Font("Tahoma", 1, 14));
         butonStart.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         butonStart.setText("Start Engine");
         butonStart.setBounds(40, 350, 110, 30);
@@ -776,9 +777,13 @@ public class Speed extends javax.swing.JFrame  implements KeyListener {
         centura.setBounds(400, 340, 40, 40);
         jLayeredPane1.add(centura, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
-        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/speedometer/Speedometer 4_modif.jpg"))); // NOI18N
-        jLabel1.setBounds(0, 0, 617, 390);
-        jLayeredPane1.add(jLabel1, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        fuelIndicator.setIcon(new javax.swing.ImageIcon(getClass().getResource("/speedometer/fuel_indicator.jpg"))); // NOI18N
+        fuelIndicator.setBounds(180, 160, 60, 110);
+        jLayeredPane1.add(fuelIndicator, javax.swing.JLayeredPane.DEFAULT_LAYER);
+
+        background.setIcon(new javax.swing.ImageIcon(getClass().getResource("/speedometer/Speedometer.jpg"))); // NOI18N
+        background.setBounds(0, 0, 617, 390);
+        jLayeredPane1.add(background, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -885,10 +890,11 @@ public class Speed extends javax.swing.JFrame  implements KeyListener {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel Buton1;
+    private javax.swing.JLabel background;
     private javax.swing.JLabel baterie;
     private javax.swing.JLabel butonStart;
     private javax.swing.JLabel centura;
-    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel fuelIndicator;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
