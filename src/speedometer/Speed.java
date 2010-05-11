@@ -13,6 +13,7 @@ package speedometer;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.awt.image.BufferedImage;
 import javax.swing.Timer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -60,6 +61,9 @@ public class Speed extends javax.swing.JFrame  implements KeyListener {
     Icon butonverde,butonrosu;
     public boolean crescutturatie=false;
     public boolean idle=false;
+    BufferedImage bi = new BufferedImage(5, 5, BufferedImage.TYPE_INT_RGB);
+    Graphics2D big;
+    public boolean firsttime=true;
 
 
 
@@ -493,14 +497,38 @@ public class Speed extends javax.swing.JFrame  implements KeyListener {
 //-----------------------------------------------------------------------------------
 //-----------------------------------------------------------------------------------
     @Override
-    @SuppressWarnings("static-access")
-     public void paint(Graphics g) {
+    public void paint(Graphics g){
         super.paint(g);
-        Graphics2D g2=(Graphics2D)g;
+        Graphics2D g2=(Graphics2D) g;
+
+//        Desenare cu DoubleBuffering
+//        Dimension dim = getSize();
+//        bi = (BufferedImage) createImage(dim.width,dim.height) ;
+//        big = bi.createGraphics();
+//        firsttime=false;
+//
+//         big.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
+//                            RenderingHints.VALUE_ANTIALIAS_ON);
+//        big.setColor(Color.orange);
+//        big.setStroke(new BasicStroke(4));
+//
+//        big.drawLine((int)x0, (int)y0, (int)x, (int)y);          //Desenare ac vitezometru
+//        big.drawLine((int)x0-1, (int)y0-1, (int)x, (int)y);
+//        big.drawLine((int)x0+1, (int)y0+1, (int)x, (int)y);
+//        big.drawLine((int)x0+1, (int)y0-1, (int)x, (int)y);
+//        big.drawLine((int)x0-1, (int)y0+1, (int)x, (int)y);
+//
+//        big.drawLine((int)x0r, (int)y0r, (int)xr, (int)yr);      //Desenare ac turometru
+//        big.drawLine((int)x0r-1, (int)y0r-1, (int)xr, (int)yr);
+//        big.drawLine((int)x0r+1, (int)y0r+1, (int)xr, (int)yr);
+//        big.drawLine((int)x0r+1, (int)y0r-1, (int)xr, (int)yr);
+//        big.drawLine((int)x0r-1, (int)y0r+1, (int)xr, (int)yr);
+
+//        g.drawImage(bi, 0,0, this);
+//        bi.flush();
+
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
                             RenderingHints.VALUE_ANTIALIAS_ON);
-        
-
         g2.setColor(Color.orange);
 	g2.setStroke(new BasicStroke(4));
 
@@ -510,14 +538,12 @@ public class Speed extends javax.swing.JFrame  implements KeyListener {
         g2.drawLine((int)x0+1, (int)y0-1, (int)x, (int)y);
         g2.drawLine((int)x0-1, (int)y0+1, (int)x, (int)y);
 
-        
         g2.drawLine((int)x0r, (int)y0r, (int)xr, (int)yr);      //Desenare ac turometru
         g2.drawLine((int)x0r-1, (int)y0r-1, (int)xr, (int)yr);
         g2.drawLine((int)x0r+1, (int)y0r+1, (int)xr, (int)yr);
         g2.drawLine((int)x0r+1, (int)y0r-1, (int)xr, (int)yr);
         g2.drawLine((int)x0r-1, (int)y0r+1, (int)xr, (int)yr);
-
-        
+//        g.drawImage(bi, 0,0, this);
 //        int xPoints[]={(int)(x0r-2),(int)(x0r+2),(int)xr,(int)(x0r-2)};   //Desenare poligon (mai complicat)
 //        int yPoints[]={(int)(y0r-2),(int)(y0r+2),(int)yr,(int)(y0r-2)};
 //        g2.setStroke(new BasicStroke(3));
@@ -529,7 +555,7 @@ public class Speed extends javax.swing.JFrame  implements KeyListener {
 //        g2.fillOval(435, 200, 30, 30);                        //Deseneaza un cerc negru in mijl vitezometrului
 //        System.out.print("  x=");System.out.print(x);                     //Afisare coordonate varf ace
 
-        
+
 //        System.out.print("  y=");System.out.print((int)y);
 //        System.out.print(" turatie=");System.out.print(turatie);
 //        System.out.print(" viteza=");System.out.print((int)v);
@@ -539,9 +565,17 @@ public class Speed extends javax.swing.JFrame  implements KeyListener {
 //        System.out.print("  z2=");System.out.println(zona2);
 //        System.out.print("  z3=");System.out.print(zona3);
 //        System.out.print("  z4=");System.out.println(zona4);
+           
     }
 //-----------------------------------------------------------------------------------
 //-----------------------------------------------------------------------------------
+//    @Override
+//    @SuppressWarnings("static-access")
+//     public void update(Graphics g) {
+//        paint(g);
+//
+//    }
+
         //-----------------------------------------------------------------------------------
 //-----------------------------------------------------------------------------------
     public void keyTyped(KeyEvent e) {
@@ -617,52 +651,52 @@ public class Speed extends javax.swing.JFrame  implements KeyListener {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
 
-        jLabel2.setFont(new java.awt.Font("Times New Roman", 1, 24));
+        jLabel2.setFont(new java.awt.Font("Times New Roman", 1, 24)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(255, 204, 0));
         jLabel2.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        jLabel2.setBounds(400, 280, 60, 30);
+        jLabel2.setBounds(400, 260, 60, 30);
         jLayeredPane1.add(jLabel2, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         jLabel4.setFont(new java.awt.Font("Times New Roman", 1, 24));
         jLabel4.setText("M/h");
-        jLabel4.setBounds(450, 280, 60, 30);
+        jLabel4.setBounds(450, 260, 60, 30);
         jLayeredPane1.add(jLabel4, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
-        jLabel3.setFont(new java.awt.Font("Times New Roman", 1, 24)); // NOI18N
+        jLabel3.setFont(new java.awt.Font("Times New Roman", 1, 24));
         jLabel3.setForeground(new java.awt.Color(255, 204, 0));
         jLabel3.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        jLabel3.setBounds(400, 310, 60, 30);
+        jLabel3.setBounds(400, 290, 60, 30);
         jLayeredPane1.add(jLabel3, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
-        jLabel5.setFont(new java.awt.Font("Times New Roman", 1, 24)); // NOI18N
+        jLabel5.setFont(new java.awt.Font("Times New Roman", 1, 24));
         jLabel5.setText("Km/h");
-        jLabel5.setBounds(450, 310, 60, 30);
+        jLabel5.setBounds(450, 290, 60, 30);
         jLayeredPane1.add(jLabel5, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
-        jLabel6.setFont(new java.awt.Font("Times New Roman", 1, 24));
+        jLabel6.setFont(new java.awt.Font("Times New Roman", 1, 24)); // NOI18N
         jLabel6.setText("Gear");
-        jLabel6.setBounds(450, 340, 60, 30);
+        jLabel6.setBounds(180, 290, 60, 30);
         jLayeredPane1.add(jLabel6, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         jLabel7.setFont(new java.awt.Font("Times New Roman", 1, 24));
         jLabel7.setForeground(new java.awt.Color(255, 204, 0));
         jLabel7.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        jLabel7.setBounds(400, 340, 60, 30);
+        jLabel7.setBounds(120, 290, 60, 30);
         jLayeredPane1.add(jLabel7, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
-        jLabel8.setFont(new java.awt.Font("Times New Roman", 1, 24));
+        jLabel8.setFont(new java.awt.Font("Times New Roman", 1, 24)); // NOI18N
         jLabel8.setForeground(new java.awt.Color(255, 204, 0));
         jLabel8.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        jLabel8.setBounds(120, 280, 60, 30);
+        jLabel8.setBounds(120, 260, 60, 30);
         jLayeredPane1.add(jLabel8, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         jLabel9.setFont(new java.awt.Font("Times New Roman", 1, 24));
         jLabel9.setText("Revs");
         jLabel9.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        jLabel9.setBounds(180, 280, 60, 30);
+        jLabel9.setBounds(180, 260, 60, 30);
         jLayeredPane1.add(jLabel9, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
-        butonStart.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        butonStart.setFont(new java.awt.Font("Tahoma", 1, 14));
         butonStart.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         butonStart.setText("Start Engine");
         butonStart.setBounds(40, 350, 110, 30);
