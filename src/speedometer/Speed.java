@@ -14,10 +14,13 @@ package speedometer;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.BufferedImage;
+import java.io.IOException;
 import javax.swing.Timer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.Icon;
+import javax.swing.ImageIcon;
+
 
 /**
  *
@@ -55,27 +58,29 @@ public class Speed extends javax.swing.JFrame  implements KeyListener {
     public int zona2=0;
     public int zona3=1;                                     //zona3 si zona4 pt turometru (jos/sus)
     public int zona4=0;
-    public boolean pornit=false;
+    public boolean pornit=false,alarmaBaterie=false;
 //    ImageIcon butonverde =new ImageIcon("buttongreen.jpg");
 //    ImageIcon butonrosu =new ImageIcon("buttonred.jpg");
-    Icon butonverde,butonrosu;
+    Icon butonverde,butonrosu,baterierosie,bateriegri;
     public boolean crescutturatie=false;
     public boolean idle=false;
     BufferedImage bi = new BufferedImage(5, 5, BufferedImage.TYPE_INT_RGB);
     Graphics2D big;
-    public boolean firsttime=true;
-
+    public boolean firsttime=true;    
+    
 
 
 
 //-----------------------------------------------------------------------------------
 //-----------------------------------------------------------------------------------
-    public Speed() {
+    public Speed() throws IOException {
         initComponents();
         addKeyListener(this);
         t.start();
-        butonverde=Buton2.getIcon();
-        butonrosu=Buton1.getIcon();
+        butonverde = new ImageIcon("images/buttongreen.jpg");
+        butonrosu = new ImageIcon("images/buttonred.jpg");
+        baterierosie=new ImageIcon("images/battery_red.jpg");
+        bateriegri=new ImageIcon("images/battery_gray.jpg");
     }
 //-----------------------------------------------------------------------------------
 //-----------------------------------------------------------------------------------
@@ -621,15 +626,17 @@ public class Speed extends javax.swing.JFrame  implements KeyListener {
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new Speed().setVisible(true);
-
+                try {
+                    new Speed().setVisible(true);
+                } catch (IOException ex) {
+                    Logger.getLogger(Speed.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         }
         );
     }
 //-----------------------------------------------------------------------------------
 //-----------------------------------------------------------------------------------
-
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -645,13 +652,17 @@ public class Speed extends javax.swing.JFrame  implements KeyListener {
         jLabel9 = new javax.swing.JLabel();
         butonStart = new javax.swing.JLabel();
         Buton1 = new javax.swing.JLabel();
+        baterie = new javax.swing.JLabel();
+        jLabel11 = new javax.swing.JLabel();
+        jLabel12 = new javax.swing.JLabel();
+        jLabel13 = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
         Buton2 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
 
-        jLabel2.setFont(new java.awt.Font("Times New Roman", 1, 24)); // NOI18N
+        jLabel2.setFont(new java.awt.Font("Times New Roman", 1, 24));
         jLabel2.setForeground(new java.awt.Color(255, 204, 0));
         jLabel2.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         jLabel2.setBounds(400, 260, 60, 30);
@@ -673,7 +684,7 @@ public class Speed extends javax.swing.JFrame  implements KeyListener {
         jLabel5.setBounds(450, 290, 60, 30);
         jLayeredPane1.add(jLabel5, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
-        jLabel6.setFont(new java.awt.Font("Times New Roman", 1, 24)); // NOI18N
+        jLabel6.setFont(new java.awt.Font("Times New Roman", 1, 24));
         jLabel6.setText("Gear");
         jLabel6.setBounds(180, 290, 60, 30);
         jLayeredPane1.add(jLabel6, javax.swing.JLayeredPane.DEFAULT_LAYER);
@@ -684,7 +695,7 @@ public class Speed extends javax.swing.JFrame  implements KeyListener {
         jLabel7.setBounds(120, 290, 60, 30);
         jLayeredPane1.add(jLabel7, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
-        jLabel8.setFont(new java.awt.Font("Times New Roman", 1, 24)); // NOI18N
+        jLabel8.setFont(new java.awt.Font("Times New Roman", 1, 24));
         jLabel8.setForeground(new java.awt.Color(255, 204, 0));
         jLabel8.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         jLabel8.setBounds(120, 260, 60, 30);
@@ -710,6 +721,27 @@ public class Speed extends javax.swing.JFrame  implements KeyListener {
         });
         Buton1.setBounds(10, 350, 30, 30);
         jLayeredPane1.add(Buton1, javax.swing.JLayeredPane.DEFAULT_LAYER);
+
+        baterie.setIcon(new javax.swing.ImageIcon(getClass().getResource("/speedometer/battery_gray.jpg"))); // NOI18N
+        baterie.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                AlarmaBaterie(evt);
+            }
+        });
+        baterie.setBounds(200, 340, 40, 39);
+        jLayeredPane1.add(baterie, javax.swing.JLayeredPane.DEFAULT_LAYER);
+
+        jLabel11.setIcon(new javax.swing.ImageIcon(getClass().getResource("/speedometer/pump_gray.jpg"))); // NOI18N
+        jLabel11.setBounds(250, 340, 40, 40);
+        jLayeredPane1.add(jLabel11, javax.swing.JLayeredPane.DEFAULT_LAYER);
+
+        jLabel12.setIcon(new javax.swing.ImageIcon(getClass().getResource("/speedometer/oil_gray.jpg"))); // NOI18N
+        jLabel12.setBounds(300, 340, 40, 39);
+        jLayeredPane1.add(jLabel12, javax.swing.JLayeredPane.DEFAULT_LAYER);
+
+        jLabel13.setIcon(new javax.swing.ImageIcon(getClass().getResource("/speedometer/doors_gray.jpg"))); // NOI18N
+        jLabel13.setBounds(350, 340, 40, 39);
+        jLayeredPane1.add(jLabel13, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/speedometer/Speedometer 4_modif.jpg"))); // NOI18N
         jLabel1.setBounds(0, 0, 617, 390);
@@ -748,15 +780,33 @@ public class Speed extends javax.swing.JFrame  implements KeyListener {
             crescutturatie=false;
         }
         SensorAlarm alarm = new SensorAlarm();
-        if (pornit)
+        if (pornit)                                 //Sunet la pornire
             alarm.StartEngine();
     }//GEN-LAST:event_ApasareStartStop
+
+    private void AlarmaBaterie(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_AlarmaBaterie
+        // TODO add your handling code here:
+        if (alarmaBaterie){
+            baterie.setIcon(bateriegri);
+            alarmaBaterie=false;
+        }
+        else{
+            SensorAlarm alarm = new SensorAlarm();
+            baterie.setIcon(baterierosie);
+            alarmaBaterie=true;
+            alarm.BatteryAlarm();
+        }
+    }//GEN-LAST:event_AlarmaBaterie
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel Buton1;
     private javax.swing.JLabel Buton2;
+    private javax.swing.JLabel baterie;
     private javax.swing.JLabel butonStart;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel11;
+    private javax.swing.JLabel jLabel12;
+    private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;

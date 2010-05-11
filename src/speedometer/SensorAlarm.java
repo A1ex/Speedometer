@@ -19,8 +19,8 @@ public class SensorAlarm {
 
 //    AudioClip soundFile1;
 //    AudioClip soundFile2;
-    InputStream EngineStart;
-    AudioStream asEngineStart;
+    InputStream EngineStart,BatteryAlarm;
+    AudioStream asEngineStart,asBatteryAlarm;
 
     SensorAlarm(){
         init();
@@ -37,10 +37,23 @@ public class SensorAlarm {
         } catch (IOException ex) {
             Logger.getLogger(SensorAlarm.class.getName()).log(Level.SEVERE, null, ex);
         }
+        try {
+            BatteryAlarm = new FileInputStream("BatteryLevelAlarm.wav");
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(SensorAlarm.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        try {
+            asBatteryAlarm = new AudioStream(BatteryAlarm);
+        } catch (IOException ex) {
+            Logger.getLogger(SensorAlarm.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
     
     public void StartEngine(){
         AudioPlayer.player.start(asEngineStart);
+    }
+    public void BatteryAlarm(){
+        AudioPlayer.player.start(asBatteryAlarm);
     }
 
     
