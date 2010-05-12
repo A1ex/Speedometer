@@ -64,10 +64,7 @@ public class Speed extends javax.swing.JFrame  implements KeyListener {
     BufferedImage bi = new BufferedImage(5, 5, BufferedImage.TYPE_INT_RGB);
     Graphics2D big;
     public boolean firsttime=true;
-    
-    
-
-
+    Scenario1 s1=new Scenario1();
 
 //-----------------------------------------------------------------------------------
 //-----------------------------------------------------------------------------------
