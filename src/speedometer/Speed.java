@@ -717,7 +717,7 @@ public class Speed extends javax.swing.JFrame  implements KeyListener {
         jLabel9.setBounds(180, 270, 60, 30);
         jLayeredPane1.add(jLabel9, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
-        butonStart.setFont(new java.awt.Font("Tahoma", 1, 14));
+        butonStart.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         butonStart.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         butonStart.setText("Start Engine");
         butonStart.setBounds(40, 350, 110, 30);
@@ -786,16 +786,16 @@ public class Speed extends javax.swing.JFrame  implements KeyListener {
         jLayeredPane1.add(background, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         jMenuBar1.setBackground(new java.awt.Color(0, 0, 0));
-        jMenuBar1.setBorder(null);
+        jMenuBar1.setBorder(javax.swing.BorderFactory.createMatteBorder(1, 1, 1, 1, new java.awt.Color(204, 204, 204)));
         jMenuBar1.setForeground(new java.awt.Color(255, 255, 255));
 
         jMenu1.setBackground(new java.awt.Color(0, 0, 0));
-        jMenu1.setForeground(new java.awt.Color(255, 255, 255));
+        jMenu1.setForeground(new java.awt.Color(204, 204, 204));
         jMenu1.setText("Options");
         jMenuBar1.add(jMenu1);
 
         jMenu2.setBackground(new java.awt.Color(0, 0, 0));
-        jMenu2.setForeground(new java.awt.Color(255, 255, 255));
+        jMenu2.setForeground(new java.awt.Color(204, 204, 204));
         jMenu2.setText("Scenario");
         jMenuBar1.add(jMenu2);
 
