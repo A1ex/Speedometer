@@ -20,8 +20,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
-
-
 /**
  *
  * @author Alexandru Popescu
@@ -65,7 +63,8 @@ public class Speed extends javax.swing.JFrame  implements KeyListener {
     public boolean idle=false;
     BufferedImage bi = new BufferedImage(5, 5, BufferedImage.TYPE_INT_RGB);
     Graphics2D big;
-    public boolean firsttime=true;    
+    public boolean firsttime=true;
+    
     
 
 
@@ -666,8 +665,15 @@ public class Speed extends javax.swing.JFrame  implements KeyListener {
         fuelIndicator = new javax.swing.JLabel();
         background = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
-        jMenu1 = new javax.swing.JMenu();
-        jMenu2 = new javax.swing.JMenu();
+        Options = new javax.swing.JMenu();
+        Mute = new javax.swing.JMenuItem();
+        swich = new javax.swing.JMenuItem();
+        Scenario = new javax.swing.JMenu();
+        Scenario1 = new javax.swing.JMenuItem();
+        Scenario2 = new javax.swing.JMenuItem();
+        Scenario3 = new javax.swing.JMenuItem();
+        Start = new javax.swing.JMenu();
+        Help = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
@@ -789,15 +795,58 @@ public class Speed extends javax.swing.JFrame  implements KeyListener {
         jMenuBar1.setBorder(javax.swing.BorderFactory.createMatteBorder(1, 1, 1, 1, new java.awt.Color(204, 204, 204)));
         jMenuBar1.setForeground(new java.awt.Color(255, 255, 255));
 
-        jMenu1.setBackground(new java.awt.Color(0, 0, 0));
-        jMenu1.setForeground(new java.awt.Color(204, 204, 204));
-        jMenu1.setText("Options");
-        jMenuBar1.add(jMenu1);
+        Options.setBackground(new java.awt.Color(0, 0, 0));
+        Options.setBorder(null);
+        Options.setForeground(new java.awt.Color(204, 204, 204));
+        Options.setText("Options");
 
-        jMenu2.setBackground(new java.awt.Color(0, 0, 0));
-        jMenu2.setForeground(new java.awt.Color(204, 204, 204));
-        jMenu2.setText("Scenario");
-        jMenuBar1.add(jMenu2);
+        Mute.setBackground(new java.awt.Color(0, 0, 0));
+        Mute.setForeground(new java.awt.Color(204, 204, 204));
+        Mute.setText("Mute Engine");
+        Mute.setBorder(null);
+        Options.add(Mute);
+
+        swich.setBackground(new java.awt.Color(0, 0, 0));
+        swich.setForeground(new java.awt.Color(204, 204, 204));
+        swich.setText("Turn off manual control");
+        swich.setBorder(null);
+        Options.add(swich);
+
+        jMenuBar1.add(Options);
+
+        Scenario.setBackground(new java.awt.Color(0, 0, 0));
+        Scenario.setForeground(new java.awt.Color(204, 204, 204));
+        Scenario.setText("Scenario");
+
+        Scenario1.setBackground(new java.awt.Color(0, 0, 0));
+        Scenario1.setForeground(new java.awt.Color(204, 204, 204));
+        Scenario1.setText("Load Scenario 1");
+        Scenario1.setBorder(null);
+        Scenario.add(Scenario1);
+
+        Scenario2.setBackground(new java.awt.Color(0, 0, 0));
+        Scenario2.setForeground(new java.awt.Color(204, 204, 204));
+        Scenario2.setText("Load Scenario 2");
+        Scenario2.setBorder(null);
+        Scenario.add(Scenario2);
+
+        Scenario3.setBackground(new java.awt.Color(0, 0, 0));
+        Scenario3.setForeground(new java.awt.Color(204, 204, 204));
+        Scenario3.setText("Load Scenario 3");
+        Scenario3.setBorder(null);
+        Scenario.add(Scenario3);
+
+        jMenuBar1.add(Scenario);
+
+        Start.setBackground(new java.awt.Color(0, 0, 0));
+        Start.setForeground(new java.awt.Color(204, 204, 204));
+        Start.setText("Start");
+        jMenuBar1.add(Start);
+
+        Help.setBackground(new java.awt.Color(0, 0, 0));
+        Help.setForeground(new java.awt.Color(204, 204, 204));
+        Help.setText("Help");
+        jMenuBar1.add(Help);
 
         setJMenuBar(jMenuBar1);
 
@@ -907,6 +956,14 @@ public class Speed extends javax.swing.JFrame  implements KeyListener {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel Buton1;
+    private javax.swing.JMenu Help;
+    private javax.swing.JMenuItem Mute;
+    private javax.swing.JMenu Options;
+    private javax.swing.JMenu Scenario;
+    private javax.swing.JMenuItem Scenario1;
+    private javax.swing.JMenuItem Scenario2;
+    private javax.swing.JMenuItem Scenario3;
+    private javax.swing.JMenu Start;
     private javax.swing.JLabel background;
     private javax.swing.JLabel baterie;
     private javax.swing.JLabel butonStart;
@@ -921,10 +978,9 @@ public class Speed extends javax.swing.JFrame  implements KeyListener {
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JLayeredPane jLayeredPane1;
-    private javax.swing.JMenu jMenu1;
-    private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JLabel pompa;
+    private javax.swing.JMenuItem swich;
     private javax.swing.JLabel ulei;
     private javax.swing.JLabel usi;
     // End of variables declaration//GEN-END:variables
