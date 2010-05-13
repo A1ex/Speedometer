@@ -5,10 +5,13 @@
 
 package speedometer;
 
+import java.applet.AudioClip;
+import java.net.MalformedURLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import  sun.audio.*;
 import  java.io.*;
+import javax.swing.JApplet;
 
 
 /**
@@ -21,7 +24,7 @@ public class SensorAlarm {
 //    AudioClip soundFile2;
     InputStream EngineStart,BatteryAlarm,FuelAlarm,OilAlarm,DoorsAlarm,SeatbeltAlarm;
     AudioStream asEngineStart,asBatteryAlarm,asFuelAlarm,asOilAlarm,asDoorsAlarm,asSeatbeltAlarm;
-
+    AudioClip EngineSound;
     SensorAlarm(){
         init();
     }
@@ -37,7 +40,7 @@ public class SensorAlarm {
         } catch (IOException ex) {
             Logger.getLogger(SensorAlarm.class.getName()).log(Level.SEVERE, null, ex);
         }
-//---------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------       
         try {
             BatteryAlarm = new FileInputStream("BatteryLevelAlarm.wav");
         } catch (FileNotFoundException ex) {
@@ -94,10 +97,22 @@ public class SensorAlarm {
             Logger.getLogger(SensorAlarm.class.getName()).log(Level.SEVERE, null, ex);
         }
 //---------------------------------------------------------------------------------------------------
+         File file=new File("EngineSound.wav");
+        try {
+            EngineSound = JApplet.newAudioClip(file.toURL());
+        } catch (MalformedURLException ex) {
+            Logger.getLogger(SensorAlarm.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
     
     public void StartEngine(){
-        AudioPlayer.player.start(asEngineStart);
+        AudioPlayer.player.start(asEngineStart);               
+    }
+    public void EngineNoise(){        
+        EngineSound.loop();
+    }
+    public void StopEngineNoise(){
+        EngineSound.stop();
     }
     public void BatteryAlarm(){
         AudioPlayer.player.start(asBatteryAlarm);

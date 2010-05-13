@@ -69,6 +69,8 @@ public class Speed extends javax.swing.JFrame  implements KeyListener {
     BufferedImage bi = new BufferedImage(5, 5, BufferedImage.TYPE_INT_RGB);
     Graphics2D big;
     public boolean firsttime=true;
+    SensorAlarm alarm1 = new SensorAlarm();
+    public boolean sunetmotor=false;        //e folosit in action performed sa dea drumu la sunet doar o data
 
 //-----------------------------------------------------------------------------------
 //-----------------------------------------------------------------------------------
@@ -88,6 +90,7 @@ public class Speed extends javax.swing.JFrame  implements KeyListener {
         usirosie=new ImageIcon("images/doors_red.jpg");
         centuragri=new ImageIcon("images/seatbelt_gray.jpg");
         centurarosie=new ImageIcon("images/seatbelt_red.jpg");
+        
 
         try {
             Class.forName("org.apache.derby.jdbc.ClientDriver");
@@ -109,6 +112,14 @@ public class Speed extends javax.swing.JFrame  implements KeyListener {
 //-----------------------------------------------------------------------------------
     ActionListener actionListener = new ActionListener() {
         public void actionPerformed(ActionEvent actionEvent) {
+            if (pornit && (sunetmotor==false)){     //Da drumu la sunetul de motor pornit
+                alarm1.EngineNoise();
+                sunetmotor=true;
+            }
+            if (!pornit && sunetmotor){
+                alarm1.StopEngineNoise();
+                sunetmotor=false;
+            }
             if ((crescutturatie==false)&&(pornit==true)&&(turatie<1000))
                 cresteTuratieLaPornire();
             calculViteza();
@@ -741,7 +752,7 @@ public class Speed extends javax.swing.JFrame  implements KeyListener {
         jLabel9.setBounds(180, 270, 60, 30);
         jLayeredPane1.add(jLabel9, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
-        butonStart.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        butonStart.setFont(new java.awt.Font("Tahoma", 1, 14));
         butonStart.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         butonStart.setText("Start Engine");
         butonStart.setBounds(40, 350, 110, 30);
@@ -833,6 +844,7 @@ public class Speed extends javax.swing.JFrame  implements KeyListener {
         jMenuBar1.add(Options);
 
         Scenario.setBackground(new java.awt.Color(0, 0, 0));
+        Scenario.setBorder(null);
         Scenario.setForeground(new java.awt.Color(204, 204, 204));
         Scenario.setText("Scenario");
 
@@ -857,11 +869,13 @@ public class Speed extends javax.swing.JFrame  implements KeyListener {
         jMenuBar1.add(Scenario);
 
         Start.setBackground(new java.awt.Color(0, 0, 0));
+        Start.setBorder(null);
         Start.setForeground(new java.awt.Color(204, 204, 204));
         Start.setText("Start");
         jMenuBar1.add(Start);
 
         Help.setBackground(new java.awt.Color(0, 0, 0));
+        Help.setBorder(null);
         Help.setForeground(new java.awt.Color(204, 204, 204));
         Help.setText("Help");
         jMenuBar1.add(Help);
@@ -888,7 +902,7 @@ public class Speed extends javax.swing.JFrame  implements KeyListener {
             butonStart.setText("Stop Engine");
             pornit=true;
             Buton1.setIcon(butonverde);
-            viteza=1;
+            viteza=1;            
         }
         else{                                       //Daca se opreste motorul
             butonStart.setText("Start Engine");
@@ -896,10 +910,12 @@ public class Speed extends javax.swing.JFrame  implements KeyListener {
             idle=false;
             Buton1.setIcon(butonrosu);
             crescutturatie=false;
+//            alarm1.StopEngineNoise();
         }
         SensorAlarm alarm = new SensorAlarm();
         if (pornit)                                 //Sunet la pornire
             alarm.StartEngine();
+//        alarm1.EngineNoise();
     }//GEN-LAST:event_ApasareStartStop
 
     private void AlarmaBaterie(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_AlarmaBaterie
