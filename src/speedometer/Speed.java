@@ -15,11 +15,16 @@ import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.sql.SQLException;
 import javax.swing.Timer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
+import java.sql.DriverManager;
+import java.sql.Connection;
+import java.sql.Statement;
+import java.sql.ResultSet;
 /**
  *
  * @author Alexandru Popescu
@@ -64,11 +69,10 @@ public class Speed extends javax.swing.JFrame  implements KeyListener {
     BufferedImage bi = new BufferedImage(5, 5, BufferedImage.TYPE_INT_RGB);
     Graphics2D big;
     public boolean firsttime=true;
-    Scenario1 s1=new Scenario1();
 
 //-----------------------------------------------------------------------------------
 //-----------------------------------------------------------------------------------
-    public Speed() throws IOException {
+    public Speed() throws IOException, SQLException {
         initComponents();
         addKeyListener(this);
         t.start();
@@ -84,6 +88,22 @@ public class Speed extends javax.swing.JFrame  implements KeyListener {
         usirosie=new ImageIcon("images/doors_red.jpg");
         centuragri=new ImageIcon("images/seatbelt_gray.jpg");
         centurarosie=new ImageIcon("images/seatbelt_red.jpg");
+
+        try {
+            Class.forName("org.apache.derby.jdbc.ClientDriver");
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(Speed.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        Connection c = DriverManager.getConnection("jdbc:derby://localhost:1527/OBCDB"); 
+        Statement sql= c.createStatement();
+        ResultSet rs=sql.executeQuery("SELECT * FROM Scenario1");
+        while (rs.next()){
+            int index = rs.getInt(1);
+            double v3=rs.getDouble(2);
+            int delay=rs.getInt(3);
+            System.out.println(index+" "+v3+" "+delay);
+        }
+
     }
 //-----------------------------------------------------------------------------------
 //-----------------------------------------------------------------------------------
@@ -548,7 +568,6 @@ public class Speed extends javax.swing.JFrame  implements KeyListener {
         g2.drawLine((int)x0r+1, (int)y0r+1, (int)xr, (int)yr);
         g2.drawLine((int)x0r+1, (int)y0r-1, (int)xr, (int)yr);
         g2.drawLine((int)x0r-1, (int)y0r+1, (int)xr, (int)yr);
-//        g.drawImage(bi, 0,0, this);
 //        int xPoints[]={(int)(x0r-2),(int)(x0r+2),(int)xr,(int)(x0r-2)};   //Desenare poligon (mai complicat)
 //        int yPoints[]={(int)(y0r-2),(int)(y0r+2),(int)yr,(int)(y0r-2)};
 //        g2.setStroke(new BasicStroke(3));
@@ -632,10 +651,12 @@ public class Speed extends javax.swing.JFrame  implements KeyListener {
                     new Speed().setVisible(true);
                 } catch (IOException ex) {
                     Logger.getLogger(Speed.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (SQLException ex) {
+                    Logger.getLogger(Speed.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
         }
-        );
+        );       
     }
 //-----------------------------------------------------------------------------------
 //-----------------------------------------------------------------------------------
