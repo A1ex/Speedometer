@@ -21,17 +21,12 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
-import java.sql.DriverManager;
-import java.sql.Connection;
-import java.sql.Statement;
-import java.sql.ResultSet;
 import javax.imageio.ImageIO;
 /**
  *
  * @author Alexandru Popescu
  */
 public class SpeedometerPanel extends javax.swing.JPanel  implements KeyListener {
-
     public double x0=450;
     public double x0r=170;
     public double y0=215+21-45;
@@ -40,8 +35,6 @@ public class SpeedometerPanel extends javax.swing.JPanel  implements KeyListener
     public double xr=64;
     public double y=328+21-45;
     public double yr=339-45;
-//    public double xr=34;          //Sunt comentate valorile xr si yr pt turatie la 1000(motor pornit)
-//    public double yr=274;
     public double v=0;
     public double turatie=0;
     public boolean s=true,d=false;
@@ -100,24 +93,7 @@ public class SpeedometerPanel extends javax.swing.JPanel  implements KeyListener
         usigri=new ImageIcon("images/doors_gray.jpg");
         usirosie=new ImageIcon("images/doors_red.jpg");
         centuragri=new ImageIcon("images/seatbelt_gray.jpg");
-        centurarosie=new ImageIcon("images/seatbelt_red.jpg");
-
-
-//        try {
-//            Class.forName("org.apache.derby.jdbc.ClientDriver");
-//        } catch (ClassNotFoundException ex) {
-//            Logger.getLogger(SpeedometerPanel.class.getName()).log(Level.SEVERE, null, ex);
-//        }
-//        Connection c = DriverManager.getConnection("jdbc:derby://localhost:1527/OBCDB");
-//        Statement sql= c.createStatement();
-//        ResultSet rs=sql.executeQuery("SELECT * FROM Scenario1");
-//        while (rs.next()){
-//            int index = rs.getInt(1);
-//            double v3=rs.getDouble(2);
-//            int delay=rs.getInt(3);
-//            System.out.println(index+" "+v3+" "+delay);
-//        }
-
+        centurarosie=new ImageIcon("images/seatbelt_red.jpg");       
     }
 //-----------------------------------------------------------------------------------
 //-----------------------------------------------------------------------------------
