@@ -9,7 +9,6 @@ import java.applet.AudioClip;
 import java.net.MalformedURLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import  sun.audio.*;
 import  java.io.*;
 import javax.swing.JApplet;
 
@@ -20,93 +19,58 @@ import javax.swing.JApplet;
  */
 public class SensorAlarm {
 
-//    AudioClip soundFile1;
-//    AudioClip soundFile2;
-    InputStream EngineStart,BatteryAlarm,FuelAlarm,OilAlarm,DoorsAlarm,SeatbeltAlarm;
-    AudioStream asEngineStart,asBatteryAlarm,asFuelAlarm,asOilAlarm,asDoorsAlarm,asSeatbeltAlarm;
-    AudioClip EngineSound;
+    AudioClip EngineSound,EngineStart,BatteryAlarm,FuelAlarm,OilAlarm,DoorsAlarm,SeatbeltAlarm;
     SensorAlarm(){
         init();
     }
 
     public void init(){
+         File file0=new File("EngineSound.wav");
         try {
-            EngineStart = new FileInputStream("enginestart.wav");
-        } catch (FileNotFoundException ex) {
+            EngineSound = JApplet.newAudioClip(file0.toURL());
+        } catch (MalformedURLException ex) {
             Logger.getLogger(SensorAlarm.class.getName()).log(Level.SEVERE, null, ex);
         }
+         File file1=new File("EngineStart.wav");
         try {
-            asEngineStart = new AudioStream(EngineStart);
-        } catch (IOException ex) {
+            EngineStart = JApplet.newAudioClip(file1.toURL());
+        } catch (MalformedURLException ex) {
             Logger.getLogger(SensorAlarm.class.getName()).log(Level.SEVERE, null, ex);
         }
-//---------------------------------------------------------------------------------------------------       
+         File file2=new File("BatteryLevelAlarm.wav");
         try {
-            BatteryAlarm = new FileInputStream("BatteryLevelAlarm.wav");
-        } catch (FileNotFoundException ex) {
+            BatteryAlarm = JApplet.newAudioClip(file2.toURL());
+        } catch (MalformedURLException ex) {
             Logger.getLogger(SensorAlarm.class.getName()).log(Level.SEVERE, null, ex);
         }
+        File file3=new File("FuelLevelAlarm.wav");
         try {
-            asBatteryAlarm = new AudioStream(BatteryAlarm);
-        } catch (IOException ex) {
+            FuelAlarm = JApplet.newAudioClip(file3.toURL());
+        } catch (MalformedURLException ex) {
             Logger.getLogger(SensorAlarm.class.getName()).log(Level.SEVERE, null, ex);
         }
-//---------------------------------------------------------------------------------------------------
-         try {
-            FuelAlarm = new FileInputStream("FuelLevelAlarm.wav");
-        } catch (FileNotFoundException ex) {
-            Logger.getLogger(SensorAlarm.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        File file4=new File("OilLevelAlarm.wav");
         try {
-            asFuelAlarm = new AudioStream(FuelAlarm);
-        } catch (IOException ex) {
+            OilAlarm = JApplet.newAudioClip(file4.toURL());
+        } catch (MalformedURLException ex) {
             Logger.getLogger(SensorAlarm.class.getName()).log(Level.SEVERE, null, ex);
         }
-//---------------------------------------------------------------------------------------------------
-         try {
-            OilAlarm = new FileInputStream("OilLevelAlarm.wav");
-        } catch (FileNotFoundException ex) {
-            Logger.getLogger(SensorAlarm.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        File file5=new File("DoorsOpenAlarm.wav");
         try {
-            asOilAlarm = new AudioStream(OilAlarm);
-        } catch (IOException ex) {
+            DoorsAlarm = JApplet.newAudioClip(file5.toURL());
+        } catch (MalformedURLException ex) {
             Logger.getLogger(SensorAlarm.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
-//---------------------------------------------------------------------------------------------------
-         try {
-            DoorsAlarm = new FileInputStream("DoorsOpenAlarm.wav");
-        } catch (FileNotFoundException ex) {
-            Logger.getLogger(SensorAlarm.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        File file6=new File("SeatbeltAlarm.wav");
         try {
-            asDoorsAlarm = new AudioStream(DoorsAlarm);
-        } catch (IOException ex) {
-            Logger.getLogger(SensorAlarm.class.getName()).log(Level.SEVERE, null, ex);
-        }
-//---------------------------------------------------------------------------------------------------
-         try {
-            SeatbeltAlarm = new FileInputStream("SeatbeltAlarm.wav");
-        } catch (FileNotFoundException ex) {
-            Logger.getLogger(SensorAlarm.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        try {
-            asSeatbeltAlarm = new AudioStream(SeatbeltAlarm);
-        } catch (IOException ex) {
-            Logger.getLogger(SensorAlarm.class.getName()).log(Level.SEVERE, null, ex);
-        }
-//---------------------------------------------------------------------------------------------------
-         File file=new File("EngineSound.wav");
-        try {
-            EngineSound = JApplet.newAudioClip(file.toURL());
+            SeatbeltAlarm = JApplet.newAudioClip(file6.toURL());
         } catch (MalformedURLException ex) {
             Logger.getLogger(SensorAlarm.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     
     public void StartEngine(){
-        AudioPlayer.player.start(asEngineStart);               
+        EngineStart.play();
     }
     public void EngineNoise(){        
         EngineSound.loop();
@@ -115,19 +79,19 @@ public class SensorAlarm {
         EngineSound.stop();
     }
     public void BatteryAlarm(){
-        AudioPlayer.player.start(asBatteryAlarm);
+        BatteryAlarm.play();
     }
     public void PumpAlarm(){
-        AudioPlayer.player.start(asFuelAlarm);
+        FuelAlarm.play();
     }
     public void OilAlarm(){
-        AudioPlayer.player.start(asOilAlarm);
+        OilAlarm.play();
     }
     public void DoorsAlarm(){
-        AudioPlayer.player.start(asDoorsAlarm);
+        DoorsAlarm.play();
     }
     public void SeatbeltAlarm(){
-        AudioPlayer.player.start(asSeatbeltAlarm);
+        SeatbeltAlarm.play();
     }
 
     

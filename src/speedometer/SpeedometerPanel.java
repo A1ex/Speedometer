@@ -123,6 +123,7 @@ public class SpeedometerPanel extends javax.swing.JPanel  implements KeyListener
             jLabel8.setText(Integer.toString((int)turatie));
         }
     };
+
     Timer t=new Timer(10,actionListener);
 //-----------------------------------------------------------------------------------
 //-----------------------------------------------------------------------------------

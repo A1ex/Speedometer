@@ -33,7 +33,7 @@ public class AppWindow extends javax.swing.JFrame {
     /** Creates new form AppWindow */
     public AppWindow() throws IOException, SQLException{
         initComponents();
-        DBConnection();
+//        DBConnection();
     }
     public void DBConnection ()throws IOException, SQLException{
          try {
