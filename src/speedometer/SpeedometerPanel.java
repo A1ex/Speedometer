@@ -4,16 +4,16 @@
  */
 
 /*
- * Speed.java
+ * SpeedometerPanel.java
  *
- * Created on Mar 13, 2010, 9:33:07 AM
+ * Created on May 13, 2010, 11:33:12 PM
  */
 
 package speedometer;
-
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.IOException;
 import java.sql.SQLException;
 import javax.swing.Timer;
@@ -25,22 +25,21 @@ import java.sql.DriverManager;
 import java.sql.Connection;
 import java.sql.Statement;
 import java.sql.ResultSet;
+import javax.imageio.ImageIO;
 /**
  *
  * @author Alexandru Popescu
  */
-//-----------------------------------------------------------------------------------
-//-----------------------------------------------------------------------------------
-public class Speed extends javax.swing.JFrame  implements KeyListener {
+public class SpeedometerPanel extends javax.swing.JPanel  implements KeyListener {
 
     public double x0=450;
     public double x0r=170;
-    public double y0=215+21;
-    public double y0r=215+21;
+    public double y0=215+21-45;
+    public double y0r=215+21-45;
     public double x=354;
-    public double xr=64;      
-    public double y=328+21;
-    public double yr=339;
+    public double xr=64;
+    public double y=328+21-45;
+    public double yr=339-45;
 //    public double xr=34;          //Sunt comentate valorile xr si yr pt turatie la 1000(motor pornit)
 //    public double yr=274;
     public double v=0;
@@ -71,13 +70,25 @@ public class Speed extends javax.swing.JFrame  implements KeyListener {
     public boolean firsttime=true;
     SensorAlarm alarm1 = new SensorAlarm();
     public boolean sunetmotor=false;        //e folosit in action performed sa dea drumu la sunet doar o data
+    BufferedImage buffer; // The image we use for double-buffering
+    Graphics2D osg; // Graphics2D object for drawing into the buffer
+    public boolean firstTime=true;
+    public int a=50,b=200;
+    Rectangle area;
+    Image m;
+    File file = new File("Speedometer.jpg");
+    KeyListener l ;
 
-//-----------------------------------------------------------------------------------
-//-----------------------------------------------------------------------------------
-    public Speed() throws IOException, SQLException {
+    /** Creates new form SpeedometerPanel */
+    public SpeedometerPanel()throws IOException, SQLException  {
         initComponents();
         addKeyListener(this);
         t.start();
+        try {
+            m =ImageIO.read(file);
+        } catch (IOException ex) {
+            Logger.getLogger(SpeedometerPanel.class.getName()).log(Level.SEVERE, null, ex);
+        }
         butonverde = new ImageIcon("images/buttongreen.jpg");
         butonrosu = new ImageIcon("images/buttonred.jpg");
         baterierosie=new ImageIcon("images/battery_red.jpg");
@@ -90,22 +101,22 @@ public class Speed extends javax.swing.JFrame  implements KeyListener {
         usirosie=new ImageIcon("images/doors_red.jpg");
         centuragri=new ImageIcon("images/seatbelt_gray.jpg");
         centurarosie=new ImageIcon("images/seatbelt_red.jpg");
-        
 
-        try {
-            Class.forName("org.apache.derby.jdbc.ClientDriver");
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(Speed.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        Connection c = DriverManager.getConnection("jdbc:derby://localhost:1527/OBCDB"); 
-        Statement sql= c.createStatement();
-        ResultSet rs=sql.executeQuery("SELECT * FROM Scenario1");
-        while (rs.next()){
-            int index = rs.getInt(1);
-            double v3=rs.getDouble(2);
-            int delay=rs.getInt(3);
-            System.out.println(index+" "+v3+" "+delay);
-        }
+
+//        try {
+//            Class.forName("org.apache.derby.jdbc.ClientDriver");
+//        } catch (ClassNotFoundException ex) {
+//            Logger.getLogger(SpeedometerPanel.class.getName()).log(Level.SEVERE, null, ex);
+//        }
+//        Connection c = DriverManager.getConnection("jdbc:derby://localhost:1527/OBCDB");
+//        Statement sql= c.createStatement();
+//        ResultSet rs=sql.executeQuery("SELECT * FROM Scenario1");
+//        while (rs.next()){
+//            int index = rs.getInt(1);
+//            double v3=rs.getDouble(2);
+//            int delay=rs.getInt(3);
+//            System.out.println(index+" "+v3+" "+delay);
+//        }
 
     }
 //-----------------------------------------------------------------------------------
@@ -133,10 +144,10 @@ public class Speed extends javax.swing.JFrame  implements KeyListener {
             jLabel3.setText(Integer.toString((int)v2));
             setareTreapta();
             jLabel7.setText(Integer.toString(viteza));
-            jLabel8.setText(Integer.toString((int)turatie));            
-        }        
-    };    
-    Timer t=new Timer(10,actionListener);    
+            jLabel8.setText(Integer.toString((int)turatie));
+        }
+    };
+    Timer t=new Timer(10,actionListener);
 //-----------------------------------------------------------------------------------
 //-----------------------------------------------------------------------------------
     public void setareTreapta(){
@@ -173,13 +184,13 @@ public class Speed extends javax.swing.JFrame  implements KeyListener {
                 d=false;
                 s=true;
             }
-        if (y<90+21)
+        if (y<90+21-45)
             v=0.00000146245*Math.pow( x,3)-0.00197303*Math.pow(x,2)+1.07994*x-146.124;
         else
-            if ((s==true)&&(y>90+21))
-                v=-0.000003660*Math.pow(y,3)+0.002450138*Math.pow(y,2)- 0.730904829*y+113.185804814;
+            if ((s==true)&&(y>90+21-45))
+                v=-0.000003916*Math.pow(y,3)+0.002106564*Math.pow(y,2)- 0.562179848*y+86.798186209;
             else
-                v=0.000003063*Math.pow(y,3)- 0.002140058*Math.pow(y,2)+0.684064162*y+36.092191548;
+                v=0.000002682*Math.pow(y,3)- 0.001523562*Math.pow(y,2)+0.473605642*y+65.175332050;
         if ((x==354)&&(zona1==1))
             v=0;
         if (v<0)
@@ -188,10 +199,10 @@ public class Speed extends javax.swing.JFrame  implements KeyListener {
 //-----------------------------------------------------------------------------------
 //-----------------------------------------------------------------------------------
     public void calculTuratie(){        //Trebuie calculata dupa mai multe puncte
-        if (yr<115+21 && xr>90)                //Daca e in zona de turatie 4000+
+        if (yr<115+21-45 && xr>90)                //Daca e in zona de turatie 4000+
             turatie=0.000305*Math.pow(xr,3)-0.165550*Math.pow(xr,2)+43.551051*xr+1125.570795;
         else                                //Daca e in zona de turatie 4000-
-            turatie=-0.000290*Math.pow(yr,3)+0.190213*Math.pow(yr,2)- 55.434502*yr+8227.754867;
+            turatie=-0.000289881*Math.pow(yr,3)+0.151079520*Math.pow(yr,2)- 40.076318640*yr+6091.969107107 ;
     }
 //-----------------------------------------------------------------------------------
 //-----------------------------------------------------------------------------------
@@ -199,21 +210,21 @@ public class Speed extends javax.swing.JFrame  implements KeyListener {
 //-----------------------------------------------------------------------------------
 //-----------------------------------------------------------------------------------
     public void setareZoneV(){
-        if((zona2==1)&&((int)y>=185+21)){                                      //Scoate din zona2
+        if((zona2==1)&&((int)y>=185+21-45)){                                      //Scoate din zona2
             zona2=0;
         }
-        if ((zona1==1)&&((int)y<=240+21)){                                     //Scoate din zona1
+        if ((zona1==1)&&((int)y<=240+21-45)){                                     //Scoate din zona1
             zona1=0;
         }
     }
 //-----------------------------------------------------------------------------------
 //-----------------------------------------------------------------------------------
     public void setareZoneR(){
-        if ((zona4==1)&&((int)yr>=185+21)&&(yr!=210+21)){                 //Scoate din zona4
+        if ((zona4==1)&&((int)yr>=185+21-45)&&(yr!=210+21-45)){                 //Scoate din zona4
             zona4=0;
         }
         else
-            if ((zona3==1)&&((int)yr<=245)&&(yr!=210)) {           //Scoate in zona 3
+            if ((zona3==1)&&((int)yr<=245-45)&&(yr!=210-45)) {           //Scoate in zona 3
                 zona3=0;
             }
     }
@@ -222,7 +233,7 @@ public class Speed extends javax.swing.JFrame  implements KeyListener {
     public void calculCoordonateUV(){
         if ((x<=304)&&(zona1==0)&&(zona2==0)){                                            //Daca intra in zona mijloc stanga vitezometru
                 y=y-3;
-                if (y<185+21){
+                if (y<185+21-45){
                     zona2=1;
                     x=306;
                     y=(-1)*Math.sqrt(Math.abs(22050-Math.pow((x-x0),2)))+y0;
@@ -231,7 +242,7 @@ public class Speed extends javax.swing.JFrame  implements KeyListener {
         else
             if ((x>=590)&&(zona2==0)&&(zona1==0)){                                        //Daca intra in zona mijloc dreapta vitezometru
                 y=y+2;
-                if (y>240+21){
+                if (y>240+21-45){
                     zona1=1;
                     x=595;
                     y=Math.sqrt(Math.abs(22050-Math.pow((x-x0),2)))+y0;
@@ -246,14 +257,14 @@ public class Speed extends javax.swing.JFrame  implements KeyListener {
                     if (zona2==1){                              //Daca e in zona sus vitezometru
                         x=x+pas1;
                         y=(-1)*Math.sqrt(Math.abs(22050-Math.pow((x-x0),2)))+y0;
-                    }        
+                    }
     }
 //-----------------------------------------------------------------------------------
 //-----------------------------------------------------------------------------------
     public void calculCoordonateDV(){
         if (x<=304){                                            //Daca intra in zona mijloc stanga vitezometru
                 y=y+3;
-                if (y>245+21){
+                if (y>245+21-45){
                     zona1=1;
                     x=306;
                     y=Math.sqrt(Math.abs(22050-Math.pow((x-x0),2)))+y0;
@@ -262,7 +273,7 @@ public class Speed extends javax.swing.JFrame  implements KeyListener {
         else
             if (x>=596){                                        //Daca intra in zona mijloc dreapta vitezometru
                 y=y-3;
-                if (y<185+21){
+                if (y<185+21-45){
                     zona2=1;
                     x=595;
                     y=(-1)*Math.sqrt(Math.abs(22050-Math.pow((x-x0),2)))+y0;
@@ -277,13 +288,13 @@ public class Speed extends javax.swing.JFrame  implements KeyListener {
                     if (zona2==1){                                          //Daca e in zona sus vitezometru
                         x=x-pas1;
                         y=(-1)*Math.sqrt(Math.abs(22050-Math.pow((x-x0),2)))+y0;
-                     }        
+                     }
     }
 //-----------------------------------------------------------------------------------
 //-----------------------------------------------------------------------------------
      public void calculCoordonateUR(){
          if (xr<270){                               //Sa nu depaseasca valoarea maxima de turatii
-             if (yr==210+21)
+             if (yr==210+21-45)
                  zona4=1;
              if ((zona3==1)&&(xr-pas3>20)){                                                     //Daca e in zona jos turometru
                 xr=xr-pas3;
@@ -301,7 +312,7 @@ public class Speed extends javax.swing.JFrame  implements KeyListener {
                         zona4=1;
                     }
                     else
-                        yr=210+21;
+                        yr=210+21-45;
                 }
          }
      }
@@ -309,7 +320,7 @@ public class Speed extends javax.swing.JFrame  implements KeyListener {
 //-----------------------------------------------------------------------------------
     public void calculCoordonateDR(){
         if (turatie>1000){                         //Sa nu depaseasca valoarea minima de turatii
-            if (yr==210+21)
+            if (yr==210+21-45)
                 zona3=1;
             if (zona3==1){                                                      //Daca e in zona jos turometru
                 xr=xr+4;
@@ -324,10 +335,10 @@ public class Speed extends javax.swing.JFrame  implements KeyListener {
                     if (yr>220+21){
                         xr=xr+4;
                         yr=Math.sqrt(Math.abs(22050-Math.pow((xr-x0r),2)))+y0r;
-                        zona3=1;                       
+                        zona3=1;
                     }
                     else
-                        yr=210+21;
+                        yr=210+21-45;
                 }
         }
      }
@@ -335,15 +346,15 @@ public class Speed extends javax.swing.JFrame  implements KeyListener {
 //-----------------------------------------------------------------------------------
     @SuppressWarnings("static-access")
     public void decelerareV(){
-        pas2=1;        
-        if(y<328+21){
+        pas2=1;
+        if(y<328+21-45){
             if (zona1==1){                                                  //Daca e in zona jos vitezometru
                 x=x+pas2;
                 y=Math.sqrt(Math.abs(22050-Math.pow((x-x0),2)))+y0;
                 try {
                     Thread.sleep(100);
                 } catch (InterruptedException ex) {
-                    Logger.getLogger(Speed.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(SpeedometerPanel.class.getName()).log(Level.SEVERE, null, ex);
                 }
                 repaint();
                 setareZoneV();
@@ -355,7 +366,7 @@ public class Speed extends javax.swing.JFrame  implements KeyListener {
                     try {
                         Thread.sleep(100);
                     } catch (InterruptedException ex) {
-                        Logger.getLogger(Speed.class.getName()).log(Level.SEVERE, null, ex);
+                        Logger.getLogger(SpeedometerPanel.class.getName()).log(Level.SEVERE, null, ex);
                     }
                     repaint();
                     setareZoneV();
@@ -363,26 +374,26 @@ public class Speed extends javax.swing.JFrame  implements KeyListener {
                 else{
                     if (v<100){                         //Daca intra in zona mijloc stanga vitezometru
                         y=y+3;
-                        if (y>245+21){
+                        if (y>245+21-45){
                             zona1=1;
                             x=306;
                         }
                         try {
                             Thread.currentThread().sleep(100);
                         } catch (InterruptedException ex) {
-                            Logger.getLogger(Speed.class.getName()).log(Level.SEVERE, null, ex);
+                            Logger.getLogger(SpeedometerPanel.class.getName()).log(Level.SEVERE, null, ex);
                         }
                     }
                     else{                               //Daca intra in zona mijloc dreapta vitezometru
                          y=y-3;
-                        if (y<185+21){
+                        if (y<185+21-45){
                             zona2=1;
                             x=595;
                         }
                         try {
                             Thread.currentThread().sleep(100);
                         } catch (InterruptedException ex) {
-                            Logger.getLogger(Speed.class.getName()).log(Level.SEVERE, null, ex);
+                            Logger.getLogger(SpeedometerPanel.class.getName()).log(Level.SEVERE, null, ex);
                         }
                     }
                     repaint();
@@ -394,16 +405,16 @@ public class Speed extends javax.swing.JFrame  implements KeyListener {
 //-----------------------------------------------------------------------------------
     public void decelerareR(){
         if (((turatie>1000)&&pornit)||(((int)turatie>0)&&(pornit==false))){
-            if (zona3==1){                  //Daca e in zona jos turometru               
+            if (zona3==1){                  //Daca e in zona jos turometru
                 xr=xr+pas4;
                 yr=Math.sqrt(Math.abs(22050-Math.pow((xr-x0r),2)))+y0r;
                 try {
                     Thread.sleep(100);
                 } catch (InterruptedException ex) {
-                    Logger.getLogger(Speed.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(SpeedometerPanel.class.getName()).log(Level.SEVERE, null, ex);
                 }
                 repaint();
-                setareZoneR();                
+                setareZoneR();
             }
             else                                            //Daca e in zona sus turometru
                 if (zona4==1){
@@ -412,7 +423,7 @@ public class Speed extends javax.swing.JFrame  implements KeyListener {
                     try {
                         Thread.sleep(100);
                     } catch (InterruptedException ex) {
-                        Logger.getLogger(Speed.class.getName()).log(Level.SEVERE, null, ex);
+                        Logger.getLogger(SpeedometerPanel.class.getName()).log(Level.SEVERE, null, ex);
                     }
                     repaint();
                     setareZoneR();
@@ -420,10 +431,10 @@ public class Speed extends javax.swing.JFrame  implements KeyListener {
                 else{
                     xr=xr+pas4;
                     yr=Math.sqrt(Math.abs(22050-Math.pow((xr-x0r),2)))+y0r;
-                    if (yr>220+21)
-                        zona3=1;                    
+                    if (yr>220+21-45)
+                        zona3=1;
                 }
-        }   
+        }
     }
 //-----------------------------------------------------------------------------------
 //-----------------------------------------------------------------------------------
@@ -454,42 +465,42 @@ public class Speed extends javax.swing.JFrame  implements KeyListener {
         if ((prag1==0)&&(turatie>4000)){            //Ducem turatia la 2000 daca depaseste prima
             prag1=1;                                // oara 4000 (aplicare prag 1)
             xr=22;
-            yr=210+21;
+            yr=210+21-45;
             zona3=0;
             zona4=0;
-            turatie=1998;           
+            turatie=1998;
         }
         if ((prag2==0)&&(turatie>5000)){            //Ducem turatia la 2535 daca depaseste prima
             prag2=1;                                // oara 5000 (aplicare prag 2)
             xr=28;
-            yr=171+21;
+            yr=171+21-45;
             zona3=0;
             zona4=1;
-            turatie=2535;            
+            turatie=2535;
         }
         if ((prag3==0)&&(turatie>6000)){            //Ducem turatia la 3056 daca depaseste prima
             prag3=1;                                // oara 6000 (aplicare prag 3)
             xr=76;
-            yr=100+21;
+            yr=100+21-45;
             zona3=0;
             zona4=1;
-            turatie=3790;          
+            turatie=3790;
         }
         if ((prag4==0)&&(turatie>6300)){
             prag4=1;
             xr=137;
-            yr=70+21;
+            yr=70+21-45;
             zona3=0;
             zona4=1;
-            turatie=4769;           
+            turatie=4769;
         }
         if ((prag5==0)&&(turatie>6500)){
             prag5=1;
             xr=155;
-            yr=67+21;
+            yr=67+21-45;
             zona3=0;
             zona4=1;
-            turatie=5034;         
+            turatie=5034;
         }
          if ((prag5==1)&&(v<100))
             prag5=0;
@@ -509,7 +520,7 @@ public class Speed extends javax.swing.JFrame  implements KeyListener {
             turatie=0;
         if (pornit &&(turatie<=1000)&&crescutturatie&&(idle==false)){
             xr=34;
-            yr=274+21;
+            yr=274+21-45;
             repaint();
             idle=true;
         }
@@ -519,12 +530,12 @@ public class Speed extends javax.swing.JFrame  implements KeyListener {
     @SuppressWarnings("static-access")
     public void cresteTuratieLaPornire(){
             xr=xr-5;
-            yr=Math.sqrt(Math.abs(22050-Math.pow((xr-x0r),2)))+y0r;            
+            yr=Math.sqrt(Math.abs(22050-Math.pow((xr-x0r),2)))+y0r;
             try {
                     Thread.sleep(50);
                 } catch (InterruptedException ex) {
-                    Logger.getLogger(Speed.class.getName()).log(Level.SEVERE, null, ex);
-                }            
+                    Logger.getLogger(SpeedometerPanel.class.getName()).log(Level.SEVERE, null, ex);
+                }
             repaint();
             setareZoneR();
         if (turatie>=1000)
@@ -533,35 +544,24 @@ public class Speed extends javax.swing.JFrame  implements KeyListener {
 //-----------------------------------------------------------------------------------
 //-----------------------------------------------------------------------------------
     @Override
-    public void paint(Graphics g){
-        super.paint(g);
-        Graphics2D g2=(Graphics2D) g;
+    public void paintComponent(Graphics g){
+//        super.paintComponent(g);
+//        Graphics2D g2=(Graphics2D) g;
+        if (firstTime) {
+          Dimension dim = getSize();
+          int w = dim.width;
+          int h = dim.height;
+          area = new Rectangle(dim);
+          buffer = (BufferedImage) createImage(w, h);
+          osg = buffer.createGraphics();
+          osg.setColor(Color.red);
+          osg.setRenderingHint(RenderingHints.KEY_ANTIALIASING,RenderingHints.VALUE_ANTIALIAS_ON);
 
-//        Desenare cu DoubleBuffering
-//        Dimension dim = getSize();
-//        bi = (BufferedImage) createImage(dim.width,dim.height) ;
-//        big = bi.createGraphics();
-//        firsttime=false;
-//
-//         big.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
-//                            RenderingHints.VALUE_ANTIALIAS_ON);
-//        big.setColor(Color.orange);
-//        big.setStroke(new BasicStroke(4));
-//
-//        big.drawLine((int)x0, (int)y0, (int)x, (int)y);          //Desenare ac vitezometru
-//        big.drawLine((int)x0-1, (int)y0-1, (int)x, (int)y);
-//        big.drawLine((int)x0+1, (int)y0+1, (int)x, (int)y);
-//        big.drawLine((int)x0+1, (int)y0-1, (int)x, (int)y);
-//        big.drawLine((int)x0-1, (int)y0+1, (int)x, (int)y);
-//
-//        big.drawLine((int)x0r, (int)y0r, (int)xr, (int)yr);      //Desenare ac turometru
-//        big.drawLine((int)x0r-1, (int)y0r-1, (int)xr, (int)yr);
-//        big.drawLine((int)x0r+1, (int)y0r+1, (int)xr, (int)yr);
-//        big.drawLine((int)x0r+1, (int)y0r-1, (int)xr, (int)yr);
-//        big.drawLine((int)x0r-1, (int)y0r+1, (int)xr, (int)yr);
-
-//        g.drawImage(bi, 0,0, this);
-//        bi.flush();
+          firstTime = false;
+        }
+        Graphics2D g2=(Graphics2D) osg;
+        g2.clearRect(0, 0, area.width, area.height);
+        g2.drawImage(m, 0,0, this);
 
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
                             RenderingHints.VALUE_ANTIALIAS_ON);
@@ -579,21 +579,21 @@ public class Speed extends javax.swing.JFrame  implements KeyListener {
         g2.drawLine((int)x0r+1, (int)y0r+1, (int)xr, (int)yr);
         g2.drawLine((int)x0r+1, (int)y0r-1, (int)xr, (int)yr);
         g2.drawLine((int)x0r-1, (int)y0r+1, (int)xr, (int)yr);
-//        int xPoints[]={(int)(x0r-2),(int)(x0r+2),(int)xr,(int)(x0r-2)};   //Desenare poligon (mai complicat)
-//        int yPoints[]={(int)(y0r-2),(int)(y0r+2),(int)yr,(int)(y0r-2)};
-//        g2.setStroke(new BasicStroke(3));
-//        g2.drawPolygon(xPoints, yPoints, 3);
-//        g2.drawPolyline(xPoints, yPoints, 4);
+
+        g2.setColor(Color.black);
+        g2.fillOval(435, 177, 30, 30);
+        g2.fillOval(155, 177, 30, 30);
+//        g2.setColor(Color.yellow);
+//        g2.setStroke(new BasicStroke(2));
+//        g2.drawOval(435, 177, 30, 30);
+//        g2.drawOval(155, 177, 30, 30);
+
+        g.drawImage(buffer, 0, 0, this);
 
 
-//        g2.setColor(Color.black);
-//        g2.fillOval(435, 200, 30, 30);                        //Deseneaza un cerc negru in mijl vitezometrului
 //        System.out.print("  s=");System.out.print(s);
 //        System.out.print("  x=");System.out.print(x);         //Afisare coordonate varf ace
-//
-//
 //        System.out.print("  y=");System.out.println((int)y);
-
 //        System.out.print(" turatie=");System.out.print(turatie);
 //        System.out.print(" viteza=");System.out.print((int)v);
 //        System.out.print("  xr=");System.out.print(xr);
@@ -602,18 +602,7 @@ public class Speed extends javax.swing.JFrame  implements KeyListener {
 //        System.out.print("  z2=");System.out.println(zona2);
 //        System.out.print("  z3=");System.out.print(zona3);
 //        System.out.print("  z4=");System.out.println(zona4);
-           
     }
-//-----------------------------------------------------------------------------------
-//-----------------------------------------------------------------------------------
-//    @Override
-//    @SuppressWarnings("static-access")
-//     public void update(Graphics g) {
-//        paint(g);
-//
-//    }
-
-        //-----------------------------------------------------------------------------------
 //-----------------------------------------------------------------------------------
     public void keyTyped(KeyEvent e) {
         throw new UnsupportedOperationException("Not supported yet.");
@@ -624,7 +613,7 @@ public class Speed extends javax.swing.JFrame  implements KeyListener {
          int tasta;
          tasta=e.getKeyCode();
          setarePasi();
-         if (tasta==KeyEvent.VK_DOWN){     //Daca se apasa sageata jos          
+         if (tasta==KeyEvent.VK_DOWN){     //Daca se apasa sageata jos
             if (v>0){
                 calculCoordonateDV();
                 setareZoneV();
@@ -645,32 +634,20 @@ public class Speed extends javax.swing.JFrame  implements KeyListener {
                 calculCoordonateUR();
                 setareZoneR();
                 repaint();
-                
+
             }
         }
     }
 //-----------------------------------------------------------------------------------
 //-----------------------------------------------------------------------------------
     public void keyReleased(KeyEvent e) {
-    }
-//-----------------------------------------------------------------------------------
-//-----------------------------------------------------------------------------------
-    public static void main(String args[]) {
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                try {
-                    new Speed().setVisible(true);
-                } catch (IOException ex) {
-                    Logger.getLogger(Speed.class.getName()).log(Level.SEVERE, null, ex);
-                } catch (SQLException ex) {
-                    Logger.getLogger(Speed.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
-        }
-        );       
-    }
-//-----------------------------------------------------------------------------------
-//-----------------------------------------------------------------------------------
+    }    
+
+    /** This method is called from within the constructor to
+     * initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is
+     * always regenerated by the Form Editor.
+     */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -691,21 +668,8 @@ public class Speed extends javax.swing.JFrame  implements KeyListener {
         ulei = new javax.swing.JLabel();
         usi = new javax.swing.JLabel();
         centura = new javax.swing.JLabel();
-        fuelIndicator = new javax.swing.JLabel();
-        background = new javax.swing.JLabel();
-        jMenuBar1 = new javax.swing.JMenuBar();
-        Options = new javax.swing.JMenu();
-        Mute = new javax.swing.JMenuItem();
-        swich = new javax.swing.JMenuItem();
-        Scenario = new javax.swing.JMenu();
-        Scenario1 = new javax.swing.JMenuItem();
-        Scenario2 = new javax.swing.JMenuItem();
-        Scenario3 = new javax.swing.JMenuItem();
-        Start = new javax.swing.JMenu();
-        Help = new javax.swing.JMenu();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setResizable(false);
+        setPreferredSize(new java.awt.Dimension(616, 390));
 
         jLabel2.setFont(new java.awt.Font("Times New Roman", 1, 24));
         jLabel2.setForeground(new java.awt.Color(255, 204, 0));
@@ -761,7 +725,7 @@ public class Speed extends javax.swing.JFrame  implements KeyListener {
         Buton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/speedometer/buttonred.jpg"))); // NOI18N
         Buton1.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                ApasareStartStop(evt);
+                Buton1ApasareStartStop(evt);
             }
         });
         Buton1.setBounds(10, 350, 30, 30);
@@ -770,7 +734,7 @@ public class Speed extends javax.swing.JFrame  implements KeyListener {
         baterie.setIcon(new javax.swing.ImageIcon(getClass().getResource("/speedometer/battery_gray.jpg"))); // NOI18N
         baterie.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                AlarmaBaterie(evt);
+                baterieAlarmaBaterie(evt);
             }
         });
         baterie.setBounds(200, 340, 40, 39);
@@ -779,7 +743,7 @@ public class Speed extends javax.swing.JFrame  implements KeyListener {
         pompa.setIcon(new javax.swing.ImageIcon(getClass().getResource("/speedometer/pump_gray.jpg"))); // NOI18N
         pompa.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                AlarmaPompa(evt);
+                pompaAlarmaPompa(evt);
             }
         });
         pompa.setBounds(250, 340, 40, 40);
@@ -788,7 +752,7 @@ public class Speed extends javax.swing.JFrame  implements KeyListener {
         ulei.setIcon(new javax.swing.ImageIcon(getClass().getResource("/speedometer/oil_gray.jpg"))); // NOI18N
         ulei.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                AlarmaUlei(evt);
+                uleiAlarmaUlei(evt);
             }
         });
         ulei.setBounds(300, 340, 40, 39);
@@ -797,7 +761,7 @@ public class Speed extends javax.swing.JFrame  implements KeyListener {
         usi.setIcon(new javax.swing.ImageIcon(getClass().getResource("/speedometer/doors_gray.jpg"))); // NOI18N
         usi.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                AlarmaUsi(evt);
+                usiAlarmaUsi(evt);
             }
         });
         usi.setBounds(350, 340, 40, 39);
@@ -806,84 +770,14 @@ public class Speed extends javax.swing.JFrame  implements KeyListener {
         centura.setIcon(new javax.swing.ImageIcon(getClass().getResource("/speedometer/seatbelt_gray.jpg"))); // NOI18N
         centura.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                AlarmaCentura(evt);
+                centuraAlarmaCentura(evt);
             }
         });
         centura.setBounds(400, 340, 40, 40);
         jLayeredPane1.add(centura, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
-        fuelIndicator.setIcon(new javax.swing.ImageIcon(getClass().getResource("/speedometer/fuel_indicator.jpg"))); // NOI18N
-        fuelIndicator.setBounds(180, 160, 60, 110);
-        jLayeredPane1.add(fuelIndicator, javax.swing.JLayeredPane.DEFAULT_LAYER);
-
-        background.setIcon(new javax.swing.ImageIcon(getClass().getResource("/speedometer/Speedometer.jpg"))); // NOI18N
-        background.setBounds(0, 0, 617, 390);
-        jLayeredPane1.add(background, javax.swing.JLayeredPane.DEFAULT_LAYER);
-
-        jMenuBar1.setBackground(new java.awt.Color(0, 0, 0));
-        jMenuBar1.setBorder(javax.swing.BorderFactory.createMatteBorder(1, 1, 1, 1, new java.awt.Color(204, 204, 204)));
-        jMenuBar1.setForeground(new java.awt.Color(255, 255, 255));
-
-        Options.setBackground(new java.awt.Color(0, 0, 0));
-        Options.setBorder(null);
-        Options.setForeground(new java.awt.Color(204, 204, 204));
-        Options.setText("Options");
-
-        Mute.setBackground(new java.awt.Color(0, 0, 0));
-        Mute.setForeground(new java.awt.Color(204, 204, 204));
-        Mute.setText("Mute Engine");
-        Mute.setBorder(null);
-        Options.add(Mute);
-
-        swich.setBackground(new java.awt.Color(0, 0, 0));
-        swich.setForeground(new java.awt.Color(204, 204, 204));
-        swich.setText("Turn off manual control");
-        swich.setBorder(null);
-        Options.add(swich);
-
-        jMenuBar1.add(Options);
-
-        Scenario.setBackground(new java.awt.Color(0, 0, 0));
-        Scenario.setBorder(null);
-        Scenario.setForeground(new java.awt.Color(204, 204, 204));
-        Scenario.setText("Scenario");
-
-        Scenario1.setBackground(new java.awt.Color(0, 0, 0));
-        Scenario1.setForeground(new java.awt.Color(204, 204, 204));
-        Scenario1.setText("Load Scenario 1");
-        Scenario1.setBorder(null);
-        Scenario.add(Scenario1);
-
-        Scenario2.setBackground(new java.awt.Color(0, 0, 0));
-        Scenario2.setForeground(new java.awt.Color(204, 204, 204));
-        Scenario2.setText("Load Scenario 2");
-        Scenario2.setBorder(null);
-        Scenario.add(Scenario2);
-
-        Scenario3.setBackground(new java.awt.Color(0, 0, 0));
-        Scenario3.setForeground(new java.awt.Color(204, 204, 204));
-        Scenario3.setText("Load Scenario 3");
-        Scenario3.setBorder(null);
-        Scenario.add(Scenario3);
-
-        jMenuBar1.add(Scenario);
-
-        Start.setBackground(new java.awt.Color(0, 0, 0));
-        Start.setBorder(null);
-        Start.setForeground(new java.awt.Color(204, 204, 204));
-        Start.setText("Start");
-        jMenuBar1.add(Start);
-
-        Help.setBackground(new java.awt.Color(0, 0, 0));
-        Help.setBorder(null);
-        Help.setForeground(new java.awt.Color(204, 204, 204));
-        Help.setText("Help");
-        jMenuBar1.add(Help);
-
-        setJMenuBar(jMenuBar1);
-
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
+        this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jLayeredPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 616, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -892,117 +786,100 @@ public class Speed extends javax.swing.JFrame  implements KeyListener {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jLayeredPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 390, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
-
-        pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void ApasareStartStop(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ApasareStartStop
-     
+    private void Buton1ApasareStartStop(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Buton1ApasareStartStop
+
         if (pornit==false){                         //Daca se porneste motorul
             butonStart.setText("Stop Engine");
             pornit=true;
             Buton1.setIcon(butonverde);
-            viteza=1;            
-        }
-        else{                                       //Daca se opreste motorul
+            viteza=1;
+        } else{                                       //Daca se opreste motorul
             butonStart.setText("Start Engine");
             pornit=false;
             idle=false;
             Buton1.setIcon(butonrosu);
             crescutturatie=false;
-//            alarm1.StopEngineNoise();
+            //            alarm1.StopEngineNoise();
         }
         SensorAlarm alarm = new SensorAlarm();
         if (pornit)                                 //Sunet la pornire
             alarm.StartEngine();
-//        alarm1.EngineNoise();
-    }//GEN-LAST:event_ApasareStartStop
+        //        alarm1.EngineNoise();
+}//GEN-LAST:event_Buton1ApasareStartStop
 
-    private void AlarmaBaterie(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_AlarmaBaterie
+    private void baterieAlarmaBaterie(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_baterieAlarmaBaterie
         // TODO add your handling code here:
         if (alarmaBaterie){
             baterie.setIcon(bateriegri);
             alarmaBaterie=false;
-        }
-        else{
+        } else{
             SensorAlarm alarm = new SensorAlarm();
             baterie.setIcon(baterierosie);
             alarmaBaterie=true;
             alarm.BatteryAlarm();
         }
-    }//GEN-LAST:event_AlarmaBaterie
+}//GEN-LAST:event_baterieAlarmaBaterie
 
-    private void AlarmaPompa(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_AlarmaPompa
+    private void pompaAlarmaPompa(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_pompaAlarmaPompa
         // TODO add your handling code here:
         if (alarmaPompa){
             pompa.setIcon(pompagri);
             alarmaPompa=false;
-        }
-        else{
+        } else{
             SensorAlarm alarm = new SensorAlarm();
             pompa.setIcon(pomparosie);
             alarmaPompa=true;
             alarm.PumpAlarm();
         }
-    }//GEN-LAST:event_AlarmaPompa
+}//GEN-LAST:event_pompaAlarmaPompa
 
-    private void AlarmaUlei(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_AlarmaUlei
+    private void uleiAlarmaUlei(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_uleiAlarmaUlei
         // TODO add your handling code here:
         if (alarmaUlei){
             ulei.setIcon(uleigri);
             alarmaUlei=false;
-        }
-        else{
+        } else{
             SensorAlarm alarm = new SensorAlarm();
             ulei.setIcon(uleirosie);
             alarmaUlei=true;
             alarm.OilAlarm();
         }
-    }//GEN-LAST:event_AlarmaUlei
+}//GEN-LAST:event_uleiAlarmaUlei
 
-    private void AlarmaUsi(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_AlarmaUsi
+    private void usiAlarmaUsi(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_usiAlarmaUsi
         // TODO add your handling code here:
         if (alarmaUsi){
             usi.setIcon(usigri);
             alarmaUsi=false;
-        }
-        else{
+        } else{
             SensorAlarm alarm = new SensorAlarm();
             usi.setIcon(usirosie);
             alarmaUsi=true;
             alarm.DoorsAlarm();
         }
-    }//GEN-LAST:event_AlarmaUsi
+}//GEN-LAST:event_usiAlarmaUsi
 
-    private void AlarmaCentura(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_AlarmaCentura
+    private void centuraAlarmaCentura(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_centuraAlarmaCentura
         // TODO add your handling code here:
         if (alarmaCentura){
             centura.setIcon(centuragri);
             alarmaCentura=false;
-        }
-        else{
+        } else{
             SensorAlarm alarm = new SensorAlarm();
             centura.setIcon(centurarosie);
             alarmaCentura=true;
             alarm.SeatbeltAlarm();
         }
-    }//GEN-LAST:event_AlarmaCentura
+}//GEN-LAST:event_centuraAlarmaCentura
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel Buton1;
-    private javax.swing.JMenu Help;
-    private javax.swing.JMenuItem Mute;
-    private javax.swing.JMenu Options;
-    private javax.swing.JMenu Scenario;
-    private javax.swing.JMenuItem Scenario1;
-    private javax.swing.JMenuItem Scenario2;
-    private javax.swing.JMenuItem Scenario3;
-    private javax.swing.JMenu Start;
-    private javax.swing.JLabel background;
     private javax.swing.JLabel baterie;
     private javax.swing.JLabel butonStart;
     private javax.swing.JLabel centura;
-    private javax.swing.JLabel fuelIndicator;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -1012,11 +889,9 @@ public class Speed extends javax.swing.JFrame  implements KeyListener {
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JLayeredPane jLayeredPane1;
-    private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JLabel pompa;
-    private javax.swing.JMenuItem swich;
     private javax.swing.JLabel ulei;
     private javax.swing.JLabel usi;
     // End of variables declaration//GEN-END:variables
-}
 
+}
