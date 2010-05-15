@@ -92,7 +92,6 @@ public class SensorAlarm {
             Logger.getLogger(SensorAlarm.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
     public void StartEngine(){
         EngineStart.play();
     }

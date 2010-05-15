@@ -13,12 +13,15 @@ package speedometer;
 
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.sql.Statement;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import javax.swing.Timer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFrame;
@@ -27,12 +30,16 @@ import javax.swing.JFrame;
  *
  * @author Alexandru Popescu
  */
-public class AppWindow extends javax.swing.JFrame {
-    
+public class AppWindow extends javax.swing.JFrame  {
+
+    public boolean mute=false,start=false;
+    SpeedometerPanel p=new SpeedometerPanel();
+    public boolean reporniresunet=false;
 
     /** Creates new form AppWindow */
     public AppWindow() throws IOException, SQLException{
         initComponents();
+        t2.start();
 //        DBConnection();
     }
     public void DBConnection ()throws IOException, SQLException{
@@ -51,6 +58,16 @@ public class AppWindow extends javax.swing.JFrame {
             System.out.println(index+" "+v3+" "+delay);
         }        
     }
+    ActionListener mainActionListener = new ActionListener() {
+         public void actionPerformed(ActionEvent actionEvent) {
+             if (mute)
+                p.sunet=false;             
+             else
+                 p.sunet=true;
+         }
+    };
+    Timer t2=new Timer(10,mainActionListener);
+    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -82,6 +99,11 @@ public class AppWindow extends javax.swing.JFrame {
         Mute.setForeground(new java.awt.Color(204, 204, 204));
         Mute.setText("Mute Engine");
         Mute.setBorder(null);
+        Mute.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                SetareMute(evt);
+            }
+        });
         Options.add(Mute);
 
         swich.setBackground(new java.awt.Color(0, 0, 0));
@@ -121,6 +143,11 @@ public class AppWindow extends javax.swing.JFrame {
         Start.setBorder(null);
         Start.setForeground(new java.awt.Color(204, 204, 204));
         Start.setText("Start");
+        Start.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                ApasatStart(evt);
+            }
+        });
         jMenuBar1.add(Start);
 
         Help.setBackground(new java.awt.Color(0, 0, 0));
@@ -145,19 +172,39 @@ public class AppWindow extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void SetareMute(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_SetareMute
+        // TODO add your handling code here:
+        if (mute==false){
+            mute=true;
+            p.alarm1.StopEngineNoise();
+            Mute.setText("Unmute Engine");
+        }
+        else{
+            mute=false;
+            if (p.pornit)                   //porneste iar motorul
+                p.alarm1.EngineNoise();
+            Mute.setText("Mute Engine");
+        }
+    }//GEN-LAST:event_SetareMute
+
+    private void ApasatStart(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ApasatStart
+        // TODO add your handling code here:
+        start=true;
+    }//GEN-LAST:event_ApasatStart
+
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 try {
                     AppWindow s = new AppWindow();
-                    SpeedometerPanel p=new SpeedometerPanel();
-                    p.setFocusable(true);
-                    s.getContentPane().add(p,BorderLayout.CENTER);
+//                    SpeedometerPanel p=new SpeedometerPanel();
+                    s.p.setFocusable(true);
+                    s.getContentPane().add(s.p,BorderLayout.CENTER);
                     s.setLayout(new GridLayout());
                     s.pack();
                     s.setSize(617, 450);
                     s.setVisible(true);
-                    s.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);                   
+                    s.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
                 } catch (IOException ex) {
                     Logger.getLogger(AppWindow.class.getName()).log(Level.SEVERE, null, ex);
                 } catch (SQLException ex) {

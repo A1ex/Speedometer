@@ -8,7 +8,6 @@
  *
  * Created on May 13, 2010, 11:33:12 PM
  */
-
 package speedometer;
 import java.awt.*;
 import java.awt.event.*;
@@ -54,6 +53,7 @@ public class SpeedometerPanel extends javax.swing.JPanel  implements KeyListener
     public int zona2=0;
     public int zona3=1;                                     //zona3 si zona4 pt turometru (jos/sus)
     public int zona4=0;
+    public boolean sunet=true;
     public boolean pornit=false;
     public boolean alarmaBaterie=false,alarmaPompa=false,alarmaUlei=false,alarmaUsi=false,alarmaCentura;
     Icon butonverde,butonrosu,baterierosie,bateriegri,pompagri,pomparosie,uleigri,uleirosie,usigri,usirosie,centuragri,centurarosie;
@@ -68,8 +68,8 @@ public class SpeedometerPanel extends javax.swing.JPanel  implements KeyListener
     public boolean sunetacceleratieoprita=false;
     public boolean sunetacceleratie=false;
     public boolean sunetmotor=false;        //e folosit in action performed sa dea drumu la sunet doar o data
-    BufferedImage buffer; // The image we use for double-buffering
-    Graphics2D osg; // Graphics2D object for drawing into the buffer
+    BufferedImage buffer; 
+    Graphics2D osg; 
     public boolean firstTime=true;
     public int a=50,b=200;
     Rectangle area;
@@ -103,8 +103,34 @@ public class SpeedometerPanel extends javax.swing.JPanel  implements KeyListener
 //-----------------------------------------------------------------------------------
 //-----------------------------------------------------------------------------------
     ActionListener actionListener = new ActionListener() {
+        
         public void actionPerformed(ActionEvent actionEvent) {
-            if (pornit && (sunetmotor==false)){     //Da drumu la sunetul de motor pornit
+            if ((crescutturatie==false)&&(pornit==true)&&(turatie<1000))
+                cresteTuratieLaPornire();
+            calculViteza();
+            calculTuratie();
+            if (sunet)
+                sunet();
+            else
+                alarm1.StopEngineNoise();
+            actualizareTuratie();
+            decelerareV();
+            if ((crescutturatie)||(pornit==false))
+                decelerareR();
+            jLabel2.setText(Integer.toString((int)v));
+            double v2=v*1.6;
+            jLabel3.setText(Integer.toString((int)v2));
+            setareTreapta();
+            jLabel7.setText(Integer.toString(viteza));
+            jLabel8.setText(Integer.toString((int)turatie));
+        }
+    };
+
+    Timer t=new Timer(10,actionListener);
+//-----------------------------------------------------------------------------------
+//-----------------------------------------------------------------------------------
+    public void sunet(){
+          if (pornit && (sunetmotor==false)){     //Da drumu la sunetul de motor pornit
                 alarm1.EngineNoise();
                 sunetmotor=true;
             }
@@ -112,11 +138,7 @@ public class SpeedometerPanel extends javax.swing.JPanel  implements KeyListener
                 alarm1.StopEngineNoise();
                 sunetmotor=false;
             }
-            if ((crescutturatie==false)&&(pornit==true)&&(turatie<1000))
-                cresteTuratieLaPornire();
-            calculViteza();
-            calculTuratie();
-            if ((turatie>6650)&&(sunetacceleratiemaxima==false)){
+          if ((turatie>6650)&&(sunetacceleratiemaxima==false)){
                 alarm1.StartMaxThrottle();
                 sunetacceleratiemaxima=true;
             }
@@ -139,29 +161,14 @@ public class SpeedometerPanel extends javax.swing.JPanel  implements KeyListener
             else{
                 if (pornit){
                     alarm1.StopThrottle();
-    //                if (pornit&&(sunetmotor==false))
-    //                    alarm1.EngineNoise();
                     if (sunetacceleratieoprita && (turatie<6650)){
                         alarm1.ThrottleStop();
                         sunetacceleratieoprita=false;
                     }
                     sunetacceleratie=false;
                 }
-            }
-            actualizareTuratie();
-            decelerareV();
-            if ((crescutturatie)||(pornit==false))
-                decelerareR();
-            jLabel2.setText(Integer.toString((int)v));
-            double v2=v*1.6;
-            jLabel3.setText(Integer.toString((int)v2));
-            setareTreapta();
-            jLabel7.setText(Integer.toString(viteza));
-            jLabel8.setText(Integer.toString((int)turatie));
-        }
-    };
-
-    Timer t=new Timer(10,actionListener);
+            }        
+    }
 //-----------------------------------------------------------------------------------
 //-----------------------------------------------------------------------------------
     public void setareTreapta(){
@@ -493,7 +500,6 @@ public class SpeedometerPanel extends javax.swing.JPanel  implements KeyListener
             zona3=0;
             zona4=0;
             turatie=1998;
-            System.out.println("Am atins prag");
             alarm1.StopThrottle();
             sunetacceleratie=false;
         }
@@ -504,7 +510,6 @@ public class SpeedometerPanel extends javax.swing.JPanel  implements KeyListener
             zona3=0;
             zona4=1;
             turatie=2535;
-            System.out.println("Am atins prag");
             alarm1.StopThrottle();
             sunetacceleratie=false;
         }
@@ -515,7 +520,6 @@ public class SpeedometerPanel extends javax.swing.JPanel  implements KeyListener
             zona3=0;
             zona4=1;
             turatie=3790;
-            System.out.println("Am atins prag");
             alarm1.StopThrottle();
             sunetacceleratie=false;
         }
@@ -526,7 +530,6 @@ public class SpeedometerPanel extends javax.swing.JPanel  implements KeyListener
             zona3=0;
             zona4=1;
             turatie=4769;
-            System.out.println("Am atins prag");
             alarm1.StopThrottle();
             sunetacceleratie=false;
         }
@@ -537,7 +540,6 @@ public class SpeedometerPanel extends javax.swing.JPanel  implements KeyListener
             zona3=0;
             zona4=1;
             turatie=5034;
-            System.out.println("Am atins prag");
             alarm1.StopThrottle();
             sunetacceleratie=false;
         }
@@ -584,8 +586,6 @@ public class SpeedometerPanel extends javax.swing.JPanel  implements KeyListener
 //-----------------------------------------------------------------------------------
     @Override
     public void paintComponent(Graphics g){
-//        super.paintComponent(g);
-//        Graphics2D g2=(Graphics2D) g;
         if (firstTime) {
           Dimension dim = getSize();
           int w = dim.width;
@@ -622,14 +622,7 @@ public class SpeedometerPanel extends javax.swing.JPanel  implements KeyListener
         g2.setColor(Color.black);
         g2.fillOval(435, 177, 30, 30);
         g2.fillOval(155, 177, 30, 30);
-//        g2.setColor(Color.yellow);
-//        g2.setStroke(new BasicStroke(2));
-//        g2.drawOval(435, 177, 30, 30);
-//        g2.drawOval(155, 177, 30, 30);
-
         g.drawImage(buffer, 0, 0, this);
-
-
 //        System.out.print("  s=");System.out.print(s);
 //        System.out.print("  x=");System.out.print(x);         //Afisare coordonate varf ace
 //        System.out.print("  y=");System.out.println((int)y);
@@ -654,10 +647,10 @@ public class SpeedometerPanel extends javax.swing.JPanel  implements KeyListener
          setarePasi();         
          if (tasta==KeyEvent.VK_DOWN){     //Daca se apasa sageata jos
             if (v>0){
-                if (frana==false){
-                    alarm1.Brake();
-                    frana=true;
-                }
+//                if (frana==false){        //Zgomot de franare
+//                    alarm1.Brake();
+//                    frana=true;
+//                }
                 calculCoordonateDV();
                 setareZoneV();
             }
@@ -686,11 +679,6 @@ public class SpeedometerPanel extends javax.swing.JPanel  implements KeyListener
     public void keyReleased(KeyEvent e) {
     }    
 
-    /** This method is called from within the constructor to
-     * initialize the form.
-     * WARNING: Do NOT modify this code. The content of this method is
-     * always regenerated by the Form Editor.
-     */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -844,10 +832,11 @@ public class SpeedometerPanel extends javax.swing.JPanel  implements KeyListener
             idle=false;
             Buton1.setIcon(butonrosu);
             crescutturatie=false;
-            alarm1.ThrottleStop();
+            if (sunet)
+                alarm1.ThrottleStop();
         }
         SensorAlarm alarm = new SensorAlarm();
-        if (pornit)                                 //Sunet la pornire
+        if (pornit&&sunet)                                 //Sunet la pornire
             alarm.StartEngine();
 }//GEN-LAST:event_Buton1ApasareStartStop
 
