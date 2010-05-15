@@ -2,7 +2,6 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package speedometer;
 
 import java.applet.AudioClip;
@@ -11,8 +10,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import  java.io.*;
 import javax.swing.JApplet;
-
-
 /**
  *
  * @author Alexandru Popescu

@@ -15,11 +15,11 @@ import java.awt.BorderLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.sql.Statement;
+//import java.sql.Statement;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.ResultSet;
+//import java.sql.ResultSet;
 import java.sql.SQLException;
 import javax.swing.Timer;
 import java.util.logging.Level;
@@ -32,41 +32,45 @@ import javax.swing.JFrame;
  */
 public class AppWindow extends javax.swing.JFrame  {
 
-    public boolean mute=false,start=false;
-    SpeedometerPanel p=new SpeedometerPanel();
-    public boolean reporniresunet=false;
+    public boolean apasatmute=false;                            //determina daca s-a apasat optiunea de meniu "Mute/Unmute Engine"
+    public boolean apasatstart=false;                           //determina daca s-a apasat optiunea de meniu "Start"
+    public boolean apasatcontrol=false;                         //determina daca s-a apasat optiunea de meniu "Turn off/on control"
+    SpeedometerPanel p=new SpeedometerPanel();                  //instanta a clasei SpeedometerPanel
 
-    /** Creates new form AppWindow */
-    public AppWindow() throws IOException, SQLException{
+    public AppWindow() throws IOException, SQLException{        //Constructor
         initComponents();
-        t2.start();
-//        DBConnection();
+        t2.start();                                             //porneste timerul
+//        DBConnection();                                       //face conexiunea la baza de date
     }
-    public void DBConnection ()throws IOException, SQLException{
+    public void DBConnection ()throws IOException, SQLException{//metoda ce face conexiunea la baza de date
          try {
             Class.forName("org.apache.derby.jdbc.ClientDriver");
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(SpeedometerPanel.class.getName()).log(Level.SEVERE, null, ex);
         }
         Connection c = DriverManager.getConnection("jdbc:derby://localhost:1527/OBCDB");
-        Statement sql= c.createStatement();
-        ResultSet rs=sql.executeQuery("SELECT * FROM Scenario1");
-        while (rs.next()){
-            int index = rs.getInt(1);
-            double v3=rs.getDouble(2);
-            int delay=rs.getInt(3);
-            System.out.println(index+" "+v3+" "+delay);
-        }        
+//        Statement sql= c.createStatement();
+//        ResultSet rs=sql.executeQuery("SELECT * FROM Scenario1");
+//        while (rs.next()){
+//            int index = rs.getInt(1);
+//            double v3=rs.getDouble(2);
+//            int delay=rs.getInt(3);
+//            System.out.println(index+" "+v3+" "+delay);
+//        }        
     }
     ActionListener mainActionListener = new ActionListener() {
          public void actionPerformed(ActionEvent actionEvent) {
-             if (mute)
+             if (apasatmute)
                 p.sunet=false;             
              else
                  p.sunet=true;
+             if (apasatcontrol)
+                 p.control=false;
+             else
+                 p.control=true;
          }
     };
-    Timer t2=new Timer(10,mainActionListener);
+    Timer t2=new Timer(10,mainActionListener);                  //seteaza intarzierea la timer
     
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -110,6 +114,11 @@ public class AppWindow extends javax.swing.JFrame  {
         swich.setForeground(new java.awt.Color(204, 204, 204));
         swich.setText("Turn off manual control");
         swich.setBorder(null);
+        swich.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                SetareControl(evt);
+            }
+        });
         Options.add(swich);
 
         jMenuBar1.add(Options);
@@ -174,23 +183,35 @@ public class AppWindow extends javax.swing.JFrame  {
 
     private void SetareMute(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_SetareMute
         // TODO add your handling code here:
-        if (mute==false){
-            mute=true;
-            p.alarm1.StopEngineNoise();
+        if (apasatmute==false){
+            apasatmute=true;
+            p.alarm.StopEngineNoise();
             Mute.setText("Unmute Engine");
         }
         else{
-            mute=false;
+            apasatmute=false;
             if (p.pornit)                   //porneste iar motorul
-                p.alarm1.EngineNoise();
+                p.alarm.EngineNoise();
             Mute.setText("Mute Engine");
         }
     }//GEN-LAST:event_SetareMute
 
     private void ApasatStart(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ApasatStart
         // TODO add your handling code here:
-        start=true;
+        apasatstart=true;
     }//GEN-LAST:event_ApasatStart
+
+    private void SetareControl(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_SetareControl
+        // TODO add your handling code here:
+         if (apasatcontrol==false){
+            apasatcontrol=true;
+            swich.setText("Turn on manual control");
+         }
+        else{
+            apasatcontrol=false;
+            swich.setText("Turn off manual control");
+        }
+    }//GEN-LAST:event_SetareControl
 
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(new Runnable() {
