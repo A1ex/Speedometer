@@ -19,7 +19,7 @@ import javax.swing.JApplet;
  */
 public class SensorAlarm {
 
-    AudioClip EngineSound,EngineStart,BatteryAlarm,FuelAlarm,OilAlarm,DoorsAlarm,SeatbeltAlarm;
+    AudioClip EngineSound,EngineStart,BatteryAlarm,FuelAlarm,OilAlarm,DoorsAlarm,SeatbeltAlarm,Throttle,ThrottleStop,MaxThrottle,Brake,BrakeLoop;
     SensorAlarm(){
         init();
     }
@@ -67,6 +67,30 @@ public class SensorAlarm {
         } catch (MalformedURLException ex) {
             Logger.getLogger(SensorAlarm.class.getName()).log(Level.SEVERE, null, ex);
         }
+        File file7=new File("Throttle.wav");
+        try {
+            Throttle = JApplet.newAudioClip(file7.toURL());
+        } catch (MalformedURLException ex) {
+            Logger.getLogger(SensorAlarm.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        File file8=new File("ThrottleStop.wav");
+        try {
+            ThrottleStop = JApplet.newAudioClip(file8.toURL());
+        } catch (MalformedURLException ex) {
+            Logger.getLogger(SensorAlarm.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        File file9=new File("MaxThrottle.wav");
+        try {
+            MaxThrottle = JApplet.newAudioClip(file9.toURL());
+        } catch (MalformedURLException ex) {
+            Logger.getLogger(SensorAlarm.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        File file10=new File("Brake.wav");
+        try {
+            Brake = JApplet.newAudioClip(file10.toURL());
+        } catch (MalformedURLException ex) {
+            Logger.getLogger(SensorAlarm.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
     
     public void StartEngine(){
@@ -93,6 +117,25 @@ public class SensorAlarm {
     public void SeatbeltAlarm(){
         SeatbeltAlarm.play();
     }
-
-    
+    public void StartThrottle(){
+        Throttle.play();
+    }
+    public void StopThrottle(){
+        Throttle.stop();
+    }
+    public void ThrottleStop(){
+        ThrottleStop.play();
+    }
+    public void StopThrottleStop(){
+        ThrottleStop.stop();
+    }
+    public void StartMaxThrottle(){
+        MaxThrottle.loop();
+    }
+    public void StopMaxThrottle(){
+        MaxThrottle.stop();
+    }
+     public void Brake(){
+        Brake.play();
+    }
 }

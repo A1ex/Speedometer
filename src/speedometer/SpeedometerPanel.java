@@ -37,6 +37,7 @@ public class SpeedometerPanel extends javax.swing.JPanel  implements KeyListener
     public double yr=339-45;
     public double v=0;
     public double turatie=0;
+    public double comparturatie=0,comparviteza=0;
     public boolean s=true,d=false;
     public double pas1=1;                                   //pas1/pas2 pt accelerare/decelerare vitezometru
     public double pas2=1;                                   //pas3/pas4 pt accelerare/decelerare turometru
@@ -60,8 +61,12 @@ public class SpeedometerPanel extends javax.swing.JPanel  implements KeyListener
     public boolean idle=false;
     BufferedImage bi = new BufferedImage(5, 5, BufferedImage.TYPE_INT_RGB);
     Graphics2D big;
-    public boolean firsttime=true;
+    public boolean firsttime=true,cresteturatie=false,cresteviteza=false;
     SensorAlarm alarm1 = new SensorAlarm();
+    public boolean frana=false;
+    public boolean sunetacceleratiemaxima=false;
+    public boolean sunetacceleratieoprita=false;
+    public boolean sunetacceleratie=false;
     public boolean sunetmotor=false;        //e folosit in action performed sa dea drumu la sunet doar o data
     BufferedImage buffer; // The image we use for double-buffering
     Graphics2D osg; // Graphics2D object for drawing into the buffer
@@ -111,6 +116,38 @@ public class SpeedometerPanel extends javax.swing.JPanel  implements KeyListener
                 cresteTuratieLaPornire();
             calculViteza();
             calculTuratie();
+            if ((turatie>6650)&&(sunetacceleratiemaxima==false)){
+                alarm1.StartMaxThrottle();
+                sunetacceleratiemaxima=true;
+            }
+            if ((turatie<6650)&&sunetacceleratiemaxima){
+                System.out.println("aici");
+                alarm1.StopMaxThrottle();
+                sunetacceleratiemaxima=false;
+            }
+            if (cresteturatie&&crescutturatie){
+                if ((sunetacceleratie==false)&&pornit){
+                    alarm1.StopThrottleStop();
+                    alarm1.StartThrottle();
+                    sunetacceleratieoprita=true;
+                    alarm1.StopEngineNoise();
+                    sunetmotor=false;
+                    sunetacceleratie=true;
+                    frana=false;
+                }
+           }
+            else{
+                if (pornit){
+                    alarm1.StopThrottle();
+    //                if (pornit&&(sunetmotor==false))
+    //                    alarm1.EngineNoise();
+                    if (sunetacceleratieoprita && (turatie<6650)){
+                        alarm1.ThrottleStop();
+                        sunetacceleratieoprita=false;
+                    }
+                    sunetacceleratie=false;
+                }
+            }
             actualizareTuratie();
             decelerareV();
             if ((crescutturatie)||(pornit==false))
@@ -152,6 +189,7 @@ public class SpeedometerPanel extends javax.swing.JPanel  implements KeyListener
 //-----------------------------------------------------------------------------------
 //-----------------------------------------------------------------------------------
     public void calculViteza(){
+        comparviteza=v;
         if(((int)x>437)&&(s==true)){
                 d=true;
                 s=false;
@@ -172,14 +210,23 @@ public class SpeedometerPanel extends javax.swing.JPanel  implements KeyListener
             v=0;
         if (v<0)
           v=0;
+         if (comparviteza<v)
+            cresteviteza=true;
+        else
+            cresteviteza=false;
     }
 //-----------------------------------------------------------------------------------
 //-----------------------------------------------------------------------------------
-    public void calculTuratie(){        //Trebuie calculata dupa mai multe puncte
+    public void calculTuratie(){
+        comparturatie=turatie;
         if (yr<115+21-45 && xr>90)                //Daca e in zona de turatie 4000+
             turatie=0.000305*Math.pow(xr,3)-0.165550*Math.pow(xr,2)+43.551051*xr+1125.570795;
         else                                //Daca e in zona de turatie 4000-
             turatie=-0.000289881*Math.pow(yr,3)+0.151079520*Math.pow(yr,2)- 40.076318640*yr+6091.969107107 ;
+        if (comparturatie<turatie)
+            cresteturatie=true;
+        else
+            cresteturatie=false;
     }
 //-----------------------------------------------------------------------------------
 //-----------------------------------------------------------------------------------
@@ -439,21 +486,27 @@ public class SpeedometerPanel extends javax.swing.JPanel  implements KeyListener
 //-----------------------------------------------------------------------------------
 //-----------------------------------------------------------------------------------
     public void actualizareTuratie(){               //Actualizam pragurile de turatie
-        if ((prag1==0)&&(turatie>4000)){            //Ducem turatia la 2000 daca depaseste prima
+        if ((prag1==0)&&(turatie>5000)){            //Ducem turatia la 2000 daca depaseste prima
             prag1=1;                                // oara 4000 (aplicare prag 1)
             xr=22;
             yr=210+21-45;
             zona3=0;
             zona4=0;
             turatie=1998;
+            System.out.println("Am atins prag");
+            alarm1.StopThrottle();
+            sunetacceleratie=false;
         }
-        if ((prag2==0)&&(turatie>5000)){            //Ducem turatia la 2535 daca depaseste prima
+        if ((prag2==0)&&(turatie>5500)){            //Ducem turatia la 2535 daca depaseste prima
             prag2=1;                                // oara 5000 (aplicare prag 2)
             xr=28;
             yr=171+21-45;
             zona3=0;
             zona4=1;
             turatie=2535;
+            System.out.println("Am atins prag");
+            alarm1.StopThrottle();
+            sunetacceleratie=false;
         }
         if ((prag3==0)&&(turatie>6000)){            //Ducem turatia la 3056 daca depaseste prima
             prag3=1;                                // oara 6000 (aplicare prag 3)
@@ -462,6 +515,9 @@ public class SpeedometerPanel extends javax.swing.JPanel  implements KeyListener
             zona3=0;
             zona4=1;
             turatie=3790;
+            System.out.println("Am atins prag");
+            alarm1.StopThrottle();
+            sunetacceleratie=false;
         }
         if ((prag4==0)&&(turatie>6300)){
             prag4=1;
@@ -470,6 +526,9 @@ public class SpeedometerPanel extends javax.swing.JPanel  implements KeyListener
             zona3=0;
             zona4=1;
             turatie=4769;
+            System.out.println("Am atins prag");
+            alarm1.StopThrottle();
+            sunetacceleratie=false;
         }
         if ((prag5==0)&&(turatie>6500)){
             prag5=1;
@@ -478,6 +537,9 @@ public class SpeedometerPanel extends javax.swing.JPanel  implements KeyListener
             zona3=0;
             zona4=1;
             turatie=5034;
+            System.out.println("Am atins prag");
+            alarm1.StopThrottle();
+            sunetacceleratie=false;
         }
          if ((prag5==1)&&(v<100))
             prag5=0;
@@ -589,9 +651,13 @@ public class SpeedometerPanel extends javax.swing.JPanel  implements KeyListener
      public void keyPressed(KeyEvent e) {
          int tasta;
          tasta=e.getKeyCode();
-         setarePasi();
+         setarePasi();         
          if (tasta==KeyEvent.VK_DOWN){     //Daca se apasa sageata jos
             if (v>0){
+                if (frana==false){
+                    alarm1.Brake();
+                    frana=true;
+                }
                 calculCoordonateDV();
                 setareZoneV();
             }
@@ -778,12 +844,11 @@ public class SpeedometerPanel extends javax.swing.JPanel  implements KeyListener
             idle=false;
             Buton1.setIcon(butonrosu);
             crescutturatie=false;
-            //            alarm1.StopEngineNoise();
+            alarm1.ThrottleStop();
         }
         SensorAlarm alarm = new SensorAlarm();
         if (pornit)                                 //Sunet la pornire
             alarm.StartEngine();
-        //        alarm1.EngineNoise();
 }//GEN-LAST:event_Buton1ApasareStartStop
 
     private void baterieAlarmaBaterie(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_baterieAlarmaBaterie
