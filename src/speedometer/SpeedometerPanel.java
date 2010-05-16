@@ -121,6 +121,11 @@ public class SpeedometerPanel extends javax.swing.JPanel  implements KeyListener
     ActionListener actionListener = new ActionListener() {
         
         public void actionPerformed(ActionEvent actionEvent) {
+//            System.out.print(turatie+" ");
+//            System.out.print(zona3+" ");
+//            System.out.print(zona4+" ");
+//            System.out.println("xr= "+(int)xr);
+
             if ((crescutturatie==false)&&(pornit==true)&&(turatie<1000))
                 cresteTuratieLaPornire();                       //duce acul turometrului la 1000 la pornire
             setarePasi();                                       //seteaza pasii de accelerare/decelerare in functie de viteza
@@ -258,10 +263,14 @@ public class SpeedometerPanel extends javax.swing.JPanel  implements KeyListener
 //-----------------------------------------------------------------------------------
     public void calculTuratie(){
         comparturatie=turatie;
-        if (yr<115+21-45 && xr>90)                              //Daca e in zona de turatie 4000+
+        if (yr<91 && xr>110){                                     //Daca e in zona de turatie 4000+
+            System.out.print("prima formula  ");
             turatie=0.000305*Math.pow(xr,3)-0.165550*Math.pow(xr,2)+43.551051*xr+1125.570795;
-        else                                                    //Daca e in zona de turatie 4000-
+        }
+        else{                                                    //Daca e in zona de turatie 4000-
             turatie=-0.000289881*Math.pow(yr,3)+0.151079520*Math.pow(yr,2)- 40.076318640*yr+6091.969107107 ;
+             System.out.print("a doua formula  ");
+        }
         if (comparturatie<turatie)
             cresteturatie=true;
         else
@@ -675,10 +684,10 @@ public class SpeedometerPanel extends javax.swing.JPanel  implements KeyListener
          if (control){
              if (tasta==KeyEvent.VK_DOWN){                      //Daca se apasa sageata jos
                 if (v>0){
-    //                if (frana==false){                        //Zgomot de franare
-    //                    alarm.Brake();
-    //                    frana=true;
-    //                }
+                    if (frana==false){                        //Zgomot de franare
+                        alarm.Brake();
+                        frana=true;
+                    }
                     calculCoordonateDV();
                     setareZoneV();
                 }
