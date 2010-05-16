@@ -12,7 +12,6 @@
 package speedometer;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -36,11 +35,11 @@ public class AppWindow extends javax.swing.JFrame  {
     public boolean apasatstart=false;                           //determina daca s-a apasat optiunea de meniu "Start"
     public boolean apasatcontrol=false;                         //determina daca s-a apasat optiunea de meniu "Turn off/on control"
     SpeedometerPanel p=new SpeedometerPanel();                  //instanta a clasei SpeedometerPanel
-    Scenario1 sc1=new Scenario1();                              //instanta a clasei Scenario1
+    Scenario1 sc1 = new Scenario1();                            //instanta a clasei Scenario1
 
     public AppWindow() throws IOException, SQLException{        //Constructor
         initComponents();
-        t2.start();                                             //porneste timerul                                      //face conexiunea la baza de date
+        t2.start();                                             //porneste timerul
     }
     ActionListener mainActionListener = new ActionListener() {  //ActionListener pentru optiunile de meniu
          public void actionPerformed(ActionEvent actionEvent) {
@@ -52,12 +51,11 @@ public class AppWindow extends javax.swing.JFrame  {
                  p.control=false;
              else
                  p.control=true;
-             if (apasatsc1&&apasatcontrol&&!incarcatscenariu){
-                 sc1.setBackground(Color.black);
-                 sc1.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
-                 sc1.pack();
-                 sc1.setVisible(true);                                 
-                 incarcatscenariu=true;
+             if (apasatsc1&&apasatcontrol&&!incarcatscenariu){              
+                    sc1.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+                    sc1.pack();
+                    sc1.setVisible(true);
+                    incarcatscenariu = true;                 
              }
              if (apasatstart&&!pornitscenariu){
                  t3.start();
@@ -70,7 +68,7 @@ public class AppWindow extends javax.swing.JFrame  {
 
          }
     };
-    Timer t2=new Timer(10,mainActionListener);                  //seteaza intarzierea la timer
+    Timer t2=new Timer(10,mainActionListener);                      //seteaza intarzierea la timer
 
     ActionListener SCENARIOActionListener = new ActionListener() {  //ActionListener pentru optiunile de meniu
          public void actionPerformed(ActionEvent actionEvent)  {
