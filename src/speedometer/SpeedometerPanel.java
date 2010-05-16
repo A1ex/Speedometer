@@ -30,10 +30,14 @@ public class SpeedometerPanel extends javax.swing.JPanel  implements KeyListener
     public double x0r=170;                                      //coordonata x baza ac turometru
     public double y0=191;                                       //coordonata y baza ac vitezometru
     public double y0r=191;                                      //coordonata y baza ac turometru
-    public double x=354;                                        //coordonata x ac vitezometru
-    public double xr=64;                                        //coordonata x ac turometru
-    public double y=328+21-45;                                  //coordonata y ac vitezometru
-    public double yr=339-45;                                    //coordonata y ac turometru
+    public double x0f=260;                                      //coordonata x baza ac indicator combustibil
+    public double y0f=215;                                      //coordonata x baza ac indicator combustibil
+    public double xf=223;                                       //coordonata y varf ac indicator combustibil
+    public double yf=200;                                       //coordonata y varf ac indicator combustibil
+    public double x=354;                                        //coordonata x varf ac vitezometru
+    public double xr=64;                                        //coordonata x varf  ac turometru
+    public double y=328+21-45;                                  //coordonata y varf ac vitezometru
+    public double yr=339-45;                                    //coordonata y varf ac turometru
     public double v=0;                                          //valoarea vitezei
     public double turatie=0;                                    //valoarea turatiei
     public double comparturatie=0,comparviteza=0;               //folosite sa verifice daca viteza creste sau scade in actionlistener
@@ -119,6 +123,7 @@ public class SpeedometerPanel extends javax.swing.JPanel  implements KeyListener
         public void actionPerformed(ActionEvent actionEvent) {
             if ((crescutturatie==false)&&(pornit==true)&&(turatie<1000))
                 cresteTuratieLaPornire();                       //duce acul turometrului la 1000 la pornire
+            setarePasi();                                       //seteaza pasii de accelerare/decelerare in functie de viteza
             calculViteza();                                     //calculeaza viteza
             calculTuratie();                                    //calculeaza turatia
             if (sunet)                                          //daca nu e selectat mute sa se aplice metoda de sunet
@@ -127,6 +132,7 @@ public class SpeedometerPanel extends javax.swing.JPanel  implements KeyListener
                 apasatpornit=false;
             actualizareTuratie();                               //actualizeaza turatia in functie de praguri (pt schimbarea de viteze)
             decelerareV();                                      //metoda ce simuleaza decelerarea pentru acul vitezometrului
+            decelerareF();
             if ((crescutturatie)||(pornit==false))
                 decelerareR();                                  //metoda ce simuleaza decelerarea pentru acul turometrului
             jLabel2.setText(Integer.toString((int)v));
@@ -135,6 +141,13 @@ public class SpeedometerPanel extends javax.swing.JPanel  implements KeyListener
             setareTreapta();
             jLabel7.setText(Integer.toString(viteza));
             jLabel8.setText(Integer.toString((int)turatie));
+            if (crescutturatie){                                //daca motorul a fost pornit si turatia a ajuns
+                try {                                           //la 1000, se introduce o intarziere de 100ms
+                            Thread.sleep(100);
+                        } catch (InterruptedException ex) {
+                            Logger.getLogger(SpeedometerPanel.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+            }
         }
     };
 
@@ -310,7 +323,7 @@ public class SpeedometerPanel extends javax.swing.JPanel  implements KeyListener
 //-----------------------------------------------------------------------------------
     public void calculCoordonateDV(){
         if (x<=304){                                            //Daca intra in zona mijloc stanga vitezometru
-                y=y+3;
+                y=y+5;
                 if (y>245+21-45){
                     zona1=1;
                     x=306;
@@ -319,7 +332,7 @@ public class SpeedometerPanel extends javax.swing.JPanel  implements KeyListener
         }
         else
             if (x>=596){                                        //Daca intra in zona mijloc dreapta vitezometru
-                y=y-3;
+                y=y-2;
                 if (y<185+21-45){
                     zona2=1;
                     x=595;
@@ -391,18 +404,30 @@ public class SpeedometerPanel extends javax.swing.JPanel  implements KeyListener
      }
 //-----------------------------------------------------------------------------------
 //-----------------------------------------------------------------------------------
+    public void decelerareF(){
+        if (yf<245){
+            if (yf>=215){
+                xf=xf+0.001;
+                yf=Math.sqrt(Math.abs(1600-Math.pow((xf-x0f),2)))+y0f;
+                repaint();                
+            }
+            else{
+                xf=xf-0.001;
+                yf=(-1)*Math.sqrt(Math.abs(1600-Math.pow((xf-x0f),2)))+y0f;
+                repaint();
+                if (yf>214.5)
+                    yf=215.1;
+            }
+        }
+    }
+//-----------------------------------------------------------------------------------
+//-----------------------------------------------------------------------------------
     @SuppressWarnings("static-access")
     public void decelerareV(){
-        pas2=1;
         if(y<328+21-45){
             if (zona1==1){                                      //Daca e in zona jos vitezometru
                 x=x+pas2;
                 y=Math.sqrt(Math.abs(22050-Math.pow((x-x0),2)))+y0;
-                try {
-                    Thread.sleep(100);
-                } catch (InterruptedException ex) {
-                    Logger.getLogger(SpeedometerPanel.class.getName()).log(Level.SEVERE, null, ex);
-                }
                 repaint();
                 setareZoneV();
             }
@@ -410,11 +435,6 @@ public class SpeedometerPanel extends javax.swing.JPanel  implements KeyListener
                 if (zona2==1){                                  //Daca e in zona sus vitezometru
                     x=x-pas2;
                     y=(-1)*Math.sqrt(Math.abs(22050-Math.pow((x-x0),2)))+y0;
-                    try {
-                        Thread.sleep(100);
-                    } catch (InterruptedException ex) {
-                        Logger.getLogger(SpeedometerPanel.class.getName()).log(Level.SEVERE, null, ex);
-                    }
                     repaint();
                     setareZoneV();
                 }
@@ -425,22 +445,12 @@ public class SpeedometerPanel extends javax.swing.JPanel  implements KeyListener
                             zona1=1;
                             x=306;
                         }
-                        try {
-                            Thread.currentThread().sleep(100);
-                        } catch (InterruptedException ex) {
-                            Logger.getLogger(SpeedometerPanel.class.getName()).log(Level.SEVERE, null, ex);
-                        }
                     }
                     else{                                       //Daca intra in zona mijloc dreapta vitezometru
                          y=y-3;
                         if (y<185+21-45){
                             zona2=1;
                             x=595;
-                        }
-                        try {
-                            Thread.currentThread().sleep(100);
-                        } catch (InterruptedException ex) {
-                            Logger.getLogger(SpeedometerPanel.class.getName()).log(Level.SEVERE, null, ex);
                         }
                     }
                     repaint();
@@ -455,11 +465,6 @@ public class SpeedometerPanel extends javax.swing.JPanel  implements KeyListener
             if ((zona3==1)&&(xr+pas4>20)){                      //Daca e in zona jos turometru
                 xr=xr+pas4;
                 yr=Math.sqrt(Math.abs(22050-Math.pow((xr-x0r),2)))+y0r;
-                try {
-                    Thread.sleep(100);
-                } catch (InterruptedException ex) {
-                    Logger.getLogger(SpeedometerPanel.class.getName()).log(Level.SEVERE, null, ex);
-                }
                 repaint();
                 setareZoneR();
             }
@@ -467,11 +472,6 @@ public class SpeedometerPanel extends javax.swing.JPanel  implements KeyListener
                 if ((zona4==1)&&(xr+pas4>20)){
                     xr=xr-pas4;
                     yr=(-1)*Math.sqrt(Math.abs(22050-Math.pow((xr-x0r),2)))+y0r;
-                    try {
-                        Thread.sleep(100);
-                    } catch (InterruptedException ex) {
-                        Logger.getLogger(SpeedometerPanel.class.getName()).log(Level.SEVERE, null, ex);
-                    }
                     repaint();
                     setareZoneR();
                 }
@@ -489,33 +489,43 @@ public class SpeedometerPanel extends javax.swing.JPanel  implements KeyListener
         if ((int)v<60)                                          //Setare pasi vitezometru
             pas1=2;
          else
-            if ((int)v<90)
+            if ((int)v<90){
                 pas1=1;
-            else
+                pas2=0.5;
+            }
+            else{
                 pas1=0.5;
+                pas2=0.35;
+            }
         if (turatie<3000)                                       //Setare pas crestere turatii functie de valoarea turatiei
             pas3=5;
         if (turatie>3000)
             pas3=4;
-        if (turatie>4000)
+        if (turatie>4000){
             pas3=3;
-        if (turatie>5000)
+            pas4=2;
+        }
+        if (turatie>5000){
             pas3=2;
-        if (turatie>5500)
+            pas4=1;
+        }
+        if (turatie>5500){
             pas3=1.5;
+            pas4=0.75;
+        }
         if (turatie>6000)
             pas3=1;
     }
 //-----------------------------------------------------------------------------------
 //-----------------------------------------------------------------------------------
     public void actualizareTuratie(){                           //Actualizam pragurile de turatie
-        if ((prag1==0)&&(turatie>5000)){                        //Ducem turatia la 2000 daca depaseste prima
+        if ((prag1==0)&&(turatie>5000)){                        //Ducem turatia la 2535 daca depaseste prima
             prag1=1;                                            // oara 5000 (aplicare prag 1)
-            xr=22;
-            yr=186;
+            xr=28;
+            yr=147;
             zona3=0;
-            zona4=0;
-            turatie=1998;
+            zona4=1;
+            turatie=2535;
             alarm.StopThrottle();
             sunetacceleratie=false;
         }
@@ -628,10 +638,18 @@ public class SpeedometerPanel extends javax.swing.JPanel  implements KeyListener
         g2.drawLine((int)x0r+1, (int)y0r+1, (int)xr, (int)yr);
         g2.drawLine((int)x0r+1, (int)y0r-1, (int)xr, (int)yr);
         g2.drawLine((int)x0r-1, (int)y0r+1, (int)xr, (int)yr);
-
-        g2.setColor(Color.black);
+        g2.setColor(Color.black);                               //Desenare cercuri negre
         g2.fillOval(435, 177, 30, 30);
         g2.fillOval(155, 177, 30, 30);
+        
+        g2.setColor(Color.orange);
+        g2.setStroke(new BasicStroke(3));
+        g2.drawLine((int)x0f, (int)y0f, (int)xf, (int)yf);
+        g2.drawLine((int)x0f-1, (int)y0f-1, (int)xf, (int)yf);
+        g2.drawLine((int)x0f+1, (int)y0f+1, (int)xf, (int)yf);
+        g2.drawLine((int)x0f+1, (int)y0f-1, (int)xf, (int)yf);
+        g2.drawLine((int)x0f-1, (int)y0f+1, (int)xf, (int)yf);
+        
         g.drawImage(buffer, 0, 0, this);                        //Deseneaza imaginea buffer
 //        System.out.print("  s=");System.out.print(s);
 //        System.out.print("  x=");System.out.print(x);         //Afisare coordonate varf ace
@@ -653,8 +671,7 @@ public class SpeedometerPanel extends javax.swing.JPanel  implements KeyListener
 //-----------------------------------------------------------------------------------
      public void keyPressed(KeyEvent e) {                       //Daca se apasa o tasta
          int tasta;
-         tasta=e.getKeyCode();
-         setarePasi();
+         tasta=e.getKeyCode();         
          if (control){
              if (tasta==KeyEvent.VK_DOWN){                      //Daca se apasa sageata jos
                 if (v>0){
@@ -681,7 +698,6 @@ public class SpeedometerPanel extends javax.swing.JPanel  implements KeyListener
                     calculCoordonateUR();
                     setareZoneR();
                     repaint();
-
                 }
             }
         }
