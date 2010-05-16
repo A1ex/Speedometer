@@ -169,7 +169,7 @@
         <Component class="javax.swing.JLabel" name="Buton1">
           <Properties>
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="3" name="/speedometer/buttonred.jpg"/>
+              <Image iconType="3" name="/images/buttonred.jpg"/>
             </Property>
           </Properties>
           <Events>
@@ -184,7 +184,7 @@
         <Component class="javax.swing.JLabel" name="baterie">
           <Properties>
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="3" name="/speedometer/battery_gray.jpg"/>
+              <Image iconType="3" name="/images/battery_gray.jpg"/>
             </Property>
           </Properties>
           <Events>
@@ -199,7 +199,7 @@
         <Component class="javax.swing.JLabel" name="pompa">
           <Properties>
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="3" name="/speedometer/pump_gray.jpg"/>
+              <Image iconType="3" name="/images/pump_gray.jpg"/>
             </Property>
           </Properties>
           <Events>
@@ -214,7 +214,7 @@
         <Component class="javax.swing.JLabel" name="ulei">
           <Properties>
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="3" name="/speedometer/oil_gray.jpg"/>
+              <Image iconType="3" name="/images/oil_gray.jpg"/>
             </Property>
           </Properties>
           <Events>
@@ -229,7 +229,7 @@
         <Component class="javax.swing.JLabel" name="usi">
           <Properties>
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="3" name="/speedometer/doors_gray.jpg"/>
+              <Image iconType="3" name="/images/doors_gray.jpg"/>
             </Property>
           </Properties>
           <Events>
@@ -244,7 +244,7 @@
         <Component class="javax.swing.JLabel" name="centura">
           <Properties>
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="3" name="/speedometer/seatbelt_gray.jpg"/>
+              <Image iconType="3" name="/images/seatbelt_gray.jpg"/>
             </Property>
           </Properties>
           <Events>

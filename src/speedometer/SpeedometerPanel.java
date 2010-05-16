@@ -95,22 +95,22 @@ public class SpeedometerPanel extends javax.swing.JPanel  implements KeyListener
         addKeyListener(this);                                   //adauga keylistener la panou
         t.start();                                              //porneste timerul
         try {                                                   //copiaza in m imaginea de background
-            m =ImageIO.read(new File("Speedometer.jpg"));
+            m =ImageIO.read(new File("src/images/Speedometer.jpg"));
         } catch (IOException ex) {
             Logger.getLogger(SpeedometerPanel.class.getName()).log(Level.SEVERE, null, ex);
         }
-        butonverde = new ImageIcon("images/buttongreen.jpg");
-        butonrosu = new ImageIcon("images/buttonred.jpg");
-        baterierosie=new ImageIcon("images/battery_red.jpg");
-        bateriegri=new ImageIcon("images/battery_gray.jpg");
-        pompagri=new ImageIcon("images/pump_gray.jpg");
-        pomparosie=new ImageIcon("images/pump_red.jpg");
-        uleigri=new ImageIcon("images/oil_gray.jpg");
-        uleirosie=new ImageIcon("images/oil_red.jpg");
-        usigri=new ImageIcon("images/doors_gray.jpg");
-        usirosie=new ImageIcon("images/doors_red.jpg");
-        centuragri=new ImageIcon("images/seatbelt_gray.jpg");
-        centurarosie=new ImageIcon("images/seatbelt_red.jpg");       
+        butonverde = new ImageIcon("src/images/buttongreen.jpg");
+        butonrosu = new ImageIcon("src/images/buttonred.jpg");
+        baterierosie=new ImageIcon("src/images/battery_red.jpg");
+        bateriegri=new ImageIcon("src/images/battery_gray.jpg");
+        pompagri=new ImageIcon("src/images/pump_gray.jpg");
+        pomparosie=new ImageIcon("src/images/pump_red.jpg");
+        uleigri=new ImageIcon("src/images/oil_gray.jpg");
+        uleirosie=new ImageIcon("src/images/oil_red.jpg");
+        usigri=new ImageIcon("src/images/doors_gray.jpg");
+        usirosie=new ImageIcon("src/images/doors_red.jpg");
+        centuragri=new ImageIcon("src/images/seatbelt_gray.jpg");
+        centurarosie=new ImageIcon("src/images/seatbelt_red.jpg");
     }
 //-----------------------------------------------------------------------------------
 //-----------------------------------------------------------------------------------
@@ -118,15 +118,17 @@ public class SpeedometerPanel extends javax.swing.JPanel  implements KeyListener
         
         public void actionPerformed(ActionEvent actionEvent) {
             if ((crescutturatie==false)&&(pornit==true)&&(turatie<1000))
-                cresteTuratieLaPornire();
-            calculViteza();
-            calculTuratie();
-            if (sunet)
+                cresteTuratieLaPornire();                       //duce acul turometrului la 1000 la pornire
+            calculViteza();                                     //calculeaza viteza
+            calculTuratie();                                    //calculeaza turatia
+            if (sunet)                                          //daca nu e selectat mute sa se aplice metoda de sunet
                 sunet();
-            actualizareTuratie();
-            decelerareV();
+            if (apasatpornit)                                   //daca s-a apasat butonul de start si era pe mute, sa nu repete zgomotul de pornire motor la unmute
+                apasatpornit=false;
+            actualizareTuratie();                               //actualizeaza turatia in functie de praguri (pt schimbarea de viteze)
+            decelerareV();                                      //metoda ce simuleaza decelerarea pentru acul vitezometrului
             if ((crescutturatie)||(pornit==false))
-                decelerareR();
+                decelerareR();                                  //metoda ce simuleaza decelerarea pentru acul turometrului
             jLabel2.setText(Integer.toString((int)v));
             double v2=v*1.6;
             jLabel3.setText(Integer.toString((int)v2));
@@ -140,7 +142,6 @@ public class SpeedometerPanel extends javax.swing.JPanel  implements KeyListener
 //-----------------------------------------------------------------------------------
 //-----------------------------------------------------------------------------------
     public void sunet(){
-//        System.out.println(apasatpornit);
         if (apasatpornit){                                      //Da drumu la sunetu de start de motor si la cel de oprire motor
             alarm.StartEngine();
             apasatpornit=false;
@@ -148,26 +149,24 @@ public class SpeedometerPanel extends javax.swing.JPanel  implements KeyListener
         if (apasatoprit){
             alarm.ThrottleStop();
             apasatoprit=false;
-        }
-        
+        }        
         if (pornit && (sunetmotor==false)){                     //Da drumu la sunetul de motor pornit idle
             alarm.EngineNoise();
             sunetmotor=true;
         }
-        if (!pornit && sunetmotor){
+        if (!pornit && sunetmotor){                             //Da drumu la sunetul de oprire a motorului
             alarm.StopEngineNoise();
             sunetmotor=false;
         }
-        if ((turatie>6650)&&(sunetacceleratiemaxima==false)){
+        if ((turatie>6650)&&(sunetacceleratiemaxima==false)){    //Da drumu la sunetul de acceleratie maxima
             alarm.StartMaxThrottle();
             sunetacceleratiemaxima=true;
         }
-        if ((turatie<6650)&&sunetacceleratiemaxima){
-            System.out.println("aici");
+        if ((turatie<6650)&&sunetacceleratiemaxima){            //Opreste sunetul de acceleratie maxima
             alarm.StopMaxThrottle();
             sunetacceleratiemaxima=false;
         }
-        if (cresteturatie&&crescutturatie){
+        if (cresteturatie&&crescutturatie){                     
             if ((sunetacceleratie==false)&&pornit){
                 alarm.StopThrottleStop();
                 alarm.StartThrottle();
@@ -453,7 +452,7 @@ public class SpeedometerPanel extends javax.swing.JPanel  implements KeyListener
 //-----------------------------------------------------------------------------------
     public void decelerareR(){
         if (((turatie>1000)&&pornit)||(((int)turatie>0)&&(pornit==false))){
-            if (zona3==1){                                      //Daca e in zona jos turometru
+            if ((zona3==1)&&(xr+pas4>20)){                      //Daca e in zona jos turometru
                 xr=xr+pas4;
                 yr=Math.sqrt(Math.abs(22050-Math.pow((xr-x0r),2)))+y0r;
                 try {
@@ -465,7 +464,7 @@ public class SpeedometerPanel extends javax.swing.JPanel  implements KeyListener
                 setareZoneR();
             }
             else                                                //Daca e in zona sus turometru
-                if (zona4==1){
+                if ((zona4==1)&&(xr+pas4>20)){
                     xr=xr-pas4;
                     yr=(-1)*Math.sqrt(Math.abs(22050-Math.pow((xr-x0r),2)))+y0r;
                     try {
@@ -513,7 +512,7 @@ public class SpeedometerPanel extends javax.swing.JPanel  implements KeyListener
         if ((prag1==0)&&(turatie>5000)){                        //Ducem turatia la 2000 daca depaseste prima
             prag1=1;                                            // oara 5000 (aplicare prag 1)
             xr=22;
-            yr=210+21-45;
+            yr=186;
             zona3=0;
             zona4=0;
             turatie=1998;
@@ -523,7 +522,7 @@ public class SpeedometerPanel extends javax.swing.JPanel  implements KeyListener
         if ((prag2==0)&&(turatie>5500)){                        //Ducem turatia la 2535 daca depaseste prima
             prag2=1;                                            // oara 5500 (aplicare prag 2)
             xr=28;
-            yr=171+21-45;
+            yr=147;
             zona3=0;
             zona4=1;
             turatie=2535;
@@ -533,7 +532,7 @@ public class SpeedometerPanel extends javax.swing.JPanel  implements KeyListener
         if ((prag3==0)&&(turatie>6000)){                        //Ducem turatia la 3056 daca depaseste prima
             prag3=1;                                            // oara 6000 (aplicare prag 3)
             xr=76;
-            yr=100+21-45;
+            yr=76;
             zona3=0;
             zona4=1;
             turatie=3790;
@@ -543,7 +542,7 @@ public class SpeedometerPanel extends javax.swing.JPanel  implements KeyListener
         if ((prag4==0)&&(turatie>6300)){                        //Ducem turatia la 4769 daca depaseste prima
             prag4=1;                                            // oara 6300 (aplicare prag 4)
             xr=137;
-            yr=70+21-45;
+            yr=46;
             zona3=0;
             zona4=1;
             turatie=4769;
@@ -553,7 +552,7 @@ public class SpeedometerPanel extends javax.swing.JPanel  implements KeyListener
         if ((prag5==0)&&(turatie>6500)){                        //Ducem turatia la 5034 daca depaseste prima
             prag5=1;                                            // oara 6500 (aplicare prag 5)
             xr=155;
-            yr=67+21-45;
+            yr=43;
             zona3=0;
             zona4=1;
             turatie=5034;
@@ -765,7 +764,7 @@ public class SpeedometerPanel extends javax.swing.JPanel  implements KeyListener
         butonStart.setBounds(40, 350, 110, 30);
         jLayeredPane1.add(butonStart, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
-        Buton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/speedometer/buttonred.jpg"))); // NOI18N
+        Buton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/buttonred.jpg"))); // NOI18N
         Buton1.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 Buton1ApasareStartStop(evt);
@@ -774,7 +773,7 @@ public class SpeedometerPanel extends javax.swing.JPanel  implements KeyListener
         Buton1.setBounds(10, 350, 30, 30);
         jLayeredPane1.add(Buton1, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
-        baterie.setIcon(new javax.swing.ImageIcon(getClass().getResource("/speedometer/battery_gray.jpg"))); // NOI18N
+        baterie.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/battery_gray.jpg"))); // NOI18N
         baterie.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 baterieAlarmaBaterie(evt);
@@ -783,7 +782,7 @@ public class SpeedometerPanel extends javax.swing.JPanel  implements KeyListener
         baterie.setBounds(200, 340, 40, 39);
         jLayeredPane1.add(baterie, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
-        pompa.setIcon(new javax.swing.ImageIcon(getClass().getResource("/speedometer/pump_gray.jpg"))); // NOI18N
+        pompa.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/pump_gray.jpg"))); // NOI18N
         pompa.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 pompaAlarmaPompa(evt);
@@ -792,7 +791,7 @@ public class SpeedometerPanel extends javax.swing.JPanel  implements KeyListener
         pompa.setBounds(250, 340, 40, 40);
         jLayeredPane1.add(pompa, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
-        ulei.setIcon(new javax.swing.ImageIcon(getClass().getResource("/speedometer/oil_gray.jpg"))); // NOI18N
+        ulei.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/oil_gray.jpg"))); // NOI18N
         ulei.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 uleiAlarmaUlei(evt);
@@ -801,7 +800,7 @@ public class SpeedometerPanel extends javax.swing.JPanel  implements KeyListener
         ulei.setBounds(300, 340, 40, 39);
         jLayeredPane1.add(ulei, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
-        usi.setIcon(new javax.swing.ImageIcon(getClass().getResource("/speedometer/doors_gray.jpg"))); // NOI18N
+        usi.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/doors_gray.jpg"))); // NOI18N
         usi.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 usiAlarmaUsi(evt);
@@ -810,7 +809,7 @@ public class SpeedometerPanel extends javax.swing.JPanel  implements KeyListener
         usi.setBounds(350, 340, 40, 39);
         jLayeredPane1.add(usi, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
-        centura.setIcon(new javax.swing.ImageIcon(getClass().getResource("/speedometer/seatbelt_gray.jpg"))); // NOI18N
+        centura.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/seatbelt_gray.jpg"))); // NOI18N
         centura.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 centuraAlarmaCentura(evt);
@@ -838,7 +837,7 @@ public class SpeedometerPanel extends javax.swing.JPanel  implements KeyListener
                 butonStart.setText("Stop Engine");
                 pornit=true;
                 Buton1.setIcon(butonverde);
-                viteza=1;
+                viteza=1;               
             } else{                                             //Daca se opreste motorul
                 apasatoprit=true;
                 butonStart.setText("Start Engine");
