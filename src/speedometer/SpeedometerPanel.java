@@ -121,11 +121,6 @@ public class SpeedometerPanel extends javax.swing.JPanel  implements KeyListener
     ActionListener actionListener = new ActionListener() {
         
         public void actionPerformed(ActionEvent actionEvent) {
-//            System.out.print(turatie+" ");
-//            System.out.print(zona3+" ");
-//            System.out.print(zona4+" ");
-//            System.out.println("xr= "+(int)xr);
-
             if ((crescutturatie==false)&&(pornit==true)&&(turatie<1000))
                 cresteTuratieLaPornire();                       //duce acul turometrului la 1000 la pornire
             setarePasi();                                       //seteaza pasii de accelerare/decelerare in functie de viteza
@@ -147,15 +142,13 @@ public class SpeedometerPanel extends javax.swing.JPanel  implements KeyListener
             jLabel7.setText(Integer.toString(viteza));
             jLabel8.setText(Integer.toString((int)turatie));
             if (crescutturatie){                                //daca motorul a fost pornit si turatia a ajuns
-                try {                                           //la 1000, se introduce o intarziere de 100ms
-                            Thread.sleep(100);
-                        } catch (InterruptedException ex) {
-                            Logger.getLogger(SpeedometerPanel.class.getName()).log(Level.SEVERE, null, ex);
-                        }
+                try {Thread.sleep(100);}                        //la 1000, se introduce o intarziere de 100ms
+                catch (InterruptedException ex) {
+                    Logger.getLogger(SpeedometerPanel.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         }
     };
-
     Timer t=new Timer(10,actionListener);
 //-----------------------------------------------------------------------------------
 //-----------------------------------------------------------------------------------
@@ -264,12 +257,10 @@ public class SpeedometerPanel extends javax.swing.JPanel  implements KeyListener
     public void calculTuratie(){
         comparturatie=turatie;
         if (yr<91 && xr>110){                                     //Daca e in zona de turatie 4000+
-            System.out.print("prima formula  ");
             turatie=0.000305*Math.pow(xr,3)-0.165550*Math.pow(xr,2)+43.551051*xr+1125.570795;
         }
         else{                                                    //Daca e in zona de turatie 4000-
             turatie=-0.000289881*Math.pow(yr,3)+0.151079520*Math.pow(yr,2)- 40.076318640*yr+6091.969107107 ;
-             System.out.print("a doua formula  ");
         }
         if (comparturatie<turatie)
             cresteturatie=true;
