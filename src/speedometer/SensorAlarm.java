@@ -16,7 +16,7 @@ import javax.swing.JApplet;
  */
 public class SensorAlarm {
 
-    AudioClip EngineSound,EngineStart,BatteryAlarm,FuelAlarm,OilAlarm,DoorsAlarm,SeatbeltAlarm,Throttle,ThrottleStop,MaxThrottle,Brake,BrakeLoop;
+    AudioClip EngineSound,EngineStart,BatteryAlarm,FuelAlarm,LightsAlarm,DoorsAlarm,SeatbeltAlarm,Throttle,ThrottleStop,MaxThrottle,Brake,BrakeLoop;
     SensorAlarm(){
         init();
     }
@@ -46,9 +46,9 @@ public class SensorAlarm {
         } catch (MalformedURLException ex) {
             Logger.getLogger(SensorAlarm.class.getName()).log(Level.SEVERE, null, ex);
         }
-        File file4=new File("OilLevelAlarm.wav");
+        File file4=new File("LightsOnAlarm.wav");
         try {
-            OilAlarm = JApplet.newAudioClip(file4.toURL());
+            LightsAlarm = JApplet.newAudioClip(file4.toURL());
         } catch (MalformedURLException ex) {
             Logger.getLogger(SensorAlarm.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -105,7 +105,7 @@ public class SensorAlarm {
         FuelAlarm.play();
     }
     public void OilAlarm(){
-        OilAlarm.play();
+        LightsAlarm.play();
     }
     public void DoorsAlarm(){
         DoorsAlarm.play();

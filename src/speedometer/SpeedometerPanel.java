@@ -33,8 +33,8 @@ public class SpeedometerPanel extends javax.swing.JPanel  implements KeyListener
     Icon bateriegri;                                            //imagine atentionare
     Icon pompagri;                                              //imagine atentionare
     Icon pomparosie;                                            //imagine atentionare
-    Icon uleigri;                                               //imagine atentionare
-    Icon uleirosie;                                             //imagine atentionare
+    Icon fargri;                                                //imagine atentionare
+    Icon farrosie;                                              //imagine atentionare
     Icon usigri;                                                //imagine atentionare
     Icon usirosie;                                              //imagine atentionare
     Icon centuragri;                                            //imagine atentionare
@@ -61,8 +61,8 @@ public class SpeedometerPanel extends javax.swing.JPanel  implements KeyListener
         bateriegri=new ImageIcon("src/images/battery_gray.jpg");
         pompagri=new ImageIcon("src/images/pump_gray.jpg");
         pomparosie=new ImageIcon("src/images/pump_red.jpg");
-        uleigri=new ImageIcon("src/images/oil_gray.jpg");
-        uleirosie=new ImageIcon("src/images/oil_red.jpg");
+        fargri=new ImageIcon("src/images/light_gray.jpg");
+        farrosie=new ImageIcon("src/images/light_red.jpg");
         usigri=new ImageIcon("src/images/doors_gray.jpg");
         usirosie=new ImageIcon("src/images/doors_red.jpg");
         centuragri=new ImageIcon("src/images/seatbelt_gray.jpg");
@@ -215,7 +215,7 @@ public class SpeedometerPanel extends javax.swing.JPanel  implements KeyListener
         Buton1 = new javax.swing.JLabel();
         baterie = new javax.swing.JLabel();
         pompa = new javax.swing.JLabel();
-        ulei = new javax.swing.JLabel();
+        far = new javax.swing.JLabel();
         usi = new javax.swing.JLabel();
         centura = new javax.swing.JLabel();
 
@@ -299,14 +299,14 @@ public class SpeedometerPanel extends javax.swing.JPanel  implements KeyListener
         pompa.setBounds(250, 340, 40, 40);
         jLayeredPane1.add(pompa, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
-        ulei.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/oil_gray.jpg"))); // NOI18N
-        ulei.addMouseListener(new java.awt.event.MouseAdapter() {
+        far.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/light_gray.jpg"))); // NOI18N
+        far.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                uleiAlarmaUlei(evt);
+                farAlarmaUlei(evt);
             }
         });
-        ulei.setBounds(300, 340, 40, 39);
-        jLayeredPane1.add(ulei, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        far.setBounds(300, 340, 40, 39);
+        jLayeredPane1.add(far, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         usi.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/doors_gray.jpg"))); // NOI18N
         usi.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -381,17 +381,17 @@ public class SpeedometerPanel extends javax.swing.JPanel  implements KeyListener
         }
 }//GEN-LAST:event_pompaAlarmaPompa
 
-    private void uleiAlarmaUlei(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_uleiAlarmaUlei
+    private void farAlarmaUlei(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_farAlarmaUlei
         // TODO add your handling code here:
         if (sac.alarmaUlei){
-            ulei.setIcon(uleigri);
+            far.setIcon(fargri);
             sac.alarmaUlei=false;
         } else{
-            ulei.setIcon(uleirosie);
+            far.setIcon(farrosie);
             sac.alarmaUlei=true;
             sac.alarm.OilAlarm();
         }
-}//GEN-LAST:event_uleiAlarmaUlei
+}//GEN-LAST:event_farAlarmaUlei
 
     private void usiAlarmaUsi(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_usiAlarmaUsi
         // TODO add your handling code here:
@@ -422,6 +422,7 @@ public class SpeedometerPanel extends javax.swing.JPanel  implements KeyListener
     private javax.swing.JLabel baterie;
     private javax.swing.JLabel butonStart;
     private javax.swing.JLabel centura;
+    private javax.swing.JLabel far;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -432,7 +433,6 @@ public class SpeedometerPanel extends javax.swing.JPanel  implements KeyListener
     private javax.swing.JLabel jLabel9;
     private javax.swing.JLayeredPane jLayeredPane1;
     private javax.swing.JLabel pompa;
-    private javax.swing.JLabel ulei;
     private javax.swing.JLabel usi;
     // End of variables declaration//GEN-END:variables
 
