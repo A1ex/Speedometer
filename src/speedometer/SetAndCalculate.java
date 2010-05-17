@@ -35,8 +35,8 @@ public class SetAndCalculate {
     public boolean alarmaCentura;                               //determina daca s-a activat alarma de centura
     public boolean apasatoprit=false;                           //determina daca se apasa butonul rosu "Stop Engine"
     public boolean apasatpornit=false;                          //determina daca se apasa butonul verde "Start Engine"
-    public boolean control=true;                                //determina daca se tine cont de apasarea tastelor (e setat in AppWindow)
-    public boolean sunet=true;                                  //determina daca se aude sunetul motorului (e setat in AppWindow)
+//    public boolean control=true;                                //determina daca se tine cont de apasarea tastelor (e setat in AppWindow)
+    
     public boolean pornit=false;                                //determina daca e pornit motorul
     public boolean sunetacceleratiemaxima=false;                //folosit in sunet() pt declansarea sunetului de acceleratie maxima (turatie>6500)
     public boolean sunetacceleratieoprita=false;                //folosit in sunet() pt declansarea sunetului oprire a accelerarii
@@ -67,11 +67,11 @@ public class SetAndCalculate {
 //-----------------------------------------------------------------------------------
 //-----------------------------------------------------------------------------------
      public void sunet(){
-        if (apasatpornit){                                      //Da drumu la sunetu de start de motor si la cel de oprire motor
+        if (apasatpornit){                                      //Da drumu la sunetu de start de motor 
             alarm.StartEngine();
             apasatpornit=false;
         }
-        if (apasatoprit){
+        if (apasatoprit){                                        //Da drumu la sunetu de oprire motor
             alarm.ThrottleStop();
             apasatoprit=false;
         }

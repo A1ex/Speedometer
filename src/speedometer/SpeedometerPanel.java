@@ -42,9 +42,11 @@ public class SpeedometerPanel extends javax.swing.JPanel  implements KeyListener
     BufferedImage buffer;                                       //imagine folosita la double buffering
     Graphics2D gbuffer;                                         //obiect grafic folosit pt desenare in buffer
     public boolean firstTime=true;                              //determina daca s-a initializat sau nu imaginea si obiectul grafic pentru db
+    public boolean control=true;                                //determina daca se tine cont de apasarea tastelor
+    public boolean sunet=true;                                  //determina daca se aude sunetul motorului
     Rectangle area;                                             //folosit la crearea imaginii folosita la buffering
     Image m;                                                    //in ea se retine imaginea de background
-    SetAndCalculate sac=new SetAndCalculate();
+    SetAndCalculate sac=new SetAndCalculate();                  //instanta a clasei SetAndCalculate
 
     public SpeedometerPanel()throws IOException, SQLException  {//Constructor
         initComponents();
@@ -76,9 +78,11 @@ public class SpeedometerPanel extends javax.swing.JPanel  implements KeyListener
             if ((sac.crescutturatie==false)&&(sac.pornit==true)&&(sac.turatie<1000))
                 sac.cresteTuratieLaPornire();                       //duce acul turometrului la 1000 la pornire
             sac.setarePasi();                                       //seteaza pasii de accelerare/decelerare in functie de viteza
-            sac.calculViteza();                                     //calculeaza viteza
+            if (control){               
+                sac.calculViteza();                                 //calculeaza viteza
+            }
             sac.calculTuratie();                                    //calculeaza turatia
-            if (sac.sunet)                                          //daca nu e selectat mute sa se aplice metoda de sunet
+            if (sunet)                                          //daca nu e selectat mute sa se aplice metoda de sunet
                 sac.sunet();
             if (sac.apasatpornit)                                   //daca s-a apasat butonul de start si era pe mute, sa nu repete zgomotul de pornire motor la unmute
                 sac.apasatpornit=false;
@@ -166,10 +170,10 @@ public class SpeedometerPanel extends javax.swing.JPanel  implements KeyListener
      public void keyPressed(KeyEvent e) {                       //Daca se apasa o tasta
          int tasta;
          tasta=e.getKeyCode();         
-         if (sac.control){
+         if (control){
              if (tasta==KeyEvent.VK_DOWN){                      //Daca se apasa sageata jos
                 if (sac.v>0){
-                    if (sac.frana==false&&sac.sunet){                        //Zgomot de franare
+                    if (sac.frana==false&&sunet){                        //Zgomot de franare
                         sac.alarm.Brake();
                         sac.frana=true;
                     }
@@ -339,7 +343,7 @@ public class SpeedometerPanel extends javax.swing.JPanel  implements KeyListener
     }// </editor-fold>//GEN-END:initComponents
 
     private void Buton1ApasareStartStop(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Buton1ApasareStartStop
-        if (sac.control){
+        if (control){
             if (sac.pornit==false){                                 //Daca se porneste motorul
                 sac.apasatpornit=true;
                 butonStart.setText("Stop Engine");
@@ -418,9 +422,9 @@ public class SpeedometerPanel extends javax.swing.JPanel  implements KeyListener
 }//GEN-LAST:event_centuraAlarmaCentura
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel Buton1;
+    public javax.swing.JLabel Buton1;
     private javax.swing.JLabel baterie;
-    private javax.swing.JLabel butonStart;
+    public javax.swing.JLabel butonStart;
     private javax.swing.JLabel centura;
     private javax.swing.JLabel far;
     private javax.swing.JLabel jLabel2;

@@ -21,7 +21,6 @@ import javax.swing.Timer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFrame;
-
 /**
  *
  * @author Alexandru Popescu
@@ -36,7 +35,10 @@ public class AppWindow extends javax.swing.JFrame  {
     public boolean apasatcontrol=false;                         //determina daca s-a apasat optiunea de meniu "Turn off/on control"
     SpeedometerPanel p=new SpeedometerPanel();                  //instanta a clasei SpeedometerPanel
     Scenario1 sc1 = new Scenario1();                            //instanta a clasei Scenario1
-
+    int index;
+    double v;
+    int delay;
+    int engine=0;
     public AppWindow() throws IOException, SQLException{        //Constructor
         initComponents();
         t2.start();                                             //porneste timerul
@@ -44,13 +46,13 @@ public class AppWindow extends javax.swing.JFrame  {
     ActionListener mainActionListener = new ActionListener() {  //ActionListener pentru optiunile de meniu
          public void actionPerformed(ActionEvent actionEvent) {
              if (apasatmute)
-                p.sac.sunet=false;
+                p.sunet=false;
              else
-                 p.sac.sunet=true;
+                p.sunet=true;
              if (apasatcontrol)
-                 p.sac.control=false;
+                 p.control=false;
              else
-                 p.sac.control=true;
+                 p.control=true;
              if (apasatsc1&&apasatcontrol&&!incarcatscenariu){              
                     sc1.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
                     sc1.pack();
@@ -68,21 +70,25 @@ public class AppWindow extends javax.swing.JFrame  {
 
          }
     };
-    Timer t2=new Timer(10,mainActionListener);                      //seteaza intarzierea la timer
+    Timer t2=new Timer(10,mainActionListener);                  //seteaza intarzierea la timer
 
-    ActionListener SCENARIOActionListener = new ActionListener() {  //ActionListener pentru optiunile de meniu
+    ActionListener SCENARIOActionListener = new ActionListener() {  //ActionListener pentru Scenarii
          public void actionPerformed(ActionEvent actionEvent)  {
             try {
-                while(sc1.rs.next()){
-                    int index = sc1.rs.getInt(1);
-                    double v = sc1.rs.getDouble(2);
-                    int delay = sc1.rs.getInt(3);
-                    System.out.println(index + " " + v + " " + delay);
-                    
-                    try {Thread.sleep(100);}
-                    catch (InterruptedException ex) {
-                        Logger.getLogger(SpeedometerPanel.class.getName()).log(Level.SEVERE, null, ex);
+                if (sc1.rs.next()){                             //daca mai sunt inregistrari in tabelul scenariului
+                    index = sc1.rs.getInt(1);
+                    v = sc1.rs.getDouble(2);
+                    delay = sc1.rs.getInt(3);
+                    engine=sc1.rs.getInt(4);
+                    if ((engine==1)&&!p.sac.pornit){            //porneste motorul daca in BD coloana Engine e 1 si motorul e oprit
+                        p.sac.pornit=true;
+                        p.sac.apasatpornit=true;
+                        p.butonStart.setText("Stop Engine");
+                        p.Buton1.setIcon(p.butonverde);
+                        p.sac.viteza=1;
                     }
+                    System.out.println(index + " " + v + " " + delay+" "+ engine);
+                    t3.setDelay(delay);
                 }
             } catch (SQLException ex) {
                 Logger.getLogger(Scenario1.class.getName()).log(Level.SEVERE, null, ex);
