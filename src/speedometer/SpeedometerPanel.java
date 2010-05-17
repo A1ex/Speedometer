@@ -26,46 +26,7 @@ import javax.imageio.ImageIO;
  * @author Alexandru Popescu
  */
 public class SpeedometerPanel extends javax.swing.JPanel  implements KeyListener {
-    public double x0=450;                                       //coordonata x baza ac vitezometru
-    public double x0r=170;                                      //coordonata x baza ac turometru
-    public double y0=191;                                       //coordonata y baza ac vitezometru
-    public double y0r=191;                                      //coordonata y baza ac turometru
-    public double x0f=260;                                      //coordonata x baza ac indicator combustibil
-    public double y0f=215;                                      //coordonata x baza ac indicator combustibil
-    public double xf=223;                                       //coordonata y varf ac indicator combustibil
-    public double yf=200;                                       //coordonata y varf ac indicator combustibil
-    public double x=354;                                        //coordonata x varf ac vitezometru
-    public double xr=64;                                        //coordonata x varf  ac turometru
-    public double y=328+21-45;                                  //coordonata y varf ac vitezometru
-    public double yr=339-45;                                    //coordonata y varf ac turometru
-    public double v=0;                                          //valoarea vitezei
-    public double turatie=0;                                    //valoarea turatiei
-    public double comparturatie=0,comparviteza=0;               //folosite sa verifice daca viteza creste sau scade in actionlistener
-    public boolean s=true,d=false;                              //folosite sa vada in ce zona e acul vitezometrului(schimba formula)
-    public double pas1=1;                                       //pas pt accelerare vitezometru
-    public double pas2=1;                                       //pas pt decelerare vitezometru
-    public double pas3=1;                                       //pas pt accelerare turometru
-    public double pas4=3;                                       //pas pt decelerare turometru
-    public int prag1=0;                                         //Prag pentru actualizarea turatiei (declanseaza trecerea in viteza 2)
-    public int prag2=0;                                         //Prag pentru actualizarea turatiei (declanseaza trecerea in viteza 3)
-    public int prag3=0;                                         //Prag pentru actualizarea turatiei (declanseaza trecerea in viteza 4)
-    public int prag4=0;                                         //Prag pentru actualizarea turatiei (declanseaza trecerea in viteza 5)
-    public int prag5=0;                                         //Prag pentru actualizarea turatiei (declanseaza trecerea in viteza 6)
-    public int viteza=0;                                        //Treapta de viteza
-    public int zona1=1;                                         //zona de jos pt vitezometru 
-    public int zona2=0;                                         //zona de sus pt vitezometru
-    public int zona3=1;                                         //zona de jos pentru turometru 
-    public int zona4=0;                                         //zona de sus pentru turometru
-    public boolean apasatoprit=false;                           //determina daca se apasa butonul rosu "Stop Engine"
-    public boolean apasatpornit=false;                          //determina daca se apasa butonul verde "Start Engine"
-    public boolean control=true;                                //determina daca se tine cont de apasarea tastelor (e setat in AppWindow)
-    public boolean sunet=true;                                  //determina daca se aude sunetul motorului (e setat in AppWindow)
-    public boolean pornit=false;                                //determina daca e pornit motorul
-    public boolean alarmaBaterie=false;                         //determina daca s-a activat alarma de baterie
-    public boolean alarmaPompa=false;                           //determina daca s-a activat alarma de pompa
-    public boolean alarmaUlei=false;                            //determina daca s-a activat alarma de ulei
-    public boolean alarmaUsi=false;                             //determina daca s-a activat alarma de usi
-    public boolean alarmaCentura;                               //determina daca s-a activat alarma de centura
+
     Icon butonverde;                                            //imagine buton
     Icon butonrosu;                                             //imagine buton
     Icon baterierosie;                                          //imagine atentionare
@@ -78,21 +39,12 @@ public class SpeedometerPanel extends javax.swing.JPanel  implements KeyListener
     Icon usirosie;                                              //imagine atentionare
     Icon centuragri;                                            //imagine atentionare
     Icon centurarosie;                                          //imagine atentionare
-    public boolean crescutturatie=false;                        //determina daca la pornire turatia s-a dus la 1000
-    public boolean idle=false;                                  //determina daca acul e la 1000
-    public boolean cresteturatie=false;                         //determina daca dupa calcularea unei noi turatii aceasta a crescut(folosita la sunet)
-    public boolean cresteviteza=false;                          //determina daca dupa calcularea unei noi viteze aceasta a crescut(folosita la sunet)
-    SensorAlarm alarm = new SensorAlarm();                      //instanta clasei SensorAlarm (folosit pt metodele de sunet)
-    public boolean frana=false;                                 //determina daca s-a apasat tasta de jos (pt declansarea sunetului de franare)
-    public boolean sunetacceleratiemaxima=false;                //folosit in sunet() pt declansarea sunetului de acceleratie maxima (turatie>6500)
-    public boolean sunetacceleratieoprita=false;                //folosit in sunet() pt declansarea sunetului oprire a accelerarii 
-    public boolean sunetacceleratie=false;                      //folosit pt declansarea sunetului de accelerare
-    public boolean sunetmotor=false;                            //folosit in sunet() pentru declansarea sunetului de motor
     BufferedImage buffer;                                       //imagine folosita la double buffering
     Graphics2D gbuffer;                                         //obiect grafic folosit pt desenare in buffer
     public boolean firstTime=true;                              //determina daca s-a initializat sau nu imaginea si obiectul grafic pentru db
     Rectangle area;                                             //folosit la crearea imaginii folosita la buffering
     Image m;                                                    //in ea se retine imaginea de background
+    SetAndCalculate sac=new SetAndCalculate();
 
     public SpeedometerPanel()throws IOException, SQLException  {//Constructor
         initComponents();
@@ -121,495 +73,37 @@ public class SpeedometerPanel extends javax.swing.JPanel  implements KeyListener
     ActionListener actionListener = new ActionListener() {
         
         public void actionPerformed(ActionEvent actionEvent) {
-            if ((crescutturatie==false)&&(pornit==true)&&(turatie<1000))
-                cresteTuratieLaPornire();                       //duce acul turometrului la 1000 la pornire
-            setarePasi();                                       //seteaza pasii de accelerare/decelerare in functie de viteza
-            calculViteza();                                     //calculeaza viteza
-            calculTuratie();                                    //calculeaza turatia
-            if (sunet)                                          //daca nu e selectat mute sa se aplice metoda de sunet
-                sunet();
-            if (apasatpornit)                                   //daca s-a apasat butonul de start si era pe mute, sa nu repete zgomotul de pornire motor la unmute
-                apasatpornit=false;
-            actualizareTuratie();                               //actualizeaza turatia in functie de praguri (pt schimbarea de viteze)
-            decelerareV();                                      //metoda ce simuleaza decelerarea pentru acul vitezometrului
-            decelerareF();
-            if ((crescutturatie)||(pornit==false))
-                decelerareR();                                  //metoda ce simuleaza decelerarea pentru acul turometrului
-            jLabel2.setText(Integer.toString((int)v));
-            double v2=v*1.6;
+            if ((sac.crescutturatie==false)&&(sac.pornit==true)&&(sac.turatie<1000))
+                sac.cresteTuratieLaPornire();                       //duce acul turometrului la 1000 la pornire
+            sac.setarePasi();                                       //seteaza pasii de accelerare/decelerare in functie de viteza
+            sac.calculViteza();                                     //calculeaza viteza
+            sac.calculTuratie();                                    //calculeaza turatia
+            if (sac.sunet)                                          //daca nu e selectat mute sa se aplice metoda de sunet
+                sac.sunet();
+            if (sac.apasatpornit)                                   //daca s-a apasat butonul de start si era pe mute, sa nu repete zgomotul de pornire motor la unmute
+                sac.apasatpornit=false;
+            sac.actualizareTuratie();                               //actualizeaza turatia in functie de praguri (pt schimbarea de viteze)
+            sac.decelerareV();                                      //metoda ce simuleaza decelerarea pentru acul vitezometrului
+            sac.decelerareF();
+            if ((sac.crescutturatie)||(sac.pornit==false))
+                sac.decelerareR();                                  //metoda ce simuleaza decelerarea pentru acul turometrului
+            jLabel2.setText(Integer.toString((int)sac.v));
+            double v2=sac.v*1.6;
             jLabel3.setText(Integer.toString((int)v2));
-            setareTreapta();
-            jLabel7.setText(Integer.toString(viteza));
-            jLabel8.setText(Integer.toString((int)turatie));
-            if (crescutturatie){                                //daca motorul a fost pornit si turatia a ajuns
-                try {Thread.sleep(100);}                        //la 1000, se introduce o intarziere de 100ms
+            sac.setareTreapta();
+            jLabel7.setText(Integer.toString(sac.viteza));
+            jLabel8.setText(Integer.toString((int)sac.turatie));
+            if (sac.crescutturatie){                                //daca motorul a fost pornit si turatia a ajuns
+                try {Thread.sleep(100);}                            //la 1000, se introduce o intarziere de 100ms
                 catch (InterruptedException ex) {
                     Logger.getLogger(SpeedometerPanel.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
+            repaint();
         }
     };
     Timer t=new Timer(10,actionListener);
-//-----------------------------------------------------------------------------------
-//-----------------------------------------------------------------------------------
-    public void sunet(){
-        if (apasatpornit){                                      //Da drumu la sunetu de start de motor si la cel de oprire motor
-            alarm.StartEngine();
-            apasatpornit=false;
-        }
-        if (apasatoprit){
-            alarm.ThrottleStop();
-            apasatoprit=false;
-        }        
-        if (pornit && (sunetmotor==false)){                     //Da drumu la sunetul de motor pornit idle
-            alarm.EngineNoise();
-            sunetmotor=true;
-        }
-        if (!pornit && sunetmotor){                             //Da drumu la sunetul de oprire a motorului
-            alarm.StopEngineNoise();
-            sunetmotor=false;
-        }
-        if ((turatie>6650)&&(sunetacceleratiemaxima==false)){    //Da drumu la sunetul de acceleratie maxima
-            alarm.StartMaxThrottle();
-            sunetacceleratiemaxima=true;
-        }
-        if ((turatie<6650)&&sunetacceleratiemaxima){            //Opreste sunetul de acceleratie maxima
-            alarm.StopMaxThrottle();
-            sunetacceleratiemaxima=false;
-        }
-        if (cresteturatie&&crescutturatie){                     
-            if ((sunetacceleratie==false)&&pornit){
-                alarm.StopThrottleStop();
-                alarm.StartThrottle();
-                sunetacceleratieoprita=true;
-                alarm.StopEngineNoise();
-                sunetmotor=false;
-                sunetacceleratie=true;
-                frana=false;
-            }
-        }
-        else{
-            if (pornit){
-                alarm.StopThrottle();
-                if (sunetacceleratieoprita && (turatie<6650)){
-                    alarm.ThrottleStop();
-                    sunetacceleratieoprita=false;
-                }
-                sunetacceleratie=false;
-            }
-        }
-    }
-//-----------------------------------------------------------------------------------
-//-----------------------------------------------------------------------------------
-    public void setareTreapta(){
-        if (pornit==false)
-            viteza=0;
-        else{
-            if ((prag1==1)&&(prag2==0)&&(prag3==0)&&(prag4==0)&&(prag5==0))
-                viteza=2;
-            else
-                if((prag1==1)&&(prag2==1)&&(prag3==0)&&(prag4==0)&&(prag5==0))
-                    viteza=3;
-                else
-                    if((prag1==1)&&(prag2==1)&&(prag3==1)&&(prag4==0)&&(prag5==0))
-                        viteza=4;
-                    else
-                        if((prag1==1)&&(prag2==1)&&(prag3==1)&&(prag4==1)&&(prag5==0))
-                            viteza=5;
-                        else
-                            if((prag1==1)&&(prag2==1)&&(prag3==1)&&(prag4==1)&&(prag5==1))
-                            viteza=6;
-                            else
-                                viteza=1;
-            }
-    }
-//-----------------------------------------------------------------------------------
-//-----------------------------------------------------------------------------------
-    public void calculViteza(){
-        comparviteza=v;
-        if(((int)x>437)&&(s==true)){
-                d=true;
-                s=false;
-            }
-        else
-            if (((int)x<437)&&(s==false)){
-                d=false;
-                s=true;
-            }
-        if (y<90+21-45)
-            v=0.00000146245*Math.pow( x,3)-0.00197303*Math.pow(x,2)+1.07994*x-146.124;
-        else
-            if ((s==true)&&(y>90+21-45))
-                v=-0.000003916*Math.pow(y,3)+0.002106564*Math.pow(y,2)- 0.562179848*y+86.798186209;
-            else
-                v=0.000002682*Math.pow(y,3)- 0.001523562*Math.pow(y,2)+0.473605642*y+65.175332050;
-        if ((x==354)&&(zona1==1))
-            v=0;
-        if (v<0)
-          v=0;
-         if (comparviteza<v)
-            cresteviteza=true;
-        else
-            cresteviteza=false;
-    }
-//-----------------------------------------------------------------------------------
-//-----------------------------------------------------------------------------------
-    public void calculTuratie(){
-        comparturatie=turatie;
-        if (yr<91 && xr>110){                                     //Daca e in zona de turatie 4000+
-            turatie=0.000305*Math.pow(xr,3)-0.165550*Math.pow(xr,2)+43.551051*xr+1125.570795;
-        }
-        else{                                                    //Daca e in zona de turatie 4000-
-            turatie=-0.000289881*Math.pow(yr,3)+0.151079520*Math.pow(yr,2)- 40.076318640*yr+6091.969107107 ;
-        }
-        if (comparturatie<turatie)
-            cresteturatie=true;
-        else
-            cresteturatie=false;
-    }
-//-----------------------------------------------------------------------------------
-//-----------------------------------------------------------------------------------
-    public void setareZoneV(){
-        if((zona2==1)&&((int)y>=185+21-45)){                    //Scoate din zona2
-            zona2=0;
-        }
-        if ((zona1==1)&&((int)y<=240+21-45)){                   //Scoate din zona1
-            zona1=0;
-        }
-    }
-//-----------------------------------------------------------------------------------
-//-----------------------------------------------------------------------------------
-    public void setareZoneR(){
-        if ((zona4==1)&&((int)yr>=185+21-45)&&(yr!=210+21-45)){ //Scoate din zona4
-            zona4=0;
-        }
-        else
-            if ((zona3==1)&&((int)yr<=245-45)&&(yr!=210-45)) {  //Scoate in zona 3
-                zona3=0;
-            }
-    }
-//-----------------------------------------------------------------------------------
-//-----------------------------------------------------------------------------------
-    public void calculCoordonateUV(){
-        if ((x<=304)&&(zona1==0)&&(zona2==0)){                  //Daca intra in zona mijloc stanga vitezometru
-                y=y-3;
-                if (y<185+21-45){
-                    zona2=1;
-                    x=306;
-                    y=(-1)*Math.sqrt(Math.abs(22050-Math.pow((x-x0),2)))+y0;
-                }
-        }
-        else
-            if ((x>=590)&&(zona2==0)&&(zona1==0)){              //Daca intra in zona mijloc dreapta vitezometru
-                y=y+2;
-                if (y>240+21-45){
-                    zona1=1;
-                    x=595;
-                    y=Math.sqrt(Math.abs(22050-Math.pow((x-x0),2)))+y0;
-                }
-            }
-            else
-                if(zona1==1){                                   //Daca e in zona jos vitezometru
-                    x=x-pas1;
-                    y=Math.sqrt(Math.abs(22050-Math.pow((x-x0),2)))+y0;
-                }
-                else
-                    if (zona2==1){                              //Daca e in zona sus vitezometru
-                        x=x+pas1;
-                        y=(-1)*Math.sqrt(Math.abs(22050-Math.pow((x-x0),2)))+y0;
-                    }
-    }
-//-----------------------------------------------------------------------------------
-//-----------------------------------------------------------------------------------
-    public void calculCoordonateDV(){
-        if (x<=304){                                            //Daca intra in zona mijloc stanga vitezometru
-                y=y+5;
-                if (y>245+21-45){
-                    zona1=1;
-                    x=306;
-                    y=Math.sqrt(Math.abs(22050-Math.pow((x-x0),2)))+y0;
-                }
-        }
-        else
-            if (x>=596){                                        //Daca intra in zona mijloc dreapta vitezometru
-                y=y-2;
-                if (y<185+21-45){
-                    zona2=1;
-                    x=595;
-                    y=(-1)*Math.sqrt(Math.abs(22050-Math.pow((x-x0),2)))+y0;
-                }
-            }
-            else
-                if(zona1==1){                                   //Daca e in zona jos vitezometru
-                    x=x+pas1;
-                    y=Math.sqrt(Math.abs(22050-Math.pow((x-x0),2)))+y0;
-                }
-                else
-                    if (zona2==1){                              //Daca e in zona sus vitezometru
-                        x=x-pas1;
-                        y=(-1)*Math.sqrt(Math.abs(22050-Math.pow((x-x0),2)))+y0;
-                     }
-    }
-//-----------------------------------------------------------------------------------
-//-----------------------------------------------------------------------------------
-     public void calculCoordonateUR(){
-         if (xr<270){                                           //Sa nu depaseasca valoarea maxima de turatii
-             if (yr==210+21-45)
-                 zona4=1;
-             if ((zona3==1)&&(xr-pas3>20)){                     //Daca e in zona jos turometru
-                xr=xr-pas3;
-                yr=Math.sqrt(Math.abs(22050-Math.pow((xr-x0r),2)))+y0r;
-            }
-            else
-                if ((zona4==1)&&(xr+pas3>20)){                  //Daca e in zona sus turometru
-                    xr=xr+pas3;
-                    yr=(-1)*Math.sqrt(Math.abs(22050-Math.pow((xr-x0r),2)))+y0r;
-                }
-                else{
-                    if ((yr<200+21)&&(xr+pas3>20)){
-                        xr=xr+pas3;
-                        yr=(-1)*Math.sqrt(Math.abs(22050-Math.pow((xr-x0r),2)))+y0r;
-                        zona4=1;
-                    }
-                    else
-                        yr=210+21-45;
-                }
-         }
-     }
-//-----------------------------------------------------------------------------------
-//-----------------------------------------------------------------------------------
-    public void calculCoordonateDR(){
-        if (turatie>1000){                                      //Sa nu depaseasca valoarea minima de turatii
-            if (yr==210+21-45)
-                zona3=1;
-            if (zona3==1){                                      //Daca e in zona jos turometru
-                xr=xr+4;
-                yr=Math.sqrt(Math.abs(22050-Math.pow((xr-x0r),2)))+y0r;
-            }
-            else
-                if (zona4==1){                                  //Daca e in zona sus turometru
-                    xr=xr-4;
-                    yr=(-1)*Math.sqrt(Math.abs(22050-Math.pow((xr-x0r),2)))+y0r;
-                }
-                else{
-                    if (yr>220+21){
-                        xr=xr+4;
-                        yr=Math.sqrt(Math.abs(22050-Math.pow((xr-x0r),2)))+y0r;
-                        zona3=1;
-                    }
-                    else
-                        yr=210+21-45;
-                }
-        }
-     }
-//-----------------------------------------------------------------------------------
-//-----------------------------------------------------------------------------------
-    public void decelerareF(){
-        if (yf<245){
-            if (yf>=215){
-                xf=xf+0.001;
-                yf=Math.sqrt(Math.abs(1600-Math.pow((xf-x0f),2)))+y0f;
-                repaint();                
-            }
-            else{
-                xf=xf-0.001;
-                yf=(-1)*Math.sqrt(Math.abs(1600-Math.pow((xf-x0f),2)))+y0f;
-                repaint();
-                if (yf>214.5)
-                    yf=215.1;
-            }
-        }
-    }
-//-----------------------------------------------------------------------------------
-//-----------------------------------------------------------------------------------
-    @SuppressWarnings("static-access")
-    public void decelerareV(){
-        if(y<328+21-45){
-            if (zona1==1){                                      //Daca e in zona jos vitezometru
-                x=x+pas2;
-                y=Math.sqrt(Math.abs(22050-Math.pow((x-x0),2)))+y0;
-                repaint();
-                setareZoneV();
-            }
-            else
-                if (zona2==1){                                  //Daca e in zona sus vitezometru
-                    x=x-pas2;
-                    y=(-1)*Math.sqrt(Math.abs(22050-Math.pow((x-x0),2)))+y0;
-                    repaint();
-                    setareZoneV();
-                }
-                else{
-                    if (v<100){                                 //Daca intra in zona mijloc stanga vitezometru
-                        y=y+3;
-                        if (y>245+21-45){
-                            zona1=1;
-                            x=306;
-                        }
-                    }
-                    else{                                       //Daca intra in zona mijloc dreapta vitezometru
-                         y=y-3;
-                        if (y<185+21-45){
-                            zona2=1;
-                            x=595;
-                        }
-                    }
-                    repaint();
-                    setareZoneV();
-                }
-        }
-    }
-//-----------------------------------------------------------------------------------
-//-----------------------------------------------------------------------------------
-    public void decelerareR(){
-        if (((turatie>1000)&&pornit)||(((int)turatie>0)&&(pornit==false))){
-            if ((zona3==1)&&(xr+pas4>20)){                      //Daca e in zona jos turometru
-                xr=xr+pas4;
-                yr=Math.sqrt(Math.abs(22050-Math.pow((xr-x0r),2)))+y0r;
-                repaint();
-                setareZoneR();
-            }
-            else                                                //Daca e in zona sus turometru
-                if ((zona4==1)&&(xr+pas4>20)){
-                    xr=xr-pas4;
-                    yr=(-1)*Math.sqrt(Math.abs(22050-Math.pow((xr-x0r),2)))+y0r;
-                    repaint();
-                    setareZoneR();
-                }
-                else{
-                    xr=xr+pas4;
-                    yr=Math.sqrt(Math.abs(22050-Math.pow((xr-x0r),2)))+y0r;
-                    if (yr>220+21-45)
-                        zona3=1;
-                }
-        }
-    }
-//-----------------------------------------------------------------------------------
-//-----------------------------------------------------------------------------------
-    public void setarePasi(){
-        if ((int)v<60)                                          //Setare pasi vitezometru
-            pas1=2;
-         else
-            if ((int)v<90){
-                pas1=1;
-                pas2=0.5;
-            }
-            else{
-                pas1=0.5;
-                pas2=0.35;
-            }
-        if (turatie<3000)                                       //Setare pas crestere turatii functie de valoarea turatiei
-            pas3=5;
-        if (turatie>3000)
-            pas3=4;
-        if (turatie>4000){
-            pas3=3;
-            pas4=2;
-        }
-        if (turatie>5000){
-            pas3=2;
-            pas4=1;
-        }
-        if (turatie>5500){
-            pas3=1.5;
-            pas4=0.75;
-        }
-        if (turatie>6000)
-            pas3=1;
-    }
-//-----------------------------------------------------------------------------------
-//-----------------------------------------------------------------------------------
-    public void actualizareTuratie(){                           //Actualizam pragurile de turatie
-        if ((prag1==0)&&(turatie>5000)){                        //Ducem turatia la 2535 daca depaseste prima
-            prag1=1;                                            // oara 5000 (aplicare prag 1)
-            xr=28;
-            yr=147;
-            zona3=0;
-            zona4=1;
-            turatie=2535;
-            alarm.StopThrottle();
-            sunetacceleratie=false;
-        }
-        if ((prag2==0)&&(turatie>5500)){                        //Ducem turatia la 2535 daca depaseste prima
-            prag2=1;                                            // oara 5500 (aplicare prag 2)
-            xr=28;
-            yr=147;
-            zona3=0;
-            zona4=1;
-            turatie=2535;
-            alarm.StopThrottle();
-            sunetacceleratie=false;
-        }
-        if ((prag3==0)&&(turatie>6000)){                        //Ducem turatia la 3056 daca depaseste prima
-            prag3=1;                                            // oara 6000 (aplicare prag 3)
-            xr=76;
-            yr=76;
-            zona3=0;
-            zona4=1;
-            turatie=3790;
-            alarm.StopThrottle();
-            sunetacceleratie=false;
-        }
-        if ((prag4==0)&&(turatie>6300)){                        //Ducem turatia la 4769 daca depaseste prima
-            prag4=1;                                            // oara 6300 (aplicare prag 4)
-            xr=137;
-            yr=46;
-            zona3=0;
-            zona4=1;
-            turatie=4769;
-            alarm.StopThrottle();
-            sunetacceleratie=false;
-        }
-        if ((prag5==0)&&(turatie>6500)){                        //Ducem turatia la 5034 daca depaseste prima
-            prag5=1;                                            // oara 6500 (aplicare prag 5)
-            xr=155;
-            yr=43;
-            zona3=0;
-            zona4=1;
-            turatie=5034;
-            alarm.StopThrottle();
-            sunetacceleratie=false;
-        }
-         if ((prag5==1)&&(v<100))                               //Reseteaza prag5 daca viteza scade sub 100Mph
-            prag5=0;
-        if ((prag4==1)&&(v<90))                                 //Reseteaza prag4 daca viteza scade sub 90Mph
-            prag4=0;
-        if ((prag3==1)&&(v<70))                                 //Reseteaza prag3 daca viteza scade sub 70Mph
-            prag3=0;
-        if ((prag2==1)&&(v<40))                                 //Reseteaza prag2 daca viteza scade sub 40Mph
-            prag2=0;
-        if ((prag1==1)&&(v<15))                                 //Reseteaza prag1 daca viteza scade sub 20Mph
-            prag1=0;
-        if ((turatie>=1000)&&pornit)
-            crescutturatie=true;
-        if ((crescutturatie==true)&&(turatie<1000)&&(pornit==true))
-            turatie=1000;
-        if ((pornit==false)&&(turatie<0))
-            turatie=0;
-        if (pornit &&(turatie<=1000)&&crescutturatie&&(idle==false)){
-            xr=34;
-            yr=274+21-45;
-            repaint();
-            idle=true;
-        }
-    }
-//-----------------------------------------------------------------------------------
-//-----------------------------------------------------------------------------------
-    @SuppressWarnings("static-access")
-    public void cresteTuratieLaPornire(){                       //Duce acul turometrului la 100 la apasare start
-            xr=xr-5;
-            yr=Math.sqrt(Math.abs(22050-Math.pow((xr-x0r),2)))+y0r;
-            try {
-                    Thread.sleep(50);
-                } catch (InterruptedException ex) {
-                    Logger.getLogger(SpeedometerPanel.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            repaint();
-            setareZoneR();
-        if (turatie>=1000)
-            crescutturatie=true;
-    }
-//-----------------------------------------------------------------------------------
-//-----------------------------------------------------------------------------------
+
     @Override
     public void paintComponent(Graphics g){
         if (firstTime) {                                        //Initializare imagine buffer
@@ -628,40 +122,40 @@ public class SpeedometerPanel extends javax.swing.JPanel  implements KeyListener
         g2.drawImage(m, 0,0, this);                             //Deseneaza imaginea de fundal in buffer
         g2.setColor(Color.orange);                              //Setari pt obiectul grafic
 	g2.setStroke(new BasicStroke(4));
-	g2.drawLine((int)x0, (int)y0, (int)x, (int)y);          //Desenare ac vitezometru in buffer
-        g2.drawLine((int)x0-1, (int)y0-1, (int)x, (int)y);
-        g2.drawLine((int)x0+1, (int)y0+1, (int)x, (int)y);
-        g2.drawLine((int)x0+1, (int)y0-1, (int)x, (int)y);
-        g2.drawLine((int)x0-1, (int)y0+1, (int)x, (int)y);
-        g2.drawLine((int)x0r, (int)y0r, (int)xr, (int)yr);      //Desenare ac turometru in buffer
-        g2.drawLine((int)x0r-1, (int)y0r-1, (int)xr, (int)yr);
-        g2.drawLine((int)x0r+1, (int)y0r+1, (int)xr, (int)yr);
-        g2.drawLine((int)x0r+1, (int)y0r-1, (int)xr, (int)yr);
-        g2.drawLine((int)x0r-1, (int)y0r+1, (int)xr, (int)yr);
+	g2.drawLine((int)sac.x0, (int)sac.y0, (int)sac.x, (int)sac.y);          //Desenare ac vitezometru in buffer
+        g2.drawLine((int)sac.x0-1, (int)sac.y0-1, (int)sac.x, (int)sac.y);
+        g2.drawLine((int)sac.x0+1, (int)sac.y0+1, (int)sac.x, (int)sac.y);
+        g2.drawLine((int)sac.x0+1, (int)sac.y0-1, (int)sac.x, (int)sac.y);
+        g2.drawLine((int)sac.x0-1, (int)sac.y0+1, (int)sac.x, (int)sac.y);
+        g2.drawLine((int)sac.x0r, (int)sac.y0r, (int)sac.xr, (int)sac.yr);      //Desenare ac turometru in buffer
+        g2.drawLine((int)sac.x0r-1, (int)sac.y0r-1, (int)sac.xr, (int)sac.yr);
+        g2.drawLine((int)sac.x0r+1, (int)sac.y0r+1, (int)sac.xr, (int)sac.yr);
+        g2.drawLine((int)sac.x0r+1, (int)sac.y0r-1, (int)sac.xr, (int)sac.yr);
+        g2.drawLine((int)sac.x0r-1, (int)sac.y0r+1, (int)sac.xr, (int)sac.yr);
         g2.setColor(Color.black);                               //Desenare cercuri negre
         g2.fillOval(435, 177, 30, 30);
         g2.fillOval(155, 177, 30, 30);
         
         g2.setColor(Color.orange);
         g2.setStroke(new BasicStroke(3));
-        g2.drawLine((int)x0f, (int)y0f, (int)xf, (int)yf);
-        g2.drawLine((int)x0f-1, (int)y0f-1, (int)xf, (int)yf);
-        g2.drawLine((int)x0f+1, (int)y0f+1, (int)xf, (int)yf);
-        g2.drawLine((int)x0f+1, (int)y0f-1, (int)xf, (int)yf);
-        g2.drawLine((int)x0f-1, (int)y0f+1, (int)xf, (int)yf);
+        g2.drawLine((int)sac.x0f, (int)sac.y0f, (int)sac.xf, (int)sac.yf);
+        g2.drawLine((int)sac.x0f-1, (int)sac.y0f-1, (int)sac.xf, (int)sac.yf);
+        g2.drawLine((int)sac.x0f+1, (int)sac.y0f+1, (int)sac.xf, (int)sac.yf);
+        g2.drawLine((int)sac.x0f+1, (int)sac.y0f-1, (int)sac.xf, (int)sac.yf);
+        g2.drawLine((int)sac.x0f-1, (int)sac.y0f+1, (int)sac.xf, (int)sac.yf);
         
         g.drawImage(buffer, 0, 0, this);                        //Deseneaza imaginea buffer
-//        System.out.print("  s=");System.out.print(s);
-//        System.out.print("  x=");System.out.print(x);         //Afisare coordonate varf ace
-//        System.out.print("  y=");System.out.println((int)y);
-//        System.out.print(" turatie=");System.out.print(turatie);
-//        System.out.print(" viteza=");System.out.print((int)v);
-//        System.out.print("  xr=");System.out.print(xr);
-//        System.out.print("  yr=");System.out.println((int)yr);
-//        System.out.print("  z1=");System.out.print(zona1);    //Afisare zone
-//        System.out.print("  z2=");System.out.println(zona2);
-//        System.out.print("  z3=");System.out.print(zona3);
-//        System.out.print("  z4=");System.out.println(zona4);
+//        System.out.print("  s=");System.out.print(sac.s);
+//        System.out.print("  x=");System.out.print(sac.x);         //Afisare coordonate varf ace
+//        System.out.print("  y=");System.out.println((int)sac.y);
+//        System.out.print(" turatie=");System.out.print(sac.turatie);
+//        System.out.print(" viteza=");System.out.print((int)sac.v);
+//        System.out.print("  xr=");System.out.print(sac.xr);
+//        System.out.print("  yr=");System.out.println((int)sac.yr);
+//        System.out.print("  z1=");System.out.print(sac.zona1);    //Afisare zone
+//        System.out.print("  z2=");System.out.println(sac.zona2);
+//        System.out.print("  z3=");System.out.print(sac.zona3);
+//        System.out.print("  z4=");System.out.println(sac.zona4);
     }
 //-----------------------------------------------------------------------------------
     public void keyTyped(KeyEvent e) {
@@ -672,32 +166,30 @@ public class SpeedometerPanel extends javax.swing.JPanel  implements KeyListener
      public void keyPressed(KeyEvent e) {                       //Daca se apasa o tasta
          int tasta;
          tasta=e.getKeyCode();         
-         if (control){
+         if (sac.control){
              if (tasta==KeyEvent.VK_DOWN){                      //Daca se apasa sageata jos
-                if (v>0){
-                    if (frana==false){                        //Zgomot de franare
-                        alarm.Brake();
-                        frana=true;
+                if (sac.v>0){
+                    if (sac.frana==false&&sac.sunet){                        //Zgomot de franare
+                        sac.alarm.Brake();
+                        sac.frana=true;
                     }
-                    calculCoordonateDV();
-                    setareZoneV();
+                    sac.calculCoordonateDV();
+                    sac.setareZoneV();
                 }
-                if (turatie>1000){
-                    calculCoordonateDR();
-                    setareZoneR();
-                    repaint();
+                if (sac.turatie>1000){
+                    sac.calculCoordonateDR();
+                    sac.setareZoneR();
                 }
             }
             if (tasta==KeyEvent.VK_UP){                         //Daca se apasa sageata sus
-                idle=false;
-                if (pornit&&(crescutturatie)){
-                        if (v<140){
-                        calculCoordonateUV();
-                        setareZoneV();
+                sac.idle=false;
+                if (sac.pornit&&(sac.crescutturatie)){
+                        if (sac.v<140){
+                        sac.calculCoordonateUV();
+                        sac.setareZoneV();
                     }
-                    calculCoordonateUR();
-                    setareZoneR();
-                    repaint();
+                    sac.calculCoordonateUR();
+                    sac.setareZoneR();
                 }
             }
         }
@@ -847,81 +339,81 @@ public class SpeedometerPanel extends javax.swing.JPanel  implements KeyListener
     }// </editor-fold>//GEN-END:initComponents
 
     private void Buton1ApasareStartStop(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Buton1ApasareStartStop
-        if (control){
-            if (pornit==false){                                 //Daca se porneste motorul
-                apasatpornit=true;
+        if (sac.control){
+            if (sac.pornit==false){                                 //Daca se porneste motorul
+                sac.apasatpornit=true;
                 butonStart.setText("Stop Engine");
-                pornit=true;
+                sac.pornit=true;
                 Buton1.setIcon(butonverde);
-                viteza=1;               
+                sac.viteza=1;
             } else{                                             //Daca se opreste motorul
-                apasatoprit=true;
+                sac.apasatoprit=true;
                 butonStart.setText("Start Engine");
-                pornit=false;
-                idle=false;
+                sac.pornit=false;
+                sac.idle=false;
                 Buton1.setIcon(butonrosu);
-                crescutturatie=false;
+                sac.crescutturatie=false;
             }
         }
 }//GEN-LAST:event_Buton1ApasareStartStop
                                                                 //Metode pt activarea atentionarilor
     private void baterieAlarmaBaterie(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_baterieAlarmaBaterie
         // TODO add your handling code here:
-        if (alarmaBaterie){
+        if (sac.alarmaBaterie){
             baterie.setIcon(bateriegri);
-            alarmaBaterie=false;
+            sac.alarmaBaterie=false;
         } else{
             baterie.setIcon(baterierosie);
-            alarmaBaterie=true;
-            alarm.BatteryAlarm();
+            sac.alarmaBaterie=true;
+            sac.alarm.BatteryAlarm();
         }
 }//GEN-LAST:event_baterieAlarmaBaterie
 
     private void pompaAlarmaPompa(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_pompaAlarmaPompa
         // TODO add your handling code here:
-        if (alarmaPompa){
+        if (sac.alarmaPompa){
             pompa.setIcon(pompagri);
-            alarmaPompa=false;
+            sac.alarmaPompa=false;
         } else{
             pompa.setIcon(pomparosie);
-            alarmaPompa=true;
-            alarm.PumpAlarm();
+            sac.alarmaPompa=true;
+            sac.alarm.PumpAlarm();
         }
 }//GEN-LAST:event_pompaAlarmaPompa
 
     private void uleiAlarmaUlei(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_uleiAlarmaUlei
         // TODO add your handling code here:
-        if (alarmaUlei){
+        if (sac.alarmaUlei){
             ulei.setIcon(uleigri);
-            alarmaUlei=false;
+            sac.alarmaUlei=false;
         } else{
             ulei.setIcon(uleirosie);
-            alarmaUlei=true;
-            alarm.OilAlarm();
+            sac.alarmaUlei=true;
+            sac.alarm.OilAlarm();
         }
 }//GEN-LAST:event_uleiAlarmaUlei
 
     private void usiAlarmaUsi(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_usiAlarmaUsi
         // TODO add your handling code here:
-        if (alarmaUsi){
+        if (sac.alarmaUsi){
             usi.setIcon(usigri);
-            alarmaUsi=false;
+            sac.alarmaUsi=false;
         } else{
             usi.setIcon(usirosie);
-            alarmaUsi=true;
-            alarm.DoorsAlarm();
+            sac.alarmaUsi=true;
+            sac.alarm.DoorsAlarm();
         }
 }//GEN-LAST:event_usiAlarmaUsi
 
     private void centuraAlarmaCentura(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_centuraAlarmaCentura
         // TODO add your handling code here:
-        if (alarmaCentura){
+        if (sac.alarmaCentura){
             centura.setIcon(centuragri);
-            alarmaCentura=false;
+            sac.alarmaCentura=false;
         } else{
             centura.setIcon(centurarosie);
-            alarmaCentura=true;
-            alarm.SeatbeltAlarm();
+            sac.alarmaCentura=true;
+            sac.alarm.SeatbeltAlarm();
         }
 }//GEN-LAST:event_centuraAlarmaCentura
 

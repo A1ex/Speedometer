@@ -44,13 +44,13 @@ public class AppWindow extends javax.swing.JFrame  {
     ActionListener mainActionListener = new ActionListener() {  //ActionListener pentru optiunile de meniu
          public void actionPerformed(ActionEvent actionEvent) {
              if (apasatmute)
-                p.sunet=false;             
+                p.sac.sunet=false;
              else
-                 p.sunet=true;
+                 p.sac.sunet=true;
              if (apasatcontrol)
-                 p.control=false;
+                 p.sac.control=false;
              else
-                 p.control=true;
+                 p.sac.control=true;
              if (apasatsc1&&apasatcontrol&&!incarcatscenariu){              
                     sc1.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
                     sc1.pack();
@@ -210,13 +210,13 @@ public class AppWindow extends javax.swing.JFrame  {
         // TODO add your handling code here:
         if (apasatmute==false){
             apasatmute=true;
-            p.alarm.StopEngineNoise();
+            p.sac.alarm.StopEngineNoise();
             Mute.setText("Unmute Engine");
         }
         else{
             apasatmute=false;
-            if (p.pornit)                   //porneste iar motorul
-                p.alarm.EngineNoise();
+            if (p.sac.pornit)                   //porneste iar motorul
+                p.sac.alarm.EngineNoise();
             Mute.setText("Mute Engine");
         }
     }//GEN-LAST:event_SetareMute
