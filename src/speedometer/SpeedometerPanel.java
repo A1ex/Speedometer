@@ -48,7 +48,7 @@ public class SpeedometerPanel extends javax.swing.JPanel  implements KeyListener
     Image m;                                                    //in ea se retine imaginea de background
     SetAndCalculate sac=new SetAndCalculate();                  //instanta a clasei SetAndCalculate
 
-    public SpeedometerPanel()throws IOException, SQLException  {//Constructor
+    public SpeedometerPanel()throws IOException, SQLException  {//Constructor       
         initComponents();
         addKeyListener(this);                                   //adauga keylistener la panou
         t.start();                                              //porneste timerul
@@ -74,13 +74,16 @@ public class SpeedometerPanel extends javax.swing.JPanel  implements KeyListener
 //-----------------------------------------------------------------------------------
     ActionListener actionListener = new ActionListener() {
         
-        public void actionPerformed(ActionEvent actionEvent) {
+        public void actionPerformed(ActionEvent actionEvent) {             
             if ((sac.crescutturatie==false)&&(sac.pornit==true)&&(sac.turatie<1000))
-                sac.cresteTuratieLaPornire();                   //duce acul turometrului la 1000 la pornire           
+                sac.cresteTuratieLaPornire();                   //duce acul turometrului la 1000 la pornire
             sac.setarePasi();                                   //seteaza pasii de accelerare/decelerare in functie de viteza
-            if (control){               
-                sac.calculViteza();                             //calculeaza viteza
+            if (control){
+                sac.calculViteza();                //calculeaza viteza
+                t4.stop();
             }
+            else
+                t4.start();
             sac.calculTuratie();                                //calculeaza turatia
             if (sunet)                                          //daca nu e selectat mute sa se aplice metoda de sunet
                 sac.sunet();
@@ -90,8 +93,8 @@ public class SpeedometerPanel extends javax.swing.JPanel  implements KeyListener
             if (!sac.vitezaidle)
                 sac.decelerareV();                              //metoda ce simuleaza decelerarea pentru acul vitezometrului
             sac.decelerareF();
-            if (((sac.crescutturatie)&&!sac.vitezaidle)||((sac.pornit==false)&&!sac.vitezaidle)){
-                sac.decelerareR();                              //metoda ce simuleaza decelerarea pentru acul turometrului                
+            if (((sac.crescutturatie)&&!sac.vitezaidle)||((sac.pornit==false)&&!sac.vitezaidle)||(sac.decelerare==1)){
+                sac.decelerareR();                              //metoda ce simuleaza decelerarea pentru acul turometrului
             }
             jLabel2.setText(Integer.toString((int)sac.v));
             double v2=sac.v*1.6;
@@ -109,6 +112,17 @@ public class SpeedometerPanel extends javax.swing.JPanel  implements KeyListener
         }
     };
     Timer t=new Timer(10,actionListener);
+
+    ActionListener RevmeteractionListener = new ActionListener() {
+
+        public void actionPerformed(ActionEvent actionEvent) {
+            if (sac.cresteviteza){
+                sac.calculCoordonateUR();
+                sac.setareZoneR();
+            }
+        }
+    };
+       Timer t4=new Timer(10,RevmeteractionListener);
 
     @Override
     public void paintComponent(Graphics g){
@@ -152,7 +166,7 @@ public class SpeedometerPanel extends javax.swing.JPanel  implements KeyListener
         
         g.drawImage(buffer, 0, 0, this);                        //Deseneaza imaginea buffer
 //        System.out.print("  s=");System.out.print(sac.s);
-//        System.out.print("  x=");System.out.print(sac.x);         //Afisare coordonate varf ace
+//        System.out.print("  x=");System.out.println(sac.x);         //Afisare coordonate varf ace
 //        System.out.print("  y=");System.out.println((int)sac.y);
 //        System.out.print(" turatie=");System.out.print(sac.turatie);
 //        System.out.print(" viteza=");System.out.print((int)sac.v);
@@ -380,10 +394,11 @@ public class SpeedometerPanel extends javax.swing.JPanel  implements KeyListener
         if (sac.alarmaPompa){
             pompa.setIcon(pompagri);
             sac.alarmaPompa=false;
+            sac.alarm.StopPumpAlarm();
         } else{
             pompa.setIcon(pomparosie);
             sac.alarmaPompa=true;
-            sac.alarm.PumpAlarm();
+            sac.alarm.StartPumpAlarm();
         }
 }//GEN-LAST:event_pompaAlarmaPompa
 
@@ -392,6 +407,7 @@ public class SpeedometerPanel extends javax.swing.JPanel  implements KeyListener
         if (sac.alarmaFar){
             far.setIcon(fargri);
             sac.alarmaFar=false;
+            sac.alarm.StopLightsAlarm();
         } else{
             far.setIcon(farrosie);
             sac.alarmaFar=true;
@@ -404,10 +420,11 @@ public class SpeedometerPanel extends javax.swing.JPanel  implements KeyListener
         if (sac.alarmaUsi){
             usi.setIcon(usigri);
             sac.alarmaUsi=false;
+            sac.alarm.StopDoorsAlarm();
         } else{
             usi.setIcon(usirosie);
             sac.alarmaUsi=true;
-            sac.alarm.DoorsAlarm();
+            sac.alarm.StartDoorsAlarm();
         }
 }//GEN-LAST:event_usiAlarmaUsi
 

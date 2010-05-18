@@ -21,8 +21,8 @@ public class SetAndCalculate {
     public double y0r=191;                                      //coordonata y baza ac turometru
     public double x0f=260;                                      //coordonata x baza ac indicator combustibil
     public double y0f=215;                                      //coordonata x baza ac indicator combustibil
-    public double xf=223;                                       //coordonata y varf ac indicator combustibil
-    public double yf=200;                                       //coordonata y varf ac indicator combustibil
+    public double xf=225;                                       //coordonata y varf ac indicator combustibil
+    public double yf=235;                                       //coordonata y varf ac indicator combustibil
     public double x=354;                                        //coordonata x varf ac vitezometru
     public double xr=64;                                        //coordonata x varf  ac turometru
     public double y=328+21-45;                                  //coordonata y varf ac vitezometru
@@ -63,8 +63,9 @@ public class SetAndCalculate {
     public double pas2=1;                                       //pas pt decelerare vitezometru
     public double pas3=1;                                       //pas pt accelerare turometru
     public double pas4=3;                                       //pas pt decelerare turometru
-    public boolean control=true;                                //variabila determinata de variabila control din AppWindow(face mici modificari in calcul)
     public int i=0;
+    public boolean control=true;
+    public int decelerare=0;
 //-----------------------------------------------------------------------------------
 //-----------------------------------------------------------------------------------
      public void sunet(){
@@ -141,9 +142,7 @@ public class SetAndCalculate {
 //-----------------------------------------------------------------------------------
 //-----------------------------------------------------------------------------------
     public void actualizareTuratie(){                               //Actualizam pragurile de turatie
-        if (!control)
-            i=1000;
-        if ((prag1==0)&&(turatie>5000-i)){                      //Ducem turatia la 2535 daca depaseste prima
+        if ((prag1==0)&&(turatie>5000)){                      //Ducem turatia la 2535 daca depaseste prima
             prag1=1;                                            // oara 5000 (aplicare prag 1)
             xr=28;
             yr=147;
@@ -153,7 +152,7 @@ public class SetAndCalculate {
             alarm.StopThrottle();
             sunetacceleratie=false;
         }
-        if ((prag2==0)&&(turatie>5500-i)){                        //Ducem turatia la 2535 daca depaseste prima
+        if ((prag2==0)&&(turatie>5500)){                        //Ducem turatia la 2535 daca depaseste prima
             prag2=1;                                            // oara 5500 (aplicare prag 2)
             xr=28;
             yr=147;
@@ -163,7 +162,7 @@ public class SetAndCalculate {
             alarm.StopThrottle();
             sunetacceleratie=false;
         }
-        if ((prag3==0)&&(turatie>6000-i)){                        //Ducem turatia la 3056 daca depaseste prima
+        if ((prag3==0)&&(turatie>6000)){                        //Ducem turatia la 3056 daca depaseste prima
             prag3=1;                                            // oara 6000 (aplicare prag 3)
             xr=76;
             yr=76;
@@ -173,7 +172,7 @@ public class SetAndCalculate {
             alarm.StopThrottle();
             sunetacceleratie=false;
         }
-        if ((prag4==0)&&(turatie>6300-i)){                        //Ducem turatia la 4769 daca depaseste prima
+        if ((prag4==0)&&(turatie>6300)){                        //Ducem turatia la 4769 daca depaseste prima
             prag4=1;                                            // oara 6300 (aplicare prag 4)
             xr=137;
             yr=46;
@@ -183,7 +182,7 @@ public class SetAndCalculate {
             alarm.StopThrottle();
             sunetacceleratie=false;
         }
-        if ((prag5==0)&&(turatie>6500-i)){                        //Ducem turatia la 5034 daca depaseste prima
+        if ((prag5==0)&&(turatie>6500)){                        //Ducem turatia la 5034 daca depaseste prima
             prag5=1;                                            // oara 6500 (aplicare prag 5)
             xr=155;
             yr=43;
@@ -218,8 +217,7 @@ public class SetAndCalculate {
 //-----------------------------------------------------------------------------------
 //-----------------------------------------------------------------------------------
     public void calculViteza(){
-        comparviteza=v;
-       
+        comparviteza=v;       
         if (y<90+21-45)
             v=0.00000146245*Math.pow( x,3)-0.00197303*Math.pow(x,2)+1.07994*x-146.124;
         else
@@ -471,11 +469,11 @@ public class SetAndCalculate {
      public void decelerareF(){
         if (yf<245){
             if (yf>=215){
-                xf=xf+0.001;
+                xf=xf+0.005;
                 yf=Math.sqrt(Math.abs(1600-Math.pow((xf-x0f),2)))+y0f;
             }
             else{
-                xf=xf-0.001;
+                xf=xf-0.005;
                 yf=(-1)*Math.sqrt(Math.abs(1600-Math.pow((xf-x0f),2)))+y0f;
                 if (yf>214.5)
                     yf=215.1;
@@ -485,6 +483,10 @@ public class SetAndCalculate {
 //-----------------------------------------------------------------------------------
 //-----------------------------------------------------------------------------------
      public void setarePasi(){
+        if (!control)                                            //Creste pasul la acul de la turometru daca se executa un scenariu
+            i=2;
+        else
+            i=0;
         if ((int)v<60)                                          //Setare pasi vitezometru
             pas1=2;
          else
@@ -497,23 +499,23 @@ public class SetAndCalculate {
                 pas2=0.35;
             }
         if (turatie<3000)                                       //Setare pas crestere turatii functie de valoarea turatiei
-            pas3=5;
+            pas3=5+i;
         if (turatie>3000)
-            pas3=4;
+            pas3=4+i;
         if (turatie>4000){
-            pas3=3;
+            pas3=3+i;
             pas4=2;
         }
         if (turatie>5000){
-            pas3=2;
+            pas3=2+i;
             pas4=1;
         }
         if (turatie>5500){
-            pas3=1.5;
+            pas3=1.5+i;
             pas4=0.75;
         }
         if (turatie>6000)
-            pas3=1;
+            pas3=1+i;
     }
 //-----------------------------------------------------------------------------------
 //-----------------------------------------------------------------------------------
