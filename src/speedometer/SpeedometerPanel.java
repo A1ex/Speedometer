@@ -76,30 +76,31 @@ public class SpeedometerPanel extends javax.swing.JPanel  implements KeyListener
         
         public void actionPerformed(ActionEvent actionEvent) {
             if ((sac.crescutturatie==false)&&(sac.pornit==true)&&(sac.turatie<1000))
-                sac.cresteTuratieLaPornire();                       //duce acul turometrului la 1000 la pornire
-            sac.setarePasi();                                       //seteaza pasii de accelerare/decelerare in functie de viteza
+                sac.cresteTuratieLaPornire();                   //duce acul turometrului la 1000 la pornire           
+            sac.setarePasi();                                   //seteaza pasii de accelerare/decelerare in functie de viteza
             if (control){               
-                sac.calculViteza();                                 //calculeaza viteza
+                sac.calculViteza();                             //calculeaza viteza
             }
-            sac.calculTuratie();                                    //calculeaza turatia
+            sac.calculTuratie();                                //calculeaza turatia
             if (sunet)                                          //daca nu e selectat mute sa se aplice metoda de sunet
                 sac.sunet();
-            if (sac.apasatpornit)                                   //daca s-a apasat butonul de start si era pe mute, sa nu repete zgomotul de pornire motor la unmute
+            if (sac.apasatpornit)                               //daca s-a apasat butonul de start si era pe mute, sa nu repete zgomotul de pornire motor la unmute
                 sac.apasatpornit=false;
-            sac.actualizareTuratie();                               //actualizeaza turatia in functie de praguri (pt schimbarea de viteze)
+            sac.actualizareTuratie();                           //actualizeaza turatia in functie de praguri (pt schimbarea de viteze)
             if (!sac.vitezaidle)
-                sac.decelerareV();                                      //metoda ce simuleaza decelerarea pentru acul vitezometrului
+                sac.decelerareV();                              //metoda ce simuleaza decelerarea pentru acul vitezometrului
             sac.decelerareF();
-            if (((sac.crescutturatie)&&!sac.vitezaidle)||((sac.pornit==false)&&!sac.vitezaidle))
-                sac.decelerareR();                                  //metoda ce simuleaza decelerarea pentru acul turometrului
+            if (((sac.crescutturatie)&&!sac.vitezaidle)||((sac.pornit==false)&&!sac.vitezaidle)){
+                sac.decelerareR();                              //metoda ce simuleaza decelerarea pentru acul turometrului                
+            }
             jLabel2.setText(Integer.toString((int)sac.v));
             double v2=sac.v*1.6;
             jLabel3.setText(Integer.toString((int)v2));
             sac.setareTreapta();
             jLabel7.setText(Integer.toString(sac.viteza));
             jLabel8.setText(Integer.toString((int)sac.turatie));
-            if (sac.crescutturatie){                                //daca motorul a fost pornit si turatia a ajuns
-                try {Thread.sleep(100);}                            //la 1000, se introduce o intarziere de 100ms
+            if (sac.crescutturatie){                            //daca motorul a fost pornit si turatia a ajuns
+                try {Thread.sleep(100);}                        //la 1000, se introduce o intarziere de 100ms
                 catch (InterruptedException ex) {
                     Logger.getLogger(SpeedometerPanel.class.getName()).log(Level.SEVERE, null, ex);
                 }
@@ -307,7 +308,7 @@ public class SpeedometerPanel extends javax.swing.JPanel  implements KeyListener
         far.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/light_gray.jpg"))); // NOI18N
         far.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                farAlarmaUlei(evt);
+                AlarmaFar(evt);
             }
         });
         far.setBounds(300, 340, 40, 39);
@@ -386,17 +387,17 @@ public class SpeedometerPanel extends javax.swing.JPanel  implements KeyListener
         }
 }//GEN-LAST:event_pompaAlarmaPompa
 
-    private void farAlarmaUlei(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_farAlarmaUlei
+    private void AlarmaFar(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_AlarmaFar
         // TODO add your handling code here:
-        if (sac.alarmaUlei){
+        if (sac.alarmaFar){
             far.setIcon(fargri);
-            sac.alarmaUlei=false;
+            sac.alarmaFar=false;
         } else{
             far.setIcon(farrosie);
-            sac.alarmaUlei=true;
-            sac.alarm.OilAlarm();
+            sac.alarmaFar=true;
+            sac.alarm.StartLightsAlarm();
         }
-}//GEN-LAST:event_farAlarmaUlei
+}//GEN-LAST:event_AlarmaFar
 
     private void usiAlarmaUsi(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_usiAlarmaUsi
         // TODO add your handling code here:
@@ -424,10 +425,10 @@ public class SpeedometerPanel extends javax.swing.JPanel  implements KeyListener
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     public javax.swing.JLabel Buton1;
-    private javax.swing.JLabel baterie;
+    public javax.swing.JLabel baterie;
     public javax.swing.JLabel butonStart;
-    private javax.swing.JLabel centura;
-    private javax.swing.JLabel far;
+    public javax.swing.JLabel centura;
+    public javax.swing.JLabel far;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -437,8 +438,8 @@ public class SpeedometerPanel extends javax.swing.JPanel  implements KeyListener
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JLayeredPane jLayeredPane1;
-    private javax.swing.JLabel pompa;
-    private javax.swing.JLabel usi;
+    public javax.swing.JLabel pompa;
+    public javax.swing.JLabel usi;
     // End of variables declaration//GEN-END:variables
 
 }

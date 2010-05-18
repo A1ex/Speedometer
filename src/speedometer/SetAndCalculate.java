@@ -30,12 +30,12 @@ public class SetAndCalculate {
     public double v=0;                                          //valoarea vitezei   
     public boolean alarmaBaterie=false;                         //determina daca s-a activat alarma de baterie
     public boolean alarmaPompa=false;                           //determina daca s-a activat alarma de pompa
-    public boolean alarmaUlei=false;                            //determina daca s-a activat alarma de ulei
+    public boolean alarmaFar=false;                             //determina daca s-a activat alarma de lumini aprinse
     public boolean alarmaUsi=false;                             //determina daca s-a activat alarma de usi
     public boolean alarmaCentura;                               //determina daca s-a activat alarma de centura
     public boolean apasatoprit=false;                           //determina daca se apasa butonul rosu "Stop Engine"
     public boolean apasatpornit=false;                          //determina daca se apasa butonul verde "Start Engine"
-    public boolean vitezaidle=true;                             //determina daca viteza in scenariu ramane la aceeasi valoare
+    public boolean vitezaidle=false;                            //determina daca viteza in scenariu ramane la aceeasi valoare
     public boolean pornit=false;                                //determina daca e pornit motorul
     public boolean sunetacceleratiemaxima=false;                //folosit in sunet() pt declansarea sunetului de acceleratie maxima (turatie>6500)
     public boolean sunetacceleratieoprita=false;                //folosit in sunet() pt declansarea sunetului oprire a accelerarii
@@ -63,6 +63,8 @@ public class SetAndCalculate {
     public double pas2=1;                                       //pas pt decelerare vitezometru
     public double pas3=1;                                       //pas pt accelerare turometru
     public double pas4=3;                                       //pas pt decelerare turometru
+    public boolean control=true;                                //variabila determinata de variabila control din AppWindow(face mici modificari in calcul)
+    public int i=0;
 //-----------------------------------------------------------------------------------
 //-----------------------------------------------------------------------------------
      public void sunet(){
@@ -138,79 +140,81 @@ public class SetAndCalculate {
         }
 //-----------------------------------------------------------------------------------
 //-----------------------------------------------------------------------------------
-    public void actualizareTuratie(){                           //Actualizam pragurile de turatie
-            if ((prag1==0)&&(turatie>5000)){                        //Ducem turatia la 2535 daca depaseste prima
-                prag1=1;                                            // oara 5000 (aplicare prag 1)
-                xr=28;
-                yr=147;
-                zona3=0;
-                zona4=1;
-                turatie=2535;
-                alarm.StopThrottle();
-                sunetacceleratie=false;
-            }
-            if ((prag2==0)&&(turatie>5500)){                        //Ducem turatia la 2535 daca depaseste prima
-                prag2=1;                                            // oara 5500 (aplicare prag 2)
-                xr=28;
-                yr=147;
-                zona3=0;
-                zona4=1;
-                turatie=2535;
-                alarm.StopThrottle();
-                sunetacceleratie=false;
-            }
-            if ((prag3==0)&&(turatie>6000)){                        //Ducem turatia la 3056 daca depaseste prima
-                prag3=1;                                            // oara 6000 (aplicare prag 3)
-                xr=76;
-                yr=76;
-                zona3=0;
-                zona4=1;
-                turatie=3790;
-                alarm.StopThrottle();
-                sunetacceleratie=false;
-            }
-            if ((prag4==0)&&(turatie>6300)){                        //Ducem turatia la 4769 daca depaseste prima
-                prag4=1;                                            // oara 6300 (aplicare prag 4)
-                xr=137;
-                yr=46;
-                zona3=0;
-                zona4=1;
-                turatie=4769;
-                alarm.StopThrottle();
-                sunetacceleratie=false;
-            }
-            if ((prag5==0)&&(turatie>6500)){                        //Ducem turatia la 5034 daca depaseste prima
-                prag5=1;                                            // oara 6500 (aplicare prag 5)
-                xr=155;
-                yr=43;
-                zona3=0;
-                zona4=1;
-                turatie=5034;
-                alarm.StopThrottle();
-                sunetacceleratie=false;
-            }
-             if ((prag5==1)&&(v<100))                               //Reseteaza prag5 daca viteza scade sub 100Mph
-                prag5=0;
-            if ((prag4==1)&&(v<90))                                 //Reseteaza prag4 daca viteza scade sub 90Mph
-                prag4=0;
-            if ((prag3==1)&&(v<70))                                 //Reseteaza prag3 daca viteza scade sub 70Mph
-                prag3=0;
-            if ((prag2==1)&&(v<40))                                 //Reseteaza prag2 daca viteza scade sub 40Mph
-                prag2=0;
-            if ((prag1==1)&&(v<15))                                 //Reseteaza prag1 daca viteza scade sub 20Mph
-                prag1=0;
-            if ((turatie>=1000)&&pornit)
-                crescutturatie=true;
-            if ((crescutturatie==true)&&(turatie<1000)&&(pornit==true))
-                turatie=1000;
-            if ((pornit==false)&&(turatie<0))
-                turatie=0;
-            if (pornit &&(turatie<=1000)&&crescutturatie&&(idle==false)){
-                xr=34;
-                yr=274+21-45;
-                idle=true;
-            }
+    public void actualizareTuratie(){                               //Actualizam pragurile de turatie
+        if (!control)
+            i=1000;
+        if ((prag1==0)&&(turatie>5000-i)){                      //Ducem turatia la 2535 daca depaseste prima
+            prag1=1;                                            // oara 5000 (aplicare prag 1)
+            xr=28;
+            yr=147;
+            zona3=0;
+            zona4=1;
+            turatie=2535;
+            alarm.StopThrottle();
+            sunetacceleratie=false;
         }
+        if ((prag2==0)&&(turatie>5500-i)){                        //Ducem turatia la 2535 daca depaseste prima
+            prag2=1;                                            // oara 5500 (aplicare prag 2)
+            xr=28;
+            yr=147;
+            zona3=0;
+            zona4=1;
+            turatie=2535;
+            alarm.StopThrottle();
+            sunetacceleratie=false;
+        }
+        if ((prag3==0)&&(turatie>6000-i)){                        //Ducem turatia la 3056 daca depaseste prima
+            prag3=1;                                            // oara 6000 (aplicare prag 3)
+            xr=76;
+            yr=76;
+            zona3=0;
+            zona4=1;
+            turatie=3790;
+            alarm.StopThrottle();
+            sunetacceleratie=false;
+        }
+        if ((prag4==0)&&(turatie>6300-i)){                        //Ducem turatia la 4769 daca depaseste prima
+            prag4=1;                                            // oara 6300 (aplicare prag 4)
+            xr=137;
+            yr=46;
+            zona3=0;
+            zona4=1;
+            turatie=4769;
+            alarm.StopThrottle();
+            sunetacceleratie=false;
+        }
+        if ((prag5==0)&&(turatie>6500-i)){                        //Ducem turatia la 5034 daca depaseste prima
+            prag5=1;                                            // oara 6500 (aplicare prag 5)
+            xr=155;
+            yr=43;
+            zona3=0;
+            zona4=1;
+            turatie=5034;
+            alarm.StopThrottle();
+            sunetacceleratie=false;
+        }
+         if ((prag5==1)&&(v<100))                               //Reseteaza prag5 daca viteza scade sub 100Mph
+            prag5=0;
+        if ((prag4==1)&&(v<90))                                 //Reseteaza prag4 daca viteza scade sub 90Mph
+            prag4=0;
+        if ((prag3==1)&&(v<70))                                 //Reseteaza prag3 daca viteza scade sub 70Mph
+            prag3=0;
+        if ((prag2==1)&&(v<40))                                 //Reseteaza prag2 daca viteza scade sub 40Mph
+            prag2=0;
+        if ((prag1==1)&&(v<15))                                 //Reseteaza prag1 daca viteza scade sub 20Mph
+            prag1=0;
+        if ((turatie>=1000)&&pornit)
+            crescutturatie=true;
+        if ((crescutturatie==true)&&(turatie<1000)&&(pornit==true))
+            turatie=1000;
+        if ((pornit==false)&&(turatie<0))
+            turatie=0;
+        if (pornit &&(turatie<=1000)&&crescutturatie&&(idle==false)){
+            xr=34;
+            yr=274+21-45;
+            idle=true;
+        }
+    }
 //-----------------------------------------------------------------------------------
 //-----------------------------------------------------------------------------------
     public void calculViteza(){
@@ -336,15 +340,15 @@ public class SetAndCalculate {
     }
 //-----------------------------------------------------------------------------------
 //-----------------------------------------------------------------------------------
-         public void cresteTuratieLaPornire(){                       //Duce acul turometrului la 100 la apasare start
-            xr=xr-5;
-            yr=Math.sqrt(Math.abs(22050-Math.pow((xr-x0r),2)))+y0r;
-            try {
-                    Thread.sleep(50);
-                } catch (InterruptedException ex) {
-                    Logger.getLogger(SpeedometerPanel.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            setareZoneR();
+    public void cresteTuratieLaPornire(){                       //Duce acul turometrului la 100 la apasare start
+        xr=xr-5;
+        yr=Math.sqrt(Math.abs(22050-Math.pow((xr-x0r),2)))+y0r;
+        try {
+                Thread.sleep(50);
+            } catch (InterruptedException ex) {
+                Logger.getLogger(SpeedometerPanel.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        setareZoneR();
         if (turatie>=1000)
             crescutturatie=true;
     }
@@ -513,6 +517,7 @@ public class SetAndCalculate {
     }
 //-----------------------------------------------------------------------------------
 //-----------------------------------------------------------------------------------
+   
 
 
 }

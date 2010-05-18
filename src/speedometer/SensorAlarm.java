@@ -104,8 +104,11 @@ public class SensorAlarm {
     public void PumpAlarm(){
         FuelAlarm.play();
     }
-    public void OilAlarm(){
-        LightsAlarm.play();
+    public void StartLightsAlarm(){
+        LightsAlarm.loop();
+    }
+    public void StopLightsAlarm(){
+        LightsAlarm.stop();
     }
     public void DoorsAlarm(){
         DoorsAlarm.play();

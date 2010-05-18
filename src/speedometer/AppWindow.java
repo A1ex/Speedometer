@@ -32,12 +32,13 @@ public class AppWindow extends javax.swing.JFrame  {
     public boolean apasatsc1=false;                             //determina daca s-a apasat optiunea de meniu "Load Scenario 1"
     public boolean apasatmute=false;                            //determina daca s-a apasat optiunea de meniu "Mute/Unmute Engine"
     public boolean apasatstart=false;                           //determina daca s-a apasat optiunea de meniu "Start"
-    public boolean apasatcontrol=false;                         //determina daca s-a apasat optiunea de meniu "Turn off/on control"    
+    public boolean apasatcontrol=false;                         //determina daca s-a apasat optiunea de meniu "Turn off/on control"
+    public boolean alarmalumini=false;
     SpeedometerPanel p=new SpeedometerPanel();                  //instanta a clasei SpeedometerPanel
     Scenario1 sc1 = new Scenario1();                            //instanta a clasei Scenario1
     int index;
     double v;
-    int delay;
+    int delay,lights;
     int engine=0;
     public AppWindow() throws IOException, SQLException{        //Constructor
         initComponents();
@@ -49,10 +50,14 @@ public class AppWindow extends javax.swing.JFrame  {
                 p.sunet=false;
              else
                 p.sunet=true;
-             if (apasatcontrol)
+             if (apasatcontrol){
                  p.control=false;
-             else
+                 p.sac.control=false;
+             }
+             else{
                  p.control=true;
+                 p.sac.control=true;
+             }
              if (apasatsc1&&apasatcontrol&&!incarcatscenariu){              
                     sc1.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
                     sc1.pack();
@@ -80,7 +85,9 @@ public class AppWindow extends javax.swing.JFrame  {
                     index = sc1.rs.getInt(1);
                     v = sc1.rs.getDouble(2);
                     delay = sc1.rs.getInt(3);
-                    engine=sc1.rs.getInt(4);
+                    engine=sc1.rs.getInt(9);
+                    lights=sc1.rs.getInt(7);
+
 
                     if (engine==1){
                         if (!p.sac.pornit){                      //porneste motorul daca in BD coloana Engine e 1 si motorul e oprit
@@ -99,12 +106,22 @@ public class AppWindow extends javax.swing.JFrame  {
                             p.sac.crescutturatie=false;
                         }
                     }
-                    System.out.println("v="+v+" comparviteza="+p.sac.comparviteza+" "+p.sac.cresteviteza);
+                    if (lights==1)                              //verifica senzorul de lumini aprinse
+                        if (!alarmalumini){
+                            alarmalumini=true;
+                            p.sac.alarm.StartLightsAlarm();
+                            p.far.setIcon(p.farrosie);
+                        }
+                        else{
+                            alarmalumini=false;
+                            p.sac.alarm.StopLightsAlarm();
+                            p.far.setIcon(p.fargri);
+                        }                                           
                     if (p.sac.comparviteza<v)                   //determina prin cresteviteza daca viteza creste
                         p.sac.cresteviteza=true;
                     else
                         p.sac.cresteviteza=false;
-                    if (p.sac.comparviteza==v)                  //determina prin idle deca viteza ramane la aceeasi valoare
+                    if ((delay>100)&&(v>0))                     //determina prin idle deca viteza ramane la aceeasi valoare
                        p.sac.vitezaidle=true;
                     p.sac.comparviteza=v;
                     
