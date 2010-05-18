@@ -87,9 +87,10 @@ public class SpeedometerPanel extends javax.swing.JPanel  implements KeyListener
             if (sac.apasatpornit)                                   //daca s-a apasat butonul de start si era pe mute, sa nu repete zgomotul de pornire motor la unmute
                 sac.apasatpornit=false;
             sac.actualizareTuratie();                               //actualizeaza turatia in functie de praguri (pt schimbarea de viteze)
-            sac.decelerareV();                                      //metoda ce simuleaza decelerarea pentru acul vitezometrului
+            if (!sac.vitezaidle)
+                sac.decelerareV();                                      //metoda ce simuleaza decelerarea pentru acul vitezometrului
             sac.decelerareF();
-            if ((sac.crescutturatie)||(sac.pornit==false))
+            if (((sac.crescutturatie)&&!sac.vitezaidle)||((sac.pornit==false)&&!sac.vitezaidle))
                 sac.decelerareR();                                  //metoda ce simuleaza decelerarea pentru acul turometrului
             jLabel2.setText(Integer.toString((int)sac.v));
             double v2=sac.v*1.6;

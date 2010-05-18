@@ -35,8 +35,7 @@ public class SetAndCalculate {
     public boolean alarmaCentura;                               //determina daca s-a activat alarma de centura
     public boolean apasatoprit=false;                           //determina daca se apasa butonul rosu "Stop Engine"
     public boolean apasatpornit=false;                          //determina daca se apasa butonul verde "Start Engine"
-//    public boolean control=true;                                //determina daca se tine cont de apasarea tastelor (e setat in AppWindow)
-    
+    public boolean vitezaidle=true;                             //determina daca viteza in scenariu ramane la aceeasi valoare
     public boolean pornit=false;                                //determina daca e pornit motorul
     public boolean sunetacceleratiemaxima=false;                //folosit in sunet() pt declansarea sunetului de acceleratie maxima (turatie>6500)
     public boolean sunetacceleratieoprita=false;                //folosit in sunet() pt declansarea sunetului oprire a accelerarii
@@ -216,15 +215,7 @@ public class SetAndCalculate {
 //-----------------------------------------------------------------------------------
     public void calculViteza(){
         comparviteza=v;
-        if(((int)x>437)&&(s==true)){
-                d=true;
-                s=false;
-            }
-        else
-            if (((int)x<437)&&(s==false)){
-                d=false;
-                s=true;
-            }
+       
         if (y<90+21-45)
             v=0.00000146245*Math.pow( x,3)-0.00197303*Math.pow(x,2)+1.07994*x-146.124;
         else
@@ -259,6 +250,15 @@ public class SetAndCalculate {
 //-----------------------------------------------------------------------------------
 //-----------------------------------------------------------------------------------
     public void setareZoneV(){
+         if(((int)x>437)&&(s==true)){
+                d=true;
+                s=false;
+            }
+        else
+            if (((int)x<437)&&(s==false)){
+                d=false;
+                s=true;
+            }
         if((zona2==1)&&((int)y>=185+21-45)){                    //Scoate din zona2
             zona2=0;
         }
@@ -511,4 +511,8 @@ public class SetAndCalculate {
         if (turatie>6000)
             pas3=1;
     }
+//-----------------------------------------------------------------------------------
+//-----------------------------------------------------------------------------------
+
+
 }

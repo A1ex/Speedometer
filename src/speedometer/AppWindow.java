@@ -32,7 +32,7 @@ public class AppWindow extends javax.swing.JFrame  {
     public boolean apasatsc1=false;                             //determina daca s-a apasat optiunea de meniu "Load Scenario 1"
     public boolean apasatmute=false;                            //determina daca s-a apasat optiunea de meniu "Mute/Unmute Engine"
     public boolean apasatstart=false;                           //determina daca s-a apasat optiunea de meniu "Start"
-    public boolean apasatcontrol=false;                         //determina daca s-a apasat optiunea de meniu "Turn off/on control"
+    public boolean apasatcontrol=false;                         //determina daca s-a apasat optiunea de meniu "Turn off/on control"    
     SpeedometerPanel p=new SpeedometerPanel();                  //instanta a clasei SpeedometerPanel
     Scenario1 sc1 = new Scenario1();                            //instanta a clasei Scenario1
     int index;
@@ -72,23 +72,53 @@ public class AppWindow extends javax.swing.JFrame  {
     };
     Timer t2=new Timer(10,mainActionListener);                  //seteaza intarzierea la timer
 
-    ActionListener SCENARIOActionListener = new ActionListener() {  //ActionListener pentru Scenarii
+    ActionListener SCENARIOActionListener = new ActionListener() {  
          public void actionPerformed(ActionEvent actionEvent)  {
             try {
                 if (sc1.rs.next()){                             //daca mai sunt inregistrari in tabelul scenariului
+
                     index = sc1.rs.getInt(1);
                     v = sc1.rs.getDouble(2);
                     delay = sc1.rs.getInt(3);
                     engine=sc1.rs.getInt(4);
-                    if ((engine==1)&&!p.sac.pornit){            //porneste motorul daca in BD coloana Engine e 1 si motorul e oprit
-                        p.sac.pornit=true;
-                        p.sac.apasatpornit=true;
-                        p.butonStart.setText("Stop Engine");
-                        p.Buton1.setIcon(p.butonverde);
-                        p.sac.viteza=1;
+
+                    if (engine==1){
+                        if (!p.sac.pornit){                      //porneste motorul daca in BD coloana Engine e 1 si motorul e oprit
+                            p.sac.pornit=true;
+                            p.sac.apasatpornit=true;
+                            p.butonStart.setText("Stop Engine");
+                            p.Buton1.setIcon(p.butonverde);
+                            p.sac.viteza=1;
+                        }
+                        else{                                   //opreste motorul daca in BD coloana Engine e 1 si motorul e oprit
+                            p.sac.apasatoprit=true;
+                            p.butonStart.setText("Start Engine");
+                            p.sac.pornit=false;
+                            p.sac.idle=false;
+                            p.Buton1.setIcon(p.butonrosu);
+                            p.sac.crescutturatie=false;
+                        }
                     }
-                    System.out.println(index + " " + v + " " + delay+" "+ engine);
+                    System.out.println("v="+v+" comparviteza="+p.sac.comparviteza+" "+p.sac.cresteviteza);
+                    if (p.sac.comparviteza<v)                   //determina prin cresteviteza daca viteza creste
+                        p.sac.cresteviteza=true;
+                    else
+                        p.sac.cresteviteza=false;
+                    if (p.sac.comparviteza==v)                  //determina prin idle deca viteza ramane la aceeasi valoare
+                       p.sac.vitezaidle=true;
+                    p.sac.comparviteza=v;
+                    
+                    calculCoordonate();                    
+                    if (p.sac.cresteviteza){
+                        p.sac.calculCoordonateUR();
+                        p.sac.setareZoneR();
+                    }
+                   
                     t3.setDelay(delay);
+                }
+                else{
+                    System.out.println("S-a terminat");
+                    t3.stop();
                 }
             } catch (SQLException ex) {
                 Logger.getLogger(Scenario1.class.getName()).log(Level.SEVERE, null, ex);
@@ -98,6 +128,30 @@ public class AppWindow extends javax.swing.JFrame  {
      Timer t3=new Timer(10,SCENARIOActionListener);
 //-----------------------------------------------------------------------------------
 //-----------------------------------------------------------------------------------
+     public void calculCoordonate(){
+
+        if (p.sac.s&&(p.sac.y>90+21-45))                        
+            p.sac.y=0.001231321*Math.pow(v,3)-0.113265236*Math.pow(v,2)-1.713665913*v+ 305.225703136;
+        if ((p.sac.x<=304)&&(p.sac.zona1==0)&&(p.sac.zona2==0)){    //Daca intra in zona mijloc stanga vitezometru
+            if (p.sac.y<185+21-45){
+                p.sac.zona2=1;
+                p.sac.x=306;
+            }
+        }
+        else                                                //Daca intra in zona mijloc dreapta vitezometru
+            if ((p.sac.x>=590)&&(p.sac.zona2==0)&&(p.sac.zona1==0)){
+                if (p.sac.y>240+21-45){
+                    p.sac.zona1=1;
+                    p.sac.x=595;
+                }
+            }
+            else
+                if (p.sac.zona1==1)                         //Daca e in zona jos vitezometru
+                    p.sac.x=(-1)*Math.sqrt(Math.abs(22050-Math.pow((p.sac.y-p.sac.y0),2)))+p.sac.x0;
+                else
+                    if (p.sac.zona2==1)                     //Daca e in zona sus vitezometru
+                        p.sac.x=(-1)*Math.sqrt(Math.abs(22050-Math.pow((p.sac.y-p.sac.y0),2)))+p.sac.x0;
+     }
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
