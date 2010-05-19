@@ -418,6 +418,7 @@ public class AppWindow extends javax.swing.JFrame  {
             swich.setText("Turn off manual control");
             p.control=true;                                //se reda controlul manual
             p.sac.control=true;                            //variabila ce determina in SetAndCalculate modificari la valorile pasilor la cresterea turatiei
+            p.sac.pas4=3;
         }
     }//GEN-LAST:event_SetareControl
 
