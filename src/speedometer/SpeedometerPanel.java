@@ -74,7 +74,8 @@ public class SpeedometerPanel extends javax.swing.JPanel  implements KeyListener
 //-----------------------------------------------------------------------------------
     ActionListener actionListener = new ActionListener() {
         
-        public void actionPerformed(ActionEvent actionEvent) {             
+        public void actionPerformed(ActionEvent actionEvent) {
+//            System.out.println(sac.pas3);
             if ((sac.crescutturatie==false)&&(sac.pornit==true)&&(sac.turatie<1000))
                 sac.cresteTuratieLaPornire();                   //duce acul turometrului la 1000 la pornire
             sac.setarePasi();                                   //seteaza pasii de accelerare/decelerare in functie de viteza
@@ -90,10 +91,13 @@ public class SpeedometerPanel extends javax.swing.JPanel  implements KeyListener
             if (sac.apasatpornit)                               //daca s-a apasat butonul de start si era pe mute, sa nu repete zgomotul de pornire motor la unmute
                 sac.apasatpornit=false;
             sac.actualizareTuratie();                           //actualizeaza turatia in functie de praguri (pt schimbarea de viteze)
-            if (!sac.vitezaidle)
+            if (sac.control)
                 sac.decelerareV();                              //metoda ce simuleaza decelerarea pentru acul vitezometrului
             sac.decelerareF();
-            if (((sac.crescutturatie)&&!sac.vitezaidle)||((sac.pornit==false)&&!sac.vitezaidle)||(sac.decelerare==1)){
+//            if (((sac.crescutturatie)&&!sac.vitezaidle)||((sac.pornit==false)&&!sac.vitezaidle)||(sac.decelerare==1)){
+            if ((sac.crescutturatie)||(sac.pornit==false)||(sac.decelerare==1)){
+                if (sac.vitezaidle&&sac.pornit)
+                    sac.pas4=0.1;
                 sac.decelerareR();                              //metoda ce simuleaza decelerarea pentru acul turometrului
             }
             jLabel2.setText(Integer.toString((int)sac.v));

@@ -484,7 +484,7 @@ public class SetAndCalculate {
 //-----------------------------------------------------------------------------------
      public void setarePasi(){
         if (!control)                                            //Creste pasul la acul de la turometru daca se executa un scenariu
-            i=2;
+            i=4;
         else
             i=0;
         if ((int)v<60)                                          //Setare pasi vitezometru

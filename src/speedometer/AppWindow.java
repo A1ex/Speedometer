@@ -51,7 +51,7 @@ public class AppWindow extends javax.swing.JFrame  {
  
     ActionListener SCENARIOActionListener = new ActionListener() {  
          public void actionPerformed(ActionEvent actionEvent)  {
-             System.out.println(p.sac.sunetmotor);
+//             System.out.println(p.sac.vitezaidle);
             try {
                 if (sc1.rs.next()){                             //daca mai sunt inregistrari in tabelul scenariului
 
@@ -61,6 +61,7 @@ public class AppWindow extends javax.swing.JFrame  {
                     delay = sc1.rs.getInt(3);
                     engine=sc1.rs.getInt(9);
                     lights=sc1.rs.getInt(7);
+                    System.out.println(lights);
                     decelerare=sc1.rs.getInt(10);
                     doors=sc1.rs.getInt(6);
                     fuel=sc1.rs.getInt(5);
@@ -94,6 +95,7 @@ public class AppWindow extends javax.swing.JFrame  {
                 p.sac.apasatoprit=true;
                 p.butonStart.setText("Start Engine");
                 p.sac.pornit=false;
+                p.sac.pas4=3;
                 p.sac.idle=false;
                 p.Buton1.setIcon(p.butonrosu);
                 p.sac.crescutturatie=false;
@@ -137,8 +139,10 @@ public class AppWindow extends javax.swing.JFrame  {
         else
             p.sac.cresteviteza=false;
          
-        if ((delay>100)&&(v>0))                     //determina prin vitezaidle deca viteza ramane la aceeasi valoare
+        if (p.sac.comparviteza==v)                      //determina prin vitezaidle deca viteza ramane la aceeasi valoare
            p.sac.vitezaidle=true;
+        else
+            p.sac.vitezaidle=false;
         if (decelerare==1)
             p.sac.decelerare=1;
         p.sac.comparviteza=v;
