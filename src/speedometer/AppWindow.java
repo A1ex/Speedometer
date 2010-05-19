@@ -51,6 +51,7 @@ public class AppWindow extends javax.swing.JFrame  {
  
     ActionListener SCENARIOActionListener = new ActionListener() {  
          public void actionPerformed(ActionEvent actionEvent)  {
+             System.out.println(p.sac.sunetmotor);
             try {
                 if (sc1.rs.next()){                             //daca mai sunt inregistrari in tabelul scenariului
 
