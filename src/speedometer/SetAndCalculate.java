@@ -63,9 +63,9 @@ public class SetAndCalculate {
     public double pas2=1;                                       //pas pt decelerare vitezometru
     public double pas3=1;                                       //pas pt accelerare turometru
     public double pas4=3;                                       //pas pt decelerare turometru
-    public int i=0;
-    public boolean control=true;
-    public int decelerare=0;
+    public int i=0;                                             //cu i se modifica pasul de crestere a turatiei in cazul rularii unui scenariu
+    public boolean control=true;                                //determina daca exista sau nu controlul manual si duce la modificarea lui i
+    public double turatieminima=1000;                           //determina turatia minima pana la care se va cobora in functie de treapta de viteza;
 //-----------------------------------------------------------------------------------
 //-----------------------------------------------------------------------------------
      public void sunet(){
@@ -78,11 +78,11 @@ public class SetAndCalculate {
             apasatoprit=false;
         }
         if (pornit && (sunetmotor==false)){                     //Da drumu la sunetul de motor pornit idle
-            alarm.EngineNoise();
+            alarm.EngineSound();
             sunetmotor=true;
         }
         if (!pornit && sunetmotor){                             //Da drumu la sunetul de oprire a motorului
-            alarm.StopEngineNoise();
+            alarm.StopEngineSound();
             sunetmotor=false;
         }
         if ((turatie>6650)&&(sunetacceleratiemaxima==false)){    //Da drumu la sunetul de acceleratie maxima
@@ -98,7 +98,7 @@ public class SetAndCalculate {
                 alarm.StopThrottleStop();
                 alarm.StartThrottle();
                 sunetacceleratieoprita=true;
-                alarm.StopEngineNoise();
+                alarm.StopEngineSound();
                 sunetmotor=false;
                 sunetacceleratie=true;
                 frana=false;
@@ -121,22 +121,34 @@ public class SetAndCalculate {
             if (pornit==false)
                 viteza=0;
             else{
-                if ((prag1==1)&&(prag2==0)&&(prag3==0)&&(prag4==0)&&(prag5==0))
+                if ((prag1==1)&&(prag2==0)&&(prag3==0)&&(prag4==0)&&(prag5==0)){
                     viteza=2;
+                    turatieminima=2500;
+                }
                 else
-                    if((prag1==1)&&(prag2==1)&&(prag3==0)&&(prag4==0)&&(prag5==0))
+                    if((prag1==1)&&(prag2==1)&&(prag3==0)&&(prag4==0)&&(prag5==0)){
                         viteza=3;
+                        turatieminima=3000;
+                    }
                     else
-                        if((prag1==1)&&(prag2==1)&&(prag3==1)&&(prag4==0)&&(prag5==0))
+                        if((prag1==1)&&(prag2==1)&&(prag3==1)&&(prag4==0)&&(prag5==0)){
                             viteza=4;
+                            turatieminima=3500;
+                        }
                         else
-                            if((prag1==1)&&(prag2==1)&&(prag3==1)&&(prag4==1)&&(prag5==0))
+                            if((prag1==1)&&(prag2==1)&&(prag3==1)&&(prag4==1)&&(prag5==0)){
                                 viteza=5;
+                                turatieminima=4000;
+                            }
                             else
-                                if((prag1==1)&&(prag2==1)&&(prag3==1)&&(prag4==1)&&(prag5==1))
+                                if((prag1==1)&&(prag2==1)&&(prag3==1)&&(prag4==1)&&(prag5==1)){
                                 viteza=6;
-                                else
+                                turatieminima=4500;
+                                }
+                                else{
                                     viteza=1;
+                                    turatieminima=1000;
+                                }
                 }
         }
 //-----------------------------------------------------------------------------------
@@ -271,11 +283,11 @@ public class SetAndCalculate {
 //-----------------------------------------------------------------------------------
 //-----------------------------------------------------------------------------------
     public void setareZoneR(){
-        if ((zona4==1)&&((int)yr>=185+21-45)&&(yr!=210+21-45)){ //Scoate din zona4
+        if ((zona4==1)&&((int)yr>=161)&&((int)yr!=186)){ //Scoate din zona4
             zona4=0;
         }
         else
-            if ((zona3==1)&&((int)yr<=245-45)&&(yr!=210-45)) {  //Scoate in zona 3
+            if ((zona3==1)&&((int)yr<=200)&&((int)yr!=165)) {  //Scoate in zona 3
                 zona3=0;
             }
     }
@@ -316,7 +328,7 @@ public class SetAndCalculate {
 //-----------------------------------------------------------------------------------
 //-----------------------------------------------------------------------------------
      public void decelerareR(){
-        if (((turatie>1000)&&pornit)||(((int)turatie>0)&&(pornit==false))){
+        if (((turatie>turatieminima)&&pornit)||(((int)turatie>0)&&(pornit==false))){
             if ((zona3==1)&&(xr+pas4>20)){                      //Daca e in zona jos turometru
                 xr=xr+pas4;
                 yr=Math.sqrt(Math.abs(22050-Math.pow((xr-x0r),2)))+y0r;
@@ -329,10 +341,12 @@ public class SetAndCalculate {
                     setareZoneR();
                 }
                 else{
-                    xr=xr+pas4;
-                    yr=Math.sqrt(Math.abs(22050-Math.pow((xr-x0r),2)))+y0r;
-                    if (yr>220+21-45)
-                        zona3=1;
+                    if ((int)yr!=186){
+                        xr=xr+pas4;
+                        yr=Math.sqrt(Math.abs(22050-Math.pow((xr-x0r),2)))+y0r;
+                        if (yr>196)
+                            zona3=1;                        
+                    }
                 }
         }
     }
@@ -416,8 +430,8 @@ public class SetAndCalculate {
 //-----------------------------------------------------------------------------------
      public void calculCoordonateUR(){
          if (xr<270){                                           //Sa nu depaseasca valoarea maxima de turatii
-             if (yr==210+21-45)
-                 zona4=1;
+             if ((int)yr==186)
+                 zona4=1;           
              if ((zona3==1)&&(xr-pas3>20)){                     //Daca e in zona jos turometru
                 xr=xr-pas3;
                 yr=Math.sqrt(Math.abs(22050-Math.pow((xr-x0r),2)))+y0r;
@@ -428,13 +442,13 @@ public class SetAndCalculate {
                     yr=(-1)*Math.sqrt(Math.abs(22050-Math.pow((xr-x0r),2)))+y0r;
                 }
                 else{
-                    if ((yr<200+21)&&(xr+pas3>20)){
+                    if ((yr<221)&&(xr+pas3>20)){
                         xr=xr+pas3;
                         yr=(-1)*Math.sqrt(Math.abs(22050-Math.pow((xr-x0r),2)))+y0r;
                         zona4=1;
                     }
                     else
-                        yr=210+21-45;
+                        yr=186;
                 }
          }
      }
@@ -442,7 +456,7 @@ public class SetAndCalculate {
 //-----------------------------------------------------------------------------------
     public void calculCoordonateDR(){
         if (turatie>1000){                                      //Sa nu depaseasca valoarea minima de turatii
-            if (yr==210+21-45)
+            if (yr==186)
                 zona3=1;
             if (zona3==1){                                      //Daca e in zona jos turometru
                 xr=xr+4;
@@ -454,13 +468,13 @@ public class SetAndCalculate {
                     yr=(-1)*Math.sqrt(Math.abs(22050-Math.pow((xr-x0r),2)))+y0r;
                 }
                 else{
-                    if (yr>220+21){
+                    if (yr>241){
                         xr=xr+4;
                         yr=Math.sqrt(Math.abs(22050-Math.pow((xr-x0r),2)))+y0r;
                         zona3=1;
                     }
                     else
-                        yr=210+21-45;
+                        yr=186;
                 }
         }
      }

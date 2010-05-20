@@ -74,13 +74,12 @@ public class SpeedometerPanel extends javax.swing.JPanel  implements KeyListener
 //-----------------------------------------------------------------------------------
     ActionListener actionListener = new ActionListener() {
         
-        public void actionPerformed(ActionEvent actionEvent) {
-//            System.out.println(sac.pas3);
+        public void actionPerformed(ActionEvent actionEvent) {            
             if ((sac.crescutturatie==false)&&(sac.pornit==true)&&(sac.turatie<1000))
                 sac.cresteTuratieLaPornire();                   //duce acul turometrului la 1000 la pornire
             sac.setarePasi();                                   //seteaza pasii de accelerare/decelerare in functie de viteza
             if (control){
-                sac.calculViteza();                //calculeaza viteza
+                sac.calculViteza();                             //calculeaza viteza
                 t4.stop();
             }
             else
@@ -93,11 +92,9 @@ public class SpeedometerPanel extends javax.swing.JPanel  implements KeyListener
             sac.actualizareTuratie();                           //actualizeaza turatia in functie de praguri (pt schimbarea de viteze)
             if (sac.control)
                 sac.decelerareV();                              //metoda ce simuleaza decelerarea pentru acul vitezometrului
-            sac.decelerareF();
-//            if (((sac.crescutturatie)&&!sac.vitezaidle)||((sac.pornit==false)&&!sac.vitezaidle)||(sac.decelerare==1)){
-            if ((sac.crescutturatie)||(sac.pornit==false)||(sac.decelerare==1)){
-                if (sac.vitezaidle&&sac.pornit)
-                    sac.pas4=0.1;
+            else
+                sac.decelerareF();                              //metoda ce semnaleaza decelerarea pentru acul indicatorului de combustibil
+            if ((sac.crescutturatie)||(sac.pornit==false)){
                 sac.decelerareR();                              //metoda ce simuleaza decelerarea pentru acul turometrului
             }
             jLabel2.setText(Integer.toString((int)sac.v));
@@ -118,10 +115,9 @@ public class SpeedometerPanel extends javax.swing.JPanel  implements KeyListener
     Timer t=new Timer(10,actionListener);
 
     ActionListener RevmeteractionListener = new ActionListener() {
-
         public void actionPerformed(ActionEvent actionEvent) {
             if (sac.cresteviteza){
-                sac.calculCoordonateUR();
+                sac.calculCoordonateUR();                
                 sac.setareZoneR();
             }
         }
@@ -169,17 +165,6 @@ public class SpeedometerPanel extends javax.swing.JPanel  implements KeyListener
         g2.drawLine((int)sac.x0f-1, (int)sac.y0f+1, (int)sac.xf, (int)sac.yf);
         
         g.drawImage(buffer, 0, 0, this);                        //Deseneaza imaginea buffer
-//        System.out.print("  s=");System.out.print(sac.s);
-//        System.out.print("  x=");System.out.println(sac.x);         //Afisare coordonate varf ace
-//        System.out.print("  y=");System.out.println((int)sac.y);
-//        System.out.print(" turatie=");System.out.print(sac.turatie);
-//        System.out.print(" viteza=");System.out.print((int)sac.v);
-//        System.out.print("  xr=");System.out.print(sac.xr);
-//        System.out.print("  yr=");System.out.println((int)sac.yr);
-//        System.out.print("  z1=");System.out.print(sac.zona1);    //Afisare zone
-//        System.out.print("  z2=");System.out.println(sac.zona2);
-//        System.out.print("  z3=");System.out.print(sac.zona3);
-//        System.out.print("  z4=");System.out.println(sac.zona4);
     }
 //-----------------------------------------------------------------------------------
     public void keyTyped(KeyEvent e) {
@@ -200,10 +185,10 @@ public class SpeedometerPanel extends javax.swing.JPanel  implements KeyListener
                     sac.calculCoordonateDV();
                     sac.setareZoneV();
                 }
-                if (sac.turatie>1000){
-                    sac.calculCoordonateDR();
-                    sac.setareZoneR();
-                }
+//                if (sac.turatie>1000){
+//                    sac.calculCoordonateDR();
+//                    sac.setareZoneR();
+//                }
             }
             if (tasta==KeyEvent.VK_UP){                         //Daca se apasa sageata sus
                 sac.idle=false;

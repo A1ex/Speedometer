@@ -92,10 +92,10 @@ public class SensorAlarm {
     public void StartEngine(){
         EngineStart.play();
     }
-    public void EngineNoise(){        
+    public void EngineSound(){
         EngineSound.loop();
     }
-    public void StopEngineNoise(){
+    public void StopEngineSound(){
         EngineSound.stop();
     }
     public void BatteryAlarm(){

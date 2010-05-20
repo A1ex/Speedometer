@@ -25,24 +25,10 @@ import java.sql.Statement;
  */
 public class Scenario1 extends javax.swing.JFrame{
 
-    ResultSet rs;
 
     /** Creates new form Scenario1 */
     public Scenario1() throws IOException, SQLException {
         initComponents();
-        DBConnection();
-    }
-//-----------------------------------------------------------------------------------
-//-----------------------------------------------------------------------------------
-    public void DBConnection ()throws IOException, SQLException{//metoda ce face conexiunea la baza de date
-         try {
-            Class.forName("org.apache.derby.jdbc.ClientDriver");
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(SpeedometerPanel.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        Connection c = DriverManager.getConnection("jdbc:derby://localhost:1527/OBCDB");
-        Statement sql= c.createStatement();
-        rs=sql.executeQuery("SELECT * FROM Scenario1");
     }
 //-----------------------------------------------------------------------------------
 //-----------------------------------------------------------------------------------
