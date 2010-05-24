@@ -20,9 +20,9 @@ public class SetAndCalculate {
     public double y0=191;                                       //coordonata y baza ac vitezometru
     public double y0r=191;                                      //coordonata y baza ac turometru
     public double x0f=260;                                      //coordonata x baza ac indicator combustibil
-    public double y0f=215;                                      //coordonata x baza ac indicator combustibil
-    public double xf=225;                                       //coordonata y varf ac indicator combustibil
-    public double yf=235;                                       //coordonata y varf ac indicator combustibil
+    public double y0f=215;                                      //coordonata y baza ac indicator combustibil
+    public double xf=225;                                       //coordonata x varf ac indicator combustibil
+    public double yf=195;                                       //coordonata y varf ac indicator combustibil
     public double x=354;                                        //coordonata x varf ac vitezometru
     public double xr=64;                                        //coordonata x varf  ac turometru
     public double y=328+21-45;                                  //coordonata y varf ac vitezometru
@@ -153,8 +153,8 @@ public class SetAndCalculate {
         }
 //-----------------------------------------------------------------------------------
 //-----------------------------------------------------------------------------------
-    public void actualizareTuratie(){                               //Actualizam pragurile de turatie
-        if ((prag1==0)&&(turatie>5000)){                      //Ducem turatia la 2535 daca depaseste prima
+    public void actualizareTuratie(){                           //Actualizam pragurile de turatie
+        if ((prag1==0)&&(turatie>5000)){                        //Ducem turatia la 2535 daca depaseste prima
             prag1=1;                                            // oara 5000 (aplicare prag 1)
             xr=28;
             yr=147;
@@ -283,11 +283,11 @@ public class SetAndCalculate {
 //-----------------------------------------------------------------------------------
 //-----------------------------------------------------------------------------------
     public void setareZoneR(){
-        if ((zona4==1)&&((int)yr>=161)&&((int)yr!=186)){ //Scoate din zona4
+        if ((zona4==1)&&((int)yr>=161)&&((int)yr!=186)){        //Scoate din zona4
             zona4=0;
         }
         else
-            if ((zona3==1)&&((int)yr<=200)&&((int)yr!=165)) {  //Scoate in zona 3
+            if ((zona3==1)&&((int)yr<=200)&&((int)yr!=165)) {   //Scoate in zona 3
                 zona3=0;
             }
     }
@@ -483,11 +483,11 @@ public class SetAndCalculate {
      public void decelerareF(){
         if (yf<245){
             if (yf>=215){
-                xf=xf+0.005;
+                xf=xf+0.001;
                 yf=Math.sqrt(Math.abs(1600-Math.pow((xf-x0f),2)))+y0f;
             }
             else{
-                xf=xf-0.005;
+                xf=xf-0.001;
                 yf=(-1)*Math.sqrt(Math.abs(1600-Math.pow((xf-x0f),2)))+y0f;
                 if (yf>214.5)
                     yf=215.1;

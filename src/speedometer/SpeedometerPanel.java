@@ -74,10 +74,11 @@ public class SpeedometerPanel extends javax.swing.JPanel  implements KeyListener
 //-----------------------------------------------------------------------------------
     ActionListener actionListener = new ActionListener() {
         
-        public void actionPerformed(ActionEvent actionEvent) {            
+        public void actionPerformed(ActionEvent actionEvent) {
             if ((sac.crescutturatie==false)&&(sac.pornit==true)&&(sac.turatie<1000))
                 sac.cresteTuratieLaPornire();                   //duce acul turometrului la 1000 la pornire
             sac.setarePasi();                                   //seteaza pasii de accelerare/decelerare in functie de viteza
+            sac.setareZoneV();
             if (control){
                 sac.calculViteza();                             //calculeaza viteza
                 t4.stop();
@@ -163,7 +164,7 @@ public class SpeedometerPanel extends javax.swing.JPanel  implements KeyListener
         g2.drawLine((int)sac.x0f+1, (int)sac.y0f+1, (int)sac.xf, (int)sac.yf);
         g2.drawLine((int)sac.x0f+1, (int)sac.y0f-1, (int)sac.xf, (int)sac.yf);
         g2.drawLine((int)sac.x0f-1, (int)sac.y0f+1, (int)sac.xf, (int)sac.yf);
-        
+//        System.out.println(sac.y);
         g.drawImage(buffer, 0, 0, this);                        //Deseneaza imaginea buffer
     }
 //-----------------------------------------------------------------------------------
@@ -178,7 +179,7 @@ public class SpeedometerPanel extends javax.swing.JPanel  implements KeyListener
          if (control){
              if (tasta==KeyEvent.VK_DOWN){                      //Daca se apasa sageata jos
                 if (sac.v>0){
-                    if (sac.frana==false&&sunet){                        //Zgomot de franare
+                    if (sac.frana==false&&sunet){               //Zgomot de franare
                         sac.alarm.Brake();
                         sac.frana=true;
                     }
@@ -228,7 +229,7 @@ public class SpeedometerPanel extends javax.swing.JPanel  implements KeyListener
         usi = new javax.swing.JLabel();
         centura = new javax.swing.JLabel();
 
-        setPreferredSize(new java.awt.Dimension(616, 390));
+        setPreferredSize(new java.awt.Dimension(616, 451));
 
         jLabel2.setFont(new java.awt.Font("Times New Roman", 1, 24));
         jLabel2.setForeground(new java.awt.Color(255, 204, 0));
@@ -339,17 +340,17 @@ public class SpeedometerPanel extends javax.swing.JPanel  implements KeyListener
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jLayeredPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 616, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addComponent(jLayeredPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 618, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jLayeredPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 390, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addComponent(jLayeredPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 391, Short.MAX_VALUE)
         );
     }// </editor-fold>//GEN-END:initComponents
 
     private void Buton1ApasareStartStop(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Buton1ApasareStartStop
         if (control){
-            if (sac.pornit==false){                                 //Daca se porneste motorul
+            if (sac.pornit==false){                             //Daca se porneste motorul
                 sac.apasatpornit=true;
                 butonStart.setText("Stop Engine");
                 sac.pornit=true;
@@ -374,7 +375,7 @@ public class SpeedometerPanel extends javax.swing.JPanel  implements KeyListener
         } else{
             baterie.setIcon(baterierosie);
             sac.alarmaBaterie=true;
-            sac.alarm.BatteryAlarm();
+            sac.alarm.StartBatteryAlarm();
         }
 }//GEN-LAST:event_baterieAlarmaBaterie
 
@@ -425,7 +426,7 @@ public class SpeedometerPanel extends javax.swing.JPanel  implements KeyListener
         } else{
             centura.setIcon(centurarosie);
             sac.alarmaCentura=true;
-            sac.alarm.SeatbeltAlarm();
+            sac.alarm.StartSeatbeltAlarm();
         }
 }//GEN-LAST:event_centuraAlarmaCentura
 

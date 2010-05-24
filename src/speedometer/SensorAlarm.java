@@ -98,8 +98,11 @@ public class SensorAlarm {
     public void StopEngineSound(){
         EngineSound.stop();
     }
-    public void BatteryAlarm(){
-        BatteryAlarm.play();
+    public void StartBatteryAlarm(){
+        BatteryAlarm.loop();
+    }
+    public void StopBatteryAlarm(){
+        BatteryAlarm.stop();
     }
     public void StartPumpAlarm(){
         FuelAlarm.loop();
@@ -119,8 +122,11 @@ public class SensorAlarm {
     public void StopDoorsAlarm(){
         DoorsAlarm.stop();
     }
-    public void SeatbeltAlarm(){
-        SeatbeltAlarm.play();
+    public void StartSeatbeltAlarm(){
+        SeatbeltAlarm.loop();
+    }
+    public void StopSeatbeltAlarm(){
+        SeatbeltAlarm.stop();
     }
     public void StartThrottle(){
         Throttle.play();
