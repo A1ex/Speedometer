@@ -31,6 +31,8 @@ public class AppWindow extends javax.swing.JFrame  {
     public boolean apasatsm6=false;                             //determina daca s-a apasat optiunea de meniu  "Small test Scenario 6"
     public boolean apasatsm7=false;                             //determina daca s-a apasat optiunea de meniu  "Small test Scenario 7"
     public boolean apasatsm8=false;                             //determina daca s-a apasat optiunea de meniu  "Small test Scenario 8"
+    public boolean apasatsm9=false;                             //determina daca s-a apasat optiunea de meniu  "Small test Scenario 9"
+    public boolean apasatsm10=false;                             //determina daca s-a apasat optiunea de meniu  "Small test Scenario 10"
     public boolean apasatmute=false;                            //determina daca s-a apasat optiunea de meniu "Mute Engine"
     public boolean apasatunmute=false;                          //determina daca s-a apasat optiunea de meniu "Unmute Engine"
     public boolean apasatstart=false;                           //determina daca s-a apasat optiunea de meniu "Start"
@@ -63,6 +65,10 @@ public class AppWindow extends javax.swing.JFrame  {
         sm4 = new javax.swing.JMenuItem();
         sm5 = new javax.swing.JMenuItem();
         sm6 = new javax.swing.JMenuItem();
+        sm7 = new javax.swing.JMenuItem();
+        sm8 = new javax.swing.JMenuItem();
+        sm9 = new javax.swing.JMenuItem();
+        sm10 = new javax.swing.JMenuItem();
         Start = new javax.swing.JMenu();
         Help = new javax.swing.JMenu();
 
@@ -194,6 +200,46 @@ public class AppWindow extends javax.swing.JFrame  {
             }
         });
         Scenario.add(sm6);
+
+        sm7.setBackground(new java.awt.Color(0, 0, 0));
+        sm7.setForeground(new java.awt.Color(204, 204, 204));
+        sm7.setText("Small test Scenario 7");
+        sm7.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                IncarcaSM7(evt);
+            }
+        });
+        Scenario.add(sm7);
+
+        sm8.setBackground(new java.awt.Color(0, 0, 0));
+        sm8.setForeground(new java.awt.Color(204, 204, 204));
+        sm8.setText("Small test Scenario 8");
+        sm8.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                IncarcaSM8(evt);
+            }
+        });
+        Scenario.add(sm8);
+
+        sm9.setBackground(new java.awt.Color(0, 0, 0));
+        sm9.setForeground(new java.awt.Color(204, 204, 204));
+        sm9.setText("Small test Scenario 9");
+        sm9.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                IncarcaSM9(evt);
+            }
+        });
+        Scenario.add(sm9);
+
+        sm10.setBackground(new java.awt.Color(0, 0, 0));
+        sm10.setForeground(new java.awt.Color(204, 204, 204));
+        sm10.setText("Small test Scenario 10");
+        sm10.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                IncarcaSM10(evt);
+            }
+        });
+        Scenario.add(sm10);
 
         jMenuBar1.add(Scenario);
 
@@ -354,6 +400,46 @@ public class AppWindow extends javax.swing.JFrame  {
         }
     }//GEN-LAST:event_IncarcaSM6
 
+    private void IncarcaSM7(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_IncarcaSM7
+        // TODO add your handling code here:
+        if (apasatcontrol){
+            if (!incarcatscenariutest&&!incarcatscenariu){
+                apasatsm7=true;
+                incarcatscenariutest=true;
+            }
+        }
+    }//GEN-LAST:event_IncarcaSM7
+
+    private void IncarcaSM8(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_IncarcaSM8
+        // TODO add your handling code here:
+         if (apasatcontrol){
+            if (!incarcatscenariutest&&!incarcatscenariu){
+                apasatsm8=true;
+                incarcatscenariutest=true;
+            }
+        }
+    }//GEN-LAST:event_IncarcaSM8
+
+    private void IncarcaSM9(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_IncarcaSM9
+        // TODO add your handling code here:
+        if (apasatcontrol){
+            if (!incarcatscenariutest&&!incarcatscenariu){
+                apasatsm9=true;
+                incarcatscenariutest=true;
+            }
+        }
+    }//GEN-LAST:event_IncarcaSM9
+
+    private void IncarcaSM10(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_IncarcaSM10
+        // TODO add your handling code here:
+         if (apasatcontrol){
+            if (!incarcatscenariutest&&!incarcatscenariu){
+                apasatsm10=true;
+                incarcatscenariutest=true;
+            }
+        }
+    }//GEN-LAST:event_IncarcaSM10
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenu Help;
@@ -366,11 +452,15 @@ public class AppWindow extends javax.swing.JFrame  {
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JPopupMenu.Separator jSeparator1;
     public javax.swing.JMenuItem sm1;
+    public javax.swing.JMenuItem sm10;
     public javax.swing.JMenuItem sm2;
     public javax.swing.JMenuItem sm3;
     public javax.swing.JMenuItem sm4;
     public javax.swing.JMenuItem sm5;
     public javax.swing.JMenuItem sm6;
+    public javax.swing.JMenuItem sm7;
+    public javax.swing.JMenuItem sm8;
+    public javax.swing.JMenuItem sm9;
     private javax.swing.JMenuItem swich;
     // End of variables declaration//GEN-END:variables
 
