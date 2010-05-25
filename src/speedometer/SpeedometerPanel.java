@@ -294,7 +294,7 @@ public class SpeedometerPanel extends javax.swing.JPanel  implements KeyListener
         baterie.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/battery_gray.jpg"))); // NOI18N
         baterie.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                baterieAlarmaBaterie(evt);
+                AlarmaBaterie(evt);
             }
         });
         baterie.setBounds(200, 340, 40, 39);
@@ -303,7 +303,7 @@ public class SpeedometerPanel extends javax.swing.JPanel  implements KeyListener
         pompa.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/pump_gray.jpg"))); // NOI18N
         pompa.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                pompaAlarmaPompa(evt);
+                AlarmaPompa(evt);
             }
         });
         pompa.setBounds(250, 340, 40, 40);
@@ -321,7 +321,7 @@ public class SpeedometerPanel extends javax.swing.JPanel  implements KeyListener
         usi.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/doors_gray.jpg"))); // NOI18N
         usi.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                usiAlarmaUsi(evt);
+                AlarmaUsi(evt);
             }
         });
         usi.setBounds(350, 340, 40, 39);
@@ -330,7 +330,7 @@ public class SpeedometerPanel extends javax.swing.JPanel  implements KeyListener
         centura.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/seatbelt_gray.jpg"))); // NOI18N
         centura.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                centuraAlarmaCentura(evt);
+                AlarmaCentura(evt);
             }
         });
         centura.setBounds(400, 340, 40, 40);
@@ -340,11 +340,11 @@ public class SpeedometerPanel extends javax.swing.JPanel  implements KeyListener
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jLayeredPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 618, Short.MAX_VALUE)
+            .addComponent(jLayeredPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 616, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jLayeredPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 391, Short.MAX_VALUE)
+            .addComponent(jLayeredPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 399, Short.MAX_VALUE)
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -367,19 +367,20 @@ public class SpeedometerPanel extends javax.swing.JPanel  implements KeyListener
         }
 }//GEN-LAST:event_Buton1ApasareStartStop
                                                                 //Metode pt activarea atentionarilor
-    private void baterieAlarmaBaterie(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_baterieAlarmaBaterie
+    private void AlarmaBaterie(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_AlarmaBaterie
         // TODO add your handling code here:
         if (sac.alarmaBaterie){
             baterie.setIcon(bateriegri);
             sac.alarmaBaterie=false;
+            sac.alarm.StopBatteryAlarm();
         } else{
             baterie.setIcon(baterierosie);
             sac.alarmaBaterie=true;
             sac.alarm.StartBatteryAlarm();
         }
-}//GEN-LAST:event_baterieAlarmaBaterie
+}//GEN-LAST:event_AlarmaBaterie
 
-    private void pompaAlarmaPompa(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_pompaAlarmaPompa
+    private void AlarmaPompa(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_AlarmaPompa
         // TODO add your handling code here:
         if (sac.alarmaPompa){
             pompa.setIcon(pompagri);
@@ -390,7 +391,7 @@ public class SpeedometerPanel extends javax.swing.JPanel  implements KeyListener
             sac.alarmaPompa=true;
             sac.alarm.StartPumpAlarm();
         }
-}//GEN-LAST:event_pompaAlarmaPompa
+}//GEN-LAST:event_AlarmaPompa
 
     private void AlarmaFar(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_AlarmaFar
         // TODO add your handling code here:
@@ -405,7 +406,7 @@ public class SpeedometerPanel extends javax.swing.JPanel  implements KeyListener
         }
 }//GEN-LAST:event_AlarmaFar
 
-    private void usiAlarmaUsi(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_usiAlarmaUsi
+    private void AlarmaUsi(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_AlarmaUsi
         // TODO add your handling code here:
         if (sac.alarmaUsi){
             usi.setIcon(usigri);
@@ -416,19 +417,20 @@ public class SpeedometerPanel extends javax.swing.JPanel  implements KeyListener
             sac.alarmaUsi=true;
             sac.alarm.StartDoorsAlarm();
         }
-}//GEN-LAST:event_usiAlarmaUsi
+}//GEN-LAST:event_AlarmaUsi
 
-    private void centuraAlarmaCentura(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_centuraAlarmaCentura
+    private void AlarmaCentura(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_AlarmaCentura
         // TODO add your handling code here:
         if (sac.alarmaCentura){
             centura.setIcon(centuragri);
             sac.alarmaCentura=false;
+            sac.alarm.StopSeatbeltAlarm();
         } else{
             centura.setIcon(centurarosie);
             sac.alarmaCentura=true;
             sac.alarm.StartSeatbeltAlarm();
         }
-}//GEN-LAST:event_centuraAlarmaCentura
+}//GEN-LAST:event_AlarmaCentura
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     public javax.swing.JLabel Buton1;

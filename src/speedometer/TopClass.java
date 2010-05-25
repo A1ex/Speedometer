@@ -185,6 +185,24 @@ public class TopClass {
              aw.incarcatscenariutest=true;
              aw.apasatsm3=false;
          }
+        if (aw.apasatsm4){
+             query="SELECT * FROM sm4";
+             DBConnection (query);
+             aw.incarcatscenariutest=true;
+             aw.apasatsm4=false;
+         }
+        if (aw.apasatsm5){
+             query="SELECT * FROM sm5";
+             DBConnection (query);
+             aw.incarcatscenariutest=true;
+             aw.apasatsm5=false;
+         }
+        if (aw.apasatsm6){
+             query="SELECT * FROM sm6";
+             DBConnection (query);
+             aw.incarcatscenariutest=true;
+             aw.apasatsm6=false;
+         }
         if (!sc1.isVisible()&&!sc2.isVisible()){                                  //daca se inchide fereastra scenariului
             aw.incarcatscenariu=false;
         }
