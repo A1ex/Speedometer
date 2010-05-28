@@ -66,6 +66,7 @@ public class SetAndCalculate {
     public int i=0;                                             //cu i se modifica pasul de crestere a turatiei in cazul rularii unui scenariu
     public boolean control=true;                                //determina daca exista sau nu controlul manual si duce la modificarea lui i
     public double turatieminima=1000;                           //determina turatia minima pana la care se va cobora in functie de treapta de viteza;
+    public boolean turatieidle=false;
 //-----------------------------------------------------------------------------------
 //-----------------------------------------------------------------------------------
      public void sunet(){
@@ -93,7 +94,7 @@ public class SetAndCalculate {
             alarm.StopMaxThrottle();
             sunetacceleratiemaxima=false;
         }
-        if (cresteturatie&&crescutturatie){
+        if (cresteviteza&&crescutturatie){
             if ((sunetacceleratie==false)&&pornit){
                 alarm.StopThrottleStop();
                 alarm.StartThrottle();
@@ -329,6 +330,7 @@ public class SetAndCalculate {
 //-----------------------------------------------------------------------------------
      public void decelerareR(){
         if (((turatie>turatieminima)&&pornit)||(((int)turatie>0)&&(pornit==false))){
+            turatieidle=false;
             if ((zona3==1)&&(xr+pas4>20)){                      //Daca e in zona jos turometru
                 xr=xr+pas4;
                 yr=Math.sqrt(Math.abs(22050-Math.pow((xr-x0r),2)))+y0r;
@@ -348,6 +350,9 @@ public class SetAndCalculate {
                             zona3=1;                        
                     }
                 }
+        }
+        if ((turatie<=turatieminima)&&crescutturatie){
+            turatieidle=true;
         }
     }
 //-----------------------------------------------------------------------------------
@@ -533,7 +538,8 @@ public class SetAndCalculate {
     }
 //-----------------------------------------------------------------------------------
 //-----------------------------------------------------------------------------------
-   
+    public void idleTuratie(){
+        
 
-
+    }
 }

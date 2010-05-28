@@ -85,6 +85,11 @@ public class SpeedometerPanel extends javax.swing.JPanel  implements KeyListener
             }
             else
                 t4.start();
+            if (sac.turatieidle&&control){                      //face acul turometrului sa tremure la idle atunci cand userul are control
+                sac.pas3=1;
+                sac.calculCoordonateUR();
+                sac.setareZoneR();
+            }
             sac.calculTuratie();                                //calculeaza turatia
             if (sunet)                                          //daca nu e selectat mute sa se aplice metoda de sunet
                 sac.sunet();
@@ -121,6 +126,12 @@ public class SpeedometerPanel extends javax.swing.JPanel  implements KeyListener
                 sac.calculCoordonateUR();                
                 sac.setareZoneR();
             }
+            else
+                if (sac.turatieidle){
+                    sac.pas3=1;
+                    sac.calculCoordonateUR();
+                    sac.setareZoneR();
+                }
         }
     };
        Timer t4=new Timer(10,RevmeteractionListener);
@@ -186,15 +197,11 @@ public class SpeedometerPanel extends javax.swing.JPanel  implements KeyListener
                     sac.calculCoordonateDV();
                     sac.setareZoneV();
                 }
-//                if (sac.turatie>1000){
-//                    sac.calculCoordonateDR();
-//                    sac.setareZoneR();
-//                }
             }
             if (tasta==KeyEvent.VK_UP){                         //Daca se apasa sageata sus
                 sac.idle=false;
                 if (sac.pornit&&(sac.crescutturatie)){
-                        if (sac.v<140){
+                    if (sac.v<140){
                         sac.calculCoordonateUV();
                         sac.setareZoneV();
                     }
@@ -369,66 +376,76 @@ public class SpeedometerPanel extends javax.swing.JPanel  implements KeyListener
                                                                 //Metode pt activarea atentionarilor
     private void AlarmaBaterie(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_AlarmaBaterie
         // TODO add your handling code here:
-        if (sac.alarmaBaterie){
-            baterie.setIcon(bateriegri);
-            sac.alarmaBaterie=false;
-            sac.alarm.StopBatteryAlarm();
-        } else{
-            baterie.setIcon(baterierosie);
-            sac.alarmaBaterie=true;
-            sac.alarm.StartBatteryAlarm();
+        if (control){
+            if (sac.alarmaBaterie){
+                baterie.setIcon(bateriegri);
+                sac.alarmaBaterie=false;
+                sac.alarm.StopBatteryAlarm();
+            } else{
+                baterie.setIcon(baterierosie);
+                sac.alarmaBaterie=true;
+                sac.alarm.StartBatteryAlarm();
+            }
         }
 }//GEN-LAST:event_AlarmaBaterie
 
     private void AlarmaPompa(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_AlarmaPompa
         // TODO add your handling code here:
-        if (sac.alarmaPompa){
-            pompa.setIcon(pompagri);
-            sac.alarmaPompa=false;
-            sac.alarm.StopPumpAlarm();
-        } else{
-            pompa.setIcon(pomparosie);
-            sac.alarmaPompa=true;
-            sac.alarm.StartPumpAlarm();
+        if (control){
+            if (sac.alarmaPompa){
+                pompa.setIcon(pompagri);
+                sac.alarmaPompa=false;
+                sac.alarm.StopPumpAlarm();
+            } else{
+                pompa.setIcon(pomparosie);
+                sac.alarmaPompa=true;
+                sac.alarm.StartPumpAlarm();
+            }
         }
 }//GEN-LAST:event_AlarmaPompa
 
     private void AlarmaFar(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_AlarmaFar
         // TODO add your handling code here:
-        if (sac.alarmaFar){
-            far.setIcon(fargri);
-            sac.alarmaFar=false;
-            sac.alarm.StopLightsAlarm();
-        } else{
-            far.setIcon(farrosie);
-            sac.alarmaFar=true;
-            sac.alarm.StartLightsAlarm();
+        if (control){
+            if (sac.alarmaFar){
+                far.setIcon(fargri);
+                sac.alarmaFar=false;
+                sac.alarm.StopLightsAlarm();
+            } else{
+                far.setIcon(farrosie);
+                sac.alarmaFar=true;
+                sac.alarm.StartLightsAlarm();
+            }
         }
 }//GEN-LAST:event_AlarmaFar
 
     private void AlarmaUsi(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_AlarmaUsi
         // TODO add your handling code here:
-        if (sac.alarmaUsi){
-            usi.setIcon(usigri);
-            sac.alarmaUsi=false;
-            sac.alarm.StopDoorsAlarm();
-        } else{
-            usi.setIcon(usirosie);
-            sac.alarmaUsi=true;
-            sac.alarm.StartDoorsAlarm();
+        if (control){
+            if (sac.alarmaUsi){
+                usi.setIcon(usigri);
+                sac.alarmaUsi=false;
+                sac.alarm.StopDoorsAlarm();
+            } else{
+                usi.setIcon(usirosie);
+                sac.alarmaUsi=true;
+                sac.alarm.StartDoorsAlarm();
+            }
         }
 }//GEN-LAST:event_AlarmaUsi
 
     private void AlarmaCentura(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_AlarmaCentura
         // TODO add your handling code here:
-        if (sac.alarmaCentura){
-            centura.setIcon(centuragri);
-            sac.alarmaCentura=false;
-            sac.alarm.StopSeatbeltAlarm();
-        } else{
-            centura.setIcon(centurarosie);
-            sac.alarmaCentura=true;
-            sac.alarm.StartSeatbeltAlarm();
+        if (control){
+            if (sac.alarmaCentura){
+                centura.setIcon(centuragri);
+                sac.alarmaCentura=false;
+                sac.alarm.StopSeatbeltAlarm();
+            } else{
+                centura.setIcon(centurarosie);
+                sac.alarmaCentura=true;
+                sac.alarm.StartSeatbeltAlarm();
+            }
         }
 }//GEN-LAST:event_AlarmaCentura
 

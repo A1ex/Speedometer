@@ -26,7 +26,7 @@
     </DimensionLayout>
     <DimensionLayout dim="1">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Component id="jLayeredPane1" alignment="0" pref="399" max="32767" attributes="0"/>
+          <Component id="jLayeredPane1" alignment="0" pref="451" max="32767" attributes="0"/>
       </Group>
     </DimensionLayout>
   </Layout>
