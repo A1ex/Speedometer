@@ -4,7 +4,7 @@
  */
 
 /*
- * SpeedometerPanel.java
+ * speedometerPanel.java
  *
  * Created on May 13, 2010, 11:33:12 PM
  */
@@ -25,7 +25,7 @@ import javax.imageio.ImageIO;
  *
  * @author Alexandru Popescu
  */
-public class SpeedometerPanel extends javax.swing.JPanel  implements KeyListener {
+public class speedometerPanel extends javax.swing.JPanel  implements KeyListener {
 
     Icon butonverde;                                            //imagine buton
     Icon butonrosu;                                             //imagine buton
@@ -46,16 +46,16 @@ public class SpeedometerPanel extends javax.swing.JPanel  implements KeyListener
     public boolean sunet=true;                                  //determina daca se aude sunetul motorului
     Rectangle area;                                             //folosit la crearea imaginii folosita la buffering
     Image m;                                                    //in ea se retine imaginea de background
-    SetAndCalculate sac=new SetAndCalculate();                  //instanta a clasei SetAndCalculate
+    setAndCalculate sac=new setAndCalculate();                  //instanta a clasei setAndCalculate
 
-    public SpeedometerPanel()throws IOException, SQLException  {//Constructor       
+    public speedometerPanel()throws IOException, SQLException  {//Constructor
         initComponents();
         addKeyListener(this);                                   //adauga keylistener la panou
         t.start();                                              //porneste timerul
         try {                                                   //copiaza in m imaginea de background
             m =ImageIO.read(new File("src/images/Speedometer.jpg"));
         } catch (IOException ex) {
-            Logger.getLogger(SpeedometerPanel.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(speedometerPanel.class.getName()).log(Level.SEVERE, null, ex);
         }
         butonverde = new ImageIcon("src/images/buttongreen.jpg");
         butonrosu = new ImageIcon("src/images/buttonred.jpg");
@@ -112,7 +112,7 @@ public class SpeedometerPanel extends javax.swing.JPanel  implements KeyListener
             if (sac.crescutturatie){                            //daca motorul a fost pornit si turatia a ajuns
                 try {Thread.sleep(100);}                        //la 1000, se introduce o intarziere de 100ms
                 catch (InterruptedException ex) {
-                    Logger.getLogger(SpeedometerPanel.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(speedometerPanel.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
             repaint();
@@ -191,7 +191,7 @@ public class SpeedometerPanel extends javax.swing.JPanel  implements KeyListener
              if (tasta==KeyEvent.VK_DOWN){                      //Daca se apasa sageata jos
                 if (sac.v>0){
                     if (sac.frana==false&&sunet){               //Zgomot de franare
-                        sac.alarm.Brake();
+                        sac.alarm.brake();
                         sac.frana=true;
                     }
                     sac.calculCoordonateDV();
@@ -351,7 +351,7 @@ public class SpeedometerPanel extends javax.swing.JPanel  implements KeyListener
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jLayeredPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 399, Short.MAX_VALUE)
+            .addComponent(jLayeredPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 401, Short.MAX_VALUE)
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -380,11 +380,11 @@ public class SpeedometerPanel extends javax.swing.JPanel  implements KeyListener
             if (sac.alarmaBaterie){
                 baterie.setIcon(bateriegri);
                 sac.alarmaBaterie=false;
-                sac.alarm.StopBatteryAlarm();
+                sac.alarm.stopBatteryAlarm();
             } else{
                 baterie.setIcon(baterierosie);
                 sac.alarmaBaterie=true;
-                sac.alarm.StartBatteryAlarm();
+                sac.alarm.startBatteryAlarm();
             }
         }
 }//GEN-LAST:event_AlarmaBaterie
@@ -395,11 +395,11 @@ public class SpeedometerPanel extends javax.swing.JPanel  implements KeyListener
             if (sac.alarmaPompa){
                 pompa.setIcon(pompagri);
                 sac.alarmaPompa=false;
-                sac.alarm.StopPumpAlarm();
+                sac.alarm.stopPumpAlarm();
             } else{
                 pompa.setIcon(pomparosie);
                 sac.alarmaPompa=true;
-                sac.alarm.StartPumpAlarm();
+                sac.alarm.startPumpAlarm();
             }
         }
 }//GEN-LAST:event_AlarmaPompa
@@ -410,11 +410,11 @@ public class SpeedometerPanel extends javax.swing.JPanel  implements KeyListener
             if (sac.alarmaFar){
                 far.setIcon(fargri);
                 sac.alarmaFar=false;
-                sac.alarm.StopLightsAlarm();
+                sac.alarm.stopLightsAlarm();
             } else{
                 far.setIcon(farrosie);
                 sac.alarmaFar=true;
-                sac.alarm.StartLightsAlarm();
+                sac.alarm.startLightsAlarm();
             }
         }
 }//GEN-LAST:event_AlarmaFar
@@ -425,11 +425,11 @@ public class SpeedometerPanel extends javax.swing.JPanel  implements KeyListener
             if (sac.alarmaUsi){
                 usi.setIcon(usigri);
                 sac.alarmaUsi=false;
-                sac.alarm.StopDoorsAlarm();
+                sac.alarm.stopDoorsAlarm();
             } else{
                 usi.setIcon(usirosie);
                 sac.alarmaUsi=true;
-                sac.alarm.StartDoorsAlarm();
+                sac.alarm.startDoorsAlarm();
             }
         }
 }//GEN-LAST:event_AlarmaUsi
@@ -440,11 +440,11 @@ public class SpeedometerPanel extends javax.swing.JPanel  implements KeyListener
             if (sac.alarmaCentura){
                 centura.setIcon(centuragri);
                 sac.alarmaCentura=false;
-                sac.alarm.StopSeatbeltAlarm();
+                sac.alarm.stopSeatbeltAlarm();
             } else{
                 centura.setIcon(centurarosie);
                 sac.alarmaCentura=true;
-                sac.alarm.StartSeatbeltAlarm();
+                sac.alarm.startSeatbeltAlarm();
             }
         }
 }//GEN-LAST:event_AlarmaCentura

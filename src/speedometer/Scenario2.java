@@ -4,7 +4,7 @@
  */
 
 /*
- * Scenario2.java
+ * scenario2.java
  *
  * Created on May 21, 2010, 6:04:36 PM
  */
@@ -17,12 +17,12 @@ import javax.swing.JScrollBar;
  *
  * @author UserXP
  */
-public class Scenario2 extends javax.swing.JFrame {
+public class scenario2 extends javax.swing.JFrame {
     
     JScrollBar vbar;
 
-    /** Creates new form Scenario2 */
-    public Scenario2() {
+    /** Creates new form scenario2 */
+    public scenario2() {
         initComponents();
         vbar = scroll2.getVerticalScrollBar();
     }
@@ -69,7 +69,7 @@ public class Scenario2 extends javax.swing.JFrame {
         jLabel5.setPreferredSize(new java.awt.Dimension(630, 25));
 
         jLabel10.setBackground(new java.awt.Color(0, 0, 0));
-        jLabel10.setFont(new java.awt.Font("Tahoma", 1, 20)); // NOI18N
+        jLabel10.setFont(new java.awt.Font("Tahoma", 1, 20));
         jLabel10.setForeground(java.awt.Color.yellow);
         jLabel10.setText("1.   Porneste motorul si asteapta 10 secunde ;");
         jLabel10.setPreferredSize(new java.awt.Dimension(630, 25));
@@ -87,7 +87,7 @@ public class Scenario2 extends javax.swing.JFrame {
         jLabel6.setPreferredSize(new java.awt.Dimension(630, 25));
 
         jLabel3.setBackground(new java.awt.Color(0, 0, 0));
-        jLabel3.setFont(new java.awt.Font("Tahoma", 1, 20)); // NOI18N
+        jLabel3.setFont(new java.awt.Font("Tahoma", 1, 20));
         jLabel3.setForeground(java.awt.Color.yellow);
         jLabel3.setText("8.   Decelereaza pana la viteza de 0M/h;");
         jLabel3.setPreferredSize(new java.awt.Dimension(630, 25));
@@ -99,7 +99,7 @@ public class Scenario2 extends javax.swing.JFrame {
         jLabel4.setPreferredSize(new java.awt.Dimension(630, 25));
 
         jLabel8.setBackground(new java.awt.Color(0, 0, 0));
-        jLabel8.setFont(new java.awt.Font("Tahoma", 1, 20)); // NOI18N
+        jLabel8.setFont(new java.awt.Font("Tahoma", 1, 20));
         jLabel8.setForeground(java.awt.Color.yellow);
         jLabel8.setText("10. Opreste motorul;");
         jLabel8.setPreferredSize(new java.awt.Dimension(630, 25));
@@ -117,13 +117,13 @@ public class Scenario2 extends javax.swing.JFrame {
         jLabel9.setPreferredSize(new java.awt.Dimension(630, 25));
 
         jLabel22.setBackground(new java.awt.Color(0, 0, 0));
-        jLabel22.setFont(new java.awt.Font("Tahoma", 1, 20)); // NOI18N
+        jLabel22.setFont(new java.awt.Font("Tahoma", 1, 20));
         jLabel22.setForeground(java.awt.Color.yellow);
         jLabel22.setText("      (semnalul va ramane activ 10 secunde apoi va fi dezactivat) ;");
         jLabel22.setPreferredSize(new java.awt.Dimension(630, 25));
 
         jLabel7.setBackground(new java.awt.Color(0, 0, 0));
-        jLabel7.setFont(new java.awt.Font("Tahoma", 1, 20)); // NOI18N
+        jLabel7.setFont(new java.awt.Font("Tahoma", 1, 20));
         jLabel7.setForeground(java.awt.Color.yellow);
         jLabel7.setText("6.   Declanseaza semnalul de avertizare pentru nivel scazut al bateriei ;");
         jLabel7.setPreferredSize(new java.awt.Dimension(630, 25));

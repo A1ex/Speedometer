@@ -4,7 +4,7 @@
  */
 
 /*
- * AppWindow.java
+ * appWindow.java
  *
  * Created on May 14, 2010, 11:30:06 AM
  */
@@ -19,7 +19,7 @@ import java.sql.SQLException;
  *
  * @author Alexandru Popescu
  */
-public class AppWindow extends javax.swing.JFrame  {
+public class appWindow extends javax.swing.JFrame  {
    
     public boolean apasatsc1=false;                             //determina daca s-a apasat optiunea de meniu "Load Scenario 1"
     public boolean apasatsc2=false;                             //determina daca s-a apasat optiunea de meniu "Load Scenario 2"
@@ -41,7 +41,7 @@ public class AppWindow extends javax.swing.JFrame  {
     public boolean incarcatscenariutest=false;
 //-----------------------------------------------------------------------------------
 //-----------------------------------------------------------------------------------
-    public AppWindow() throws IOException, SQLException{        //Constructor
+    public appWindow() throws IOException, SQLException{        //Constructor
         initComponents();
     }
 //-----------------------------------------------------------------------------------

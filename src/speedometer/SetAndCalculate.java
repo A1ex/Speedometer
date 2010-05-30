@@ -12,9 +12,9 @@ import java.util.logging.Logger;
  *
  * @author Alexandru Popescu
  */
-public class SetAndCalculate {
+public class setAndCalculate {
     
-    SensorAlarm alarm = new SensorAlarm();
+    sensorAlarm alarm = new sensorAlarm();
     public double x0=450;                                       //coordonata x baza ac vitezometru
     public double x0r=170;                                      //coordonata x baza ac turometru
     public double y0=191;                                       //coordonata y baza ac vitezometru
@@ -71,35 +71,35 @@ public class SetAndCalculate {
 //-----------------------------------------------------------------------------------
      public void sunet(){
         if (apasatpornit){                                      //Da drumu la sunetu de start de motor 
-            alarm.StartEngine();
+            alarm.startEngine();
             apasatpornit=false;
         }
         if (apasatoprit){                                        //Da drumu la sunetu de oprire motor
-            alarm.ThrottleStop();
+            alarm.throttleStop();
             apasatoprit=false;
         }
         if (pornit && (sunetmotor==false)){                     //Da drumu la sunetul de motor pornit idle
-            alarm.EngineSound();
+            alarm.engineSound();
             sunetmotor=true;
         }
         if (!pornit && sunetmotor){                             //Da drumu la sunetul de oprire a motorului
-            alarm.StopEngineSound();
+            alarm.stopEngineSound();
             sunetmotor=false;
         }
         if ((turatie>6650)&&(sunetacceleratiemaxima==false)){    //Da drumu la sunetul de acceleratie maxima
-            alarm.StartMaxThrottle();
+            alarm.startMaxThrottle();
             sunetacceleratiemaxima=true;
         }
         if ((turatie<6650)&&sunetacceleratiemaxima){            //Opreste sunetul de acceleratie maxima
-            alarm.StopMaxThrottle();
+            alarm.stopMaxThrottle();
             sunetacceleratiemaxima=false;
         }
         if (cresteviteza&&crescutturatie){
             if ((sunetacceleratie==false)&&pornit){
-                alarm.StopThrottleStop();
-                alarm.StartThrottle();
+                alarm.stopThrottleStop();
+                alarm.startThrottle();
                 sunetacceleratieoprita=true;
-                alarm.StopEngineSound();
+                alarm.stopEngineSound();
                 sunetmotor=false;
                 sunetacceleratie=true;
                 frana=false;
@@ -107,9 +107,9 @@ public class SetAndCalculate {
         }
         else{
             if (pornit){
-                alarm.StopThrottle();
+                alarm.stopThrottle();
                 if (sunetacceleratieoprita && (turatie<6650)){
-                    alarm.ThrottleStop();
+                    alarm.throttleStop();
                     sunetacceleratieoprita=false;
                 }
                 sunetacceleratie=false;
@@ -162,7 +162,7 @@ public class SetAndCalculate {
             zona3=0;
             zona4=1;
             turatie=2535;
-            alarm.StopThrottle();
+            alarm.stopThrottle();
             sunetacceleratie=false;
         }
         if ((prag2==0)&&(turatie>5500)){                        //Ducem turatia la 2535 daca depaseste prima
@@ -172,7 +172,7 @@ public class SetAndCalculate {
             zona3=0;
             zona4=1;
             turatie=2535;
-            alarm.StopThrottle();
+            alarm.stopThrottle();
             sunetacceleratie=false;
         }
         if ((prag3==0)&&(turatie>6000)){                        //Ducem turatia la 3056 daca depaseste prima
@@ -182,7 +182,7 @@ public class SetAndCalculate {
             zona3=0;
             zona4=1;
             turatie=3790;
-            alarm.StopThrottle();
+            alarm.stopThrottle();
             sunetacceleratie=false;
         }
         if ((prag4==0)&&(turatie>6300)){                        //Ducem turatia la 4769 daca depaseste prima
@@ -192,7 +192,7 @@ public class SetAndCalculate {
             zona3=0;
             zona4=1;
             turatie=4769;
-            alarm.StopThrottle();
+            alarm.stopThrottle();
             sunetacceleratie=false;
         }
         if ((prag5==0)&&(turatie>6500)){                        //Ducem turatia la 5034 daca depaseste prima
@@ -202,7 +202,7 @@ public class SetAndCalculate {
             zona3=0;
             zona4=1;
             turatie=5034;
-            alarm.StopThrottle();
+            alarm.stopThrottle();
             sunetacceleratie=false;
         }
          if ((prag5==1)&&(v<100))                               //Reseteaza prag5 daca viteza scade sub 100Mph
@@ -231,10 +231,10 @@ public class SetAndCalculate {
 //-----------------------------------------------------------------------------------
     public void calculViteza(){
         comparviteza=v;       
-        if (y<90+21-45)
+        if (y<66)
             v=0.00000146245*Math.pow( x,3)-0.00197303*Math.pow(x,2)+1.07994*x-146.124;
         else
-            if ((s==true)&&(y>90+21-45))
+            if ((s==true)&&(y>66))
                 v=-0.000003916*Math.pow(y,3)+0.002106564*Math.pow(y,2)- 0.562179848*y+86.798186209;
             else
                 v=0.000002682*Math.pow(y,3)- 0.001523562*Math.pow(y,2)+0.473605642*y+65.175332050;
@@ -274,10 +274,10 @@ public class SetAndCalculate {
                 d=false;
                 s=true;
             }
-        if((zona2==1)&&((int)y>=185+21-45)){                    //Scoate din zona2
+        if((zona2==1)&&((int)y>=161)){                          //Scoate din zona2
             zona2=0;
         }
-        if ((zona1==1)&&((int)y<=240+21-45)){                   //Scoate din zona1
+        if ((zona1==1)&&((int)y<=216)){                         //Scoate din zona1
             zona1=0;
         }
     }
@@ -363,7 +363,7 @@ public class SetAndCalculate {
         try {
                 Thread.sleep(50);
             } catch (InterruptedException ex) {
-                Logger.getLogger(SpeedometerPanel.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(speedometerPanel.class.getName()).log(Level.SEVERE, null, ex);
             }
         setareZoneR();
         if (turatie>=1000)
@@ -374,7 +374,7 @@ public class SetAndCalculate {
     public void calculCoordonateUV(){
         if ((x<=304)&&(zona1==0)&&(zona2==0)){                  //Daca intra in zona mijloc stanga vitezometru
                 y=y-3;
-                if (y<185+21-45){
+                if (y<161){
                     zona2=1;
                     x=306;
                     y=(-1)*Math.sqrt(Math.abs(22050-Math.pow((x-x0),2)))+y0;
@@ -383,7 +383,7 @@ public class SetAndCalculate {
         else
             if ((x>=590)&&(zona2==0)&&(zona1==0)){              //Daca intra in zona mijloc dreapta vitezometru
                 y=y+2;
-                if (y>240+21-45){
+                if (y>216){
                     zona1=1;
                     x=595;
                     y=Math.sqrt(Math.abs(22050-Math.pow((x-x0),2)))+y0;
@@ -446,7 +446,7 @@ public class SetAndCalculate {
                     xr=xr+pas3;
                     yr=(-1)*Math.sqrt(Math.abs(22050-Math.pow((xr-x0r),2)))+y0r;
                 }
-                else{
+                else{                                           //Daca e in zona de mijloc turometru
                     if ((yr<221)&&(xr+pas3>20)){
                         xr=xr+pas3;
                         yr=(-1)*Math.sqrt(Math.abs(22050-Math.pow((xr-x0r),2)))+y0r;
@@ -538,8 +538,4 @@ public class SetAndCalculate {
     }
 //-----------------------------------------------------------------------------------
 //-----------------------------------------------------------------------------------
-    public void idleTuratie(){
-        
-
-    }
 }

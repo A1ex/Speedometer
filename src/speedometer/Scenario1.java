@@ -4,7 +4,7 @@
  */
 
 /*
- * Scenario1.java
+ * scenario1.java
  *
  * Created on May 16, 2010, 8:39:45 PM
  */
@@ -17,11 +17,11 @@ import javax.swing.JScrollBar;
  *
  * @author Alexandru Popescu
  */
-public class Scenario1 extends javax.swing.JFrame{
+public class scenario1 extends javax.swing.JFrame{
     JScrollBar vbar;
 
-    /** Creates new form Scenario1 */
-    public Scenario1() throws IOException, SQLException {
+    /** Creates new form scenario1 */
+    public scenario1() throws IOException, SQLException {
         initComponents();
         vbar = scroll1.getVerticalScrollBar();
     }

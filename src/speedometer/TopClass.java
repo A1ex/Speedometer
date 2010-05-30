@@ -25,12 +25,12 @@ import javax.swing.Timer;
  *
  * @author Alexandru Popescu
  */
-public class TopClass {
+public class topClass {
 
-    SpeedometerPanel p=new SpeedometerPanel();                  //instanta a clasei SpeedometerPanel
-    Scenario1 sc1 = new Scenario1();                            //instanta a clasei Scenario1
-    Scenario2 sc2 = new Scenario2();                            //instanta a clasei Scenario1
-    AppWindow aw = new AppWindow();
+    speedometerPanel p=new speedometerPanel();                  //instanta a clasei speedometerPanel
+    scenario1 sc1 = new scenario1();                            //instanta a clasei scenario1
+    scenario2 sc2 = new scenario2();                            //instanta a clasei scenario1
+    appWindow aw = new appWindow();
     ResultSet rs;
     public int index,delay,lights,decelerare,engine,doors,fuel,seatbelt,brake,battery;
     public int i=0;
@@ -48,18 +48,18 @@ public class TopClass {
 
 //-----------------------------------------------------------------------------------
 //-----------------------------------------------------------------------------------
-    public TopClass() throws IOException, SQLException{
+    public topClass() throws IOException, SQLException{
 //        DBConnection();
 //        t3.start();
         t5.start();
     }
 //-----------------------------------------------------------------------------------
 //-----------------------------------------------------------------------------------
-    public void DBConnection (String s)throws IOException, SQLException{//metoda ce face conexiunea la baza de date
+    public void dbConnection (String s)throws IOException, SQLException{//metoda ce face conexiunea la baza de date
          try {
             Class.forName("org.apache.derby.jdbc.ClientDriver");
         } catch (ClassNotFoundException ex) {
-            Logger.getLogger(SpeedometerPanel.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(speedometerPanel.class.getName()).log(Level.SEVERE, null, ex);
         }
         Connection c = DriverManager.getConnection("jdbc:derby://localhost:1527/OBCDB");
         Statement sql= c.createStatement();
@@ -68,7 +68,7 @@ public class TopClass {
 //-----------------------------------------------------------------------------------
 //-----------------------------------------------------------------------------------
     ActionListener scenarioActionListener = new ActionListener() {
-         public void actionPerformed(ActionEvent actionEvent){
+         public void actionPerformed(ActionEvent actionEvent1){
             try {                
                 if(aw.apasatstart){
                     if (rs.next()){                             //daca mai sunt inregistrari in tabelul scenariului
@@ -101,7 +101,7 @@ public class TopClass {
                     }
                 }
             } catch (SQLException ex) {
-                Logger.getLogger(Scenario1.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(scenario1.class.getName()).log(Level.SEVERE, null, ex);
             }
          }
      };
@@ -109,13 +109,13 @@ public class TopClass {
 //-----------------------------------------------------------------------------------
 //-----------------------------------------------------------------------------------
      ActionListener menuActionListener = new ActionListener() {
-         public void actionPerformed(ActionEvent actionEvent)  {
+         public void actionPerformed(ActionEvent actionEvent2)  {
             try {
                 actualizariMeniu();
             } catch (IOException ex) {
-                Logger.getLogger(TopClass.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(topClass.class.getName()).log(Level.SEVERE, null, ex);
             } catch (SQLException ex) {
-                Logger.getLogger(TopClass.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(topClass.class.getName()).log(Level.SEVERE, null, ex);
             }
          }
      };
@@ -127,8 +127,8 @@ public class TopClass {
             t3.start();
         else                                                    //daca se apasa stop
             t3.stop();
-        if (aw.apasatmute){                                    //daca se apasa Mute in AppWindow
-            p.sac.alarm.StopEngineSound();
+        if (aw.apasatmute){                                    //daca se apasa Mute in appWindow
+            p.sac.alarm.stopEngineSound();
             p.sunet=false;
             p.sac.sunetmotor=false;
         }
@@ -147,7 +147,7 @@ public class TopClass {
         if (aw.apasatsc1){                                      //daca se apasa pe "Load Scenario 1"
             p.sac.yf=235;
             query="SELECT * FROM Scenario1";
-            DBConnection (query);
+            dbConnection (query);
             sc1.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
             sc1.pack();
             sc1.setVisible(true);
@@ -158,7 +158,7 @@ public class TopClass {
         }
         if (aw.apasatsc2){                                      //daca se apasa pe "Load Scenario 1"            
             query="SELECT * FROM Scenario2";
-            DBConnection (query);
+            dbConnection (query);
             sc2.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
             sc2.pack();
             sc2.setVisible(true);
@@ -169,61 +169,61 @@ public class TopClass {
         }
          if (aw.apasatsm1){
              query="SELECT * FROM sm1";
-             DBConnection (query);
+             dbConnection (query);
              aw.incarcatscenariutest=true;
              aw.apasatsm1=false;
          }
          if (aw.apasatsm2){
              query="SELECT * FROM sm2";
-             DBConnection (query);
+             dbConnection (query);
              aw.incarcatscenariutest=true;
              aw.apasatsm2=false;
          }
         if (aw.apasatsm3){
              query="SELECT * FROM sm3";
-             DBConnection (query);
+             dbConnection (query);
              aw.incarcatscenariutest=true;
              aw.apasatsm3=false;
          }
         if (aw.apasatsm4){
              query="SELECT * FROM sm4";
-             DBConnection (query);
+             dbConnection (query);
              aw.incarcatscenariutest=true;
              aw.apasatsm4=false;
          }
         if (aw.apasatsm5){
              query="SELECT * FROM sm5";
-             DBConnection (query);
+             dbConnection (query);
              aw.incarcatscenariutest=true;
              aw.apasatsm5=false;
          }
         if (aw.apasatsm6){
              query="SELECT * FROM sm6";
-             DBConnection (query);
+             dbConnection (query);
              aw.incarcatscenariutest=true;
              aw.apasatsm6=false;
          }
          if (aw.apasatsm7){
              query="SELECT * FROM sm7";
-             DBConnection (query);
+             dbConnection (query);
              aw.incarcatscenariutest=true;
              aw.apasatsm7=false;
          }
         if (aw.apasatsm8){
              query="SELECT * FROM sm8";
-             DBConnection (query);
+             dbConnection (query);
              aw.incarcatscenariutest=true;
              aw.apasatsm8=false;
          }
         if (aw.apasatsm9){
              query="SELECT * FROM sm9";
-             DBConnection (query);
+             dbConnection (query);
              aw.incarcatscenariutest=true;
              aw.apasatsm9=false;
          }
         if (aw.apasatsm10){
              query="SELECT * FROM sm10";
-             DBConnection (query);
+             dbConnection (query);
              aw.incarcatscenariutest=true;
              aw.apasatsm10=false;
          }
@@ -255,60 +255,60 @@ public class TopClass {
         if (lights==1)                                          //verifica senzorul de lumini aprinse
             if (!alarmalumini){
                 alarmalumini=true;
-                p.sac.alarm.StartLightsAlarm();
+                p.sac.alarm.startLightsAlarm();
                 p.far.setIcon(p.farrosie);
             }
             else{
                 alarmalumini=false;
-                p.sac.alarm.StopLightsAlarm();
+                p.sac.alarm.stopLightsAlarm();
                 p.far.setIcon(p.fargri);
             }
          if (battery==1)                                          //verifica senzorul de nivel scazut al bateriei
             if (!alarmabaterie){
                 alarmabaterie=true;
-                p.sac.alarm.StartBatteryAlarm();
+                p.sac.alarm.startBatteryAlarm();
                 p.baterie.setIcon(p.baterierosie);
             }
             else{
                 alarmabaterie=false;
-                p.sac.alarm.StopBatteryAlarm();
+                p.sac.alarm.stopBatteryAlarm();
                 p.baterie.setIcon(p.bateriegri);
             }
         if (seatbelt==1)                                        //verifica senzorul de centura nefolosita
             if (!alarmacentura){
                 alarmacentura=true;
-                p.sac.alarm.StartSeatbeltAlarm();
+                p.sac.alarm.startSeatbeltAlarm();
                 p.centura.setIcon(p.centurarosie);
             }
             else{
                 alarmacentura=false;
-                p.sac.alarm.StopSeatbeltAlarm();
+                p.sac.alarm.stopSeatbeltAlarm();
                 p.centura.setIcon(p.centuragri);
             }
         if (doors==1)                                           //verifica senzorul de usi deschise
             if (!alarmausi){
                 alarmausi=true;
-                p.sac.alarm.StartDoorsAlarm();
+                p.sac.alarm.startDoorsAlarm();
                 p.usi.setIcon(p.usirosie);
             }
             else{
                 alarmausi=false;
-                p.sac.alarm.StopDoorsAlarm();
+                p.sac.alarm.stopDoorsAlarm();
                 p.usi.setIcon(p.usigri);
             }
          if (fuel==1)                                           //verifica senzorul de nivel de combustibil
             if (!alarmapompa){
                 alarmapompa=true;
-                p.sac.alarm.StartPumpAlarm();
+                p.sac.alarm.startPumpAlarm();
                 p.pompa.setIcon(p.pomparosie);
             }
             else{
                 alarmapompa=false;
-                p.sac.alarm.StopPumpAlarm();
+                p.sac.alarm.stopPumpAlarm();
                 p.pompa.setIcon(p.pompagri);
             }
         if (brake==1){
-            p.sac.alarm.Brake();
+            p.sac.alarm.brake();
             p.sac.frana=true;
         }
         else
@@ -536,7 +536,7 @@ public class TopClass {
 //-----------------------------------------------------------------------------------    
      public static void main(String args[]) {
         try {                   
-            TopClass tc=new TopClass();
+            topClass tc=new topClass();
             tc.aw.getContentPane().add(tc.p, BorderLayout.CENTER);
             tc.p.setFocusable(true);
             tc.aw.setLayout(new GridLayout());
@@ -545,9 +545,9 @@ public class TopClass {
             tc.aw.setVisible(true);
             tc.aw.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         } catch (IOException ex) {
-            Logger.getLogger(AppWindow.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(appWindow.class.getName()).log(Level.SEVERE, null, ex);
         } catch (SQLException ex) {
-            Logger.getLogger(AppWindow.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(appWindow.class.getName()).log(Level.SEVERE, null, ex);
         }
      }
      
