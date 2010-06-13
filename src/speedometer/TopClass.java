@@ -72,18 +72,18 @@ public class topClass {
             try {                
                 if(aw.apasatstart){
                     if (rs.next()){                             //daca mai sunt inregistrari in tabelul scenariului
+                        p.sac.v=v;
                         index =rs.getInt(1);
                         v = rs.getDouble(2);
-                        p.sac.v=v;
                         delay = rs.getInt(3);
-                        engine=rs.getInt(9);
+                        battery=rs.getInt(4);
+                        fuel=rs.getInt(5);
+                        doors=rs.getInt(6);
                         lights=rs.getInt(7);
                         seatbelt=rs.getInt(8);
-                        battery=rs.getInt(4);
+                        engine=rs.getInt(9);                                                                        
                         decelerare=rs.getInt(10);
-                        brake=rs.getInt(11);
-                        doors=rs.getInt(6);
-                        fuel=rs.getInt(5);
+                        brake=rs.getInt(11);                                               
                         actualizariScenariu();
                         calculCoordonateScenariu();
                         if (sc1.isVisible())

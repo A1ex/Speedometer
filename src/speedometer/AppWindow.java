@@ -143,7 +143,7 @@ public class appWindow extends javax.swing.JFrame  {
 
         sm1.setBackground(new java.awt.Color(0, 0, 0));
         sm1.setForeground(new java.awt.Color(204, 204, 204));
-        sm1.setText("Small test Scenario 1");
+        sm1.setText("Indicator Test Scenario 1");
         sm1.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mousePressed(java.awt.event.MouseEvent evt) {
                 IncarcaSM1(evt);
@@ -153,7 +153,7 @@ public class appWindow extends javax.swing.JFrame  {
 
         sm2.setBackground(new java.awt.Color(0, 0, 0));
         sm2.setForeground(new java.awt.Color(204, 204, 204));
-        sm2.setText("Small test Scenario 2");
+        sm2.setText("Medium Functionality Test Scenario 1");
         sm2.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mousePressed(java.awt.event.MouseEvent evt) {
                 IncarcaSM2(evt);
@@ -163,7 +163,7 @@ public class appWindow extends javax.swing.JFrame  {
 
         sm3.setBackground(new java.awt.Color(0, 0, 0));
         sm3.setForeground(new java.awt.Color(204, 204, 204));
-        sm3.setText("Small test Scenario 3");
+        sm3.setText("Medium Functionality Test Scenario 2");
         sm3.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mousePressed(java.awt.event.MouseEvent evt) {
                 IncarcaSM3(evt);
@@ -173,7 +173,7 @@ public class appWindow extends javax.swing.JFrame  {
 
         sm4.setBackground(new java.awt.Color(0, 0, 0));
         sm4.setForeground(new java.awt.Color(204, 204, 204));
-        sm4.setText("Small test Scenario 4");
+        sm4.setText("Indicator Test Scenario2");
         sm4.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mousePressed(java.awt.event.MouseEvent evt) {
                 IncarcaSM4(evt);
@@ -183,7 +183,7 @@ public class appWindow extends javax.swing.JFrame  {
 
         sm5.setBackground(new java.awt.Color(0, 0, 0));
         sm5.setForeground(new java.awt.Color(204, 204, 204));
-        sm5.setText("Small test Scenario 5");
+        sm5.setText("Medium Functionality Test Scenario 3");
         sm5.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mousePressed(java.awt.event.MouseEvent evt) {
                 IncarcaSM5(evt);
@@ -193,7 +193,7 @@ public class appWindow extends javax.swing.JFrame  {
 
         sm6.setBackground(new java.awt.Color(0, 0, 0));
         sm6.setForeground(new java.awt.Color(204, 204, 204));
-        sm6.setText("Small test Scenario 6");
+        sm6.setText("Medium Functionality Test Scenario 4");
         sm6.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mousePressed(java.awt.event.MouseEvent evt) {
                 IncarcaSM6(evt);
@@ -203,7 +203,7 @@ public class appWindow extends javax.swing.JFrame  {
 
         sm7.setBackground(new java.awt.Color(0, 0, 0));
         sm7.setForeground(new java.awt.Color(204, 204, 204));
-        sm7.setText("Small test Scenario 7");
+        sm7.setText("Indicator Test Scenario3");
         sm7.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mousePressed(java.awt.event.MouseEvent evt) {
                 IncarcaSM7(evt);
@@ -213,7 +213,7 @@ public class appWindow extends javax.swing.JFrame  {
 
         sm8.setBackground(new java.awt.Color(0, 0, 0));
         sm8.setForeground(new java.awt.Color(204, 204, 204));
-        sm8.setText("Small test Scenario 8");
+        sm8.setText("Indicator Test Scenario4");
         sm8.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mousePressed(java.awt.event.MouseEvent evt) {
                 IncarcaSM8(evt);
@@ -223,7 +223,7 @@ public class appWindow extends javax.swing.JFrame  {
 
         sm9.setBackground(new java.awt.Color(0, 0, 0));
         sm9.setForeground(new java.awt.Color(204, 204, 204));
-        sm9.setText("Small test Scenario 9");
+        sm9.setText("Medium Functionality Test Scenario 5");
         sm9.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mousePressed(java.awt.event.MouseEvent evt) {
                 IncarcaSM9(evt);
@@ -233,7 +233,7 @@ public class appWindow extends javax.swing.JFrame  {
 
         sm10.setBackground(new java.awt.Color(0, 0, 0));
         sm10.setForeground(new java.awt.Color(204, 204, 204));
-        sm10.setText("Small test Scenario 10");
+        sm10.setText("Medium Functionality Test Scenario 6");
         sm10.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mousePressed(java.awt.event.MouseEvent evt) {
                 IncarcaSM10(evt);
