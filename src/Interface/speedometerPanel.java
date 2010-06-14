@@ -8,7 +8,7 @@
  *
  * Created on May 13, 2010, 11:33:12 PM
  */
-package speedometer;
+package Interface;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.BufferedImage;
@@ -21,24 +21,25 @@ import java.util.logging.Logger;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.imageio.ImageIO;
+import Functionality.setAndCalculate;
 /**
  *
  * @author Alexandru Popescu
  */
 public class speedometerPanel extends javax.swing.JPanel  implements KeyListener {
 
-    Icon butonverde;                                            //imagine buton
-    Icon butonrosu;                                             //imagine buton
-    Icon baterierosie;                                          //imagine atentionare
-    Icon bateriegri;                                            //imagine atentionare
-    Icon pompagri;                                              //imagine atentionare
-    Icon pomparosie;                                            //imagine atentionare
-    Icon fargri;                                                //imagine atentionare
-    Icon farrosie;                                              //imagine atentionare
-    Icon usigri;                                                //imagine atentionare
-    Icon usirosie;                                              //imagine atentionare
-    Icon centuragri;                                            //imagine atentionare
-    Icon centurarosie;                                          //imagine atentionare
+    public Icon butonverde;                                            //imagine buton
+    public Icon butonrosu;                                             //imagine buton
+    public Icon baterierosie;                                          //imagine atentionare
+    public Icon bateriegri;                                            //imagine atentionare
+    public Icon pompagri;                                              //imagine atentionare
+    public Icon pomparosie;                                            //imagine atentionare
+    public Icon fargri;                                                //imagine atentionare
+    public Icon farrosie;                                              //imagine atentionare
+    public Icon usigri;                                                //imagine atentionare
+    public Icon usirosie;                                              //imagine atentionare
+    public Icon centuragri;                                            //imagine atentionare
+    public Icon centurarosie;                                          //imagine atentionare
     BufferedImage buffer;                                       //imagine folosita la double buffering
     Graphics2D gbuffer;                                         //obiect grafic folosit pt desenare in buffer
     public boolean firstTime=true;                              //determina daca s-a initializat sau nu imaginea si obiectul grafic pentru db
@@ -46,7 +47,7 @@ public class speedometerPanel extends javax.swing.JPanel  implements KeyListener
     public boolean sunet=true;                                  //determina daca se aude sunetul motorului
     Rectangle area;                                             //folosit la crearea imaginii folosita la buffering
     Image m;                                                    //in ea se retine imaginea de background
-    setAndCalculate sac=new setAndCalculate();                  //instanta a clasei setAndCalculate
+    public setAndCalculate sac=new setAndCalculate();                  //instanta a clasei setAndCalculate
 
     public speedometerPanel()throws IOException, SQLException  {//Constructor
         initComponents();
@@ -277,7 +278,7 @@ public class speedometerPanel extends javax.swing.JPanel  implements KeyListener
         jLabel8.setBounds(120, 270, 60, 30);
         jLayeredPane1.add(jLabel8, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
-        jLabel9.setFont(new java.awt.Font("Times New Roman", 1, 24));
+        jLabel9.setFont(new java.awt.Font("Times New Roman", 1, 24)); // NOI18N
         jLabel9.setText("Revs");
         jLabel9.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         jLabel9.setBounds(180, 270, 60, 30);

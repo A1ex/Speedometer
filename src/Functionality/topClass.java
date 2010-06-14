@@ -3,8 +3,12 @@
  * and open the template in the editor.
  */
 
-package speedometer;
+package Functionality;
 
+import Interface.speedometerPanel;
+import Interface.scenario2;
+import Interface.scenario1;
+import Interface.appWindow;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.GridLayout;
@@ -28,7 +32,7 @@ import javax.swing.Timer;
 public class topClass {
 
     speedometerPanel p=new speedometerPanel();                  //instanta a clasei speedometerPanel
-    scenario1 sc1 = new scenario1();                            //instanta a clasei scenario1
+    scenario1 sc1 = new Interface.scenario1();                            //instanta a clasei scenario1
     scenario2 sc2 = new scenario2();                            //instanta a clasei scenario1
     appWindow aw = new appWindow();
     ResultSet rs;

@@ -3,8 +3,9 @@
  * and open the template in the editor.
  */
 
-package speedometer;
+package Functionality;
 
+import Interface.speedometerPanel;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -14,7 +15,7 @@ import java.util.logging.Logger;
  */
 public class setAndCalculate {
     
-    sensorAlarm alarm = new sensorAlarm();
+    public sensorAlarm alarm = new sensorAlarm();
     public double x0=450;                                       //coordonata x baza ac vitezometru
     public double x0r=170;                                      //coordonata x baza ac turometru
     public double y0=191;                                       //coordonata y baza ac vitezometru

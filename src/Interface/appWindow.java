@@ -9,7 +9,7 @@
  * Created on May 14, 2010, 11:30:06 AM
  */
 
-package speedometer;
+package Interface;
 
 
 import java.io.IOException;
@@ -55,22 +55,23 @@ public class appWindow extends javax.swing.JFrame  {
         Options = new javax.swing.JMenu();
         Mute = new javax.swing.JMenuItem();
         swich = new javax.swing.JMenuItem();
+        Start = new javax.swing.JMenu();
         Scenario = new javax.swing.JMenu();
         Scenario1 = new javax.swing.JMenuItem();
         Scenario2 = new javax.swing.JMenuItem();
-        jSeparator1 = new javax.swing.JPopupMenu.Separator();
-        sm1 = new javax.swing.JMenuItem();
+        jMenu1 = new javax.swing.JMenu();
         sm2 = new javax.swing.JMenuItem();
         sm3 = new javax.swing.JMenuItem();
-        sm4 = new javax.swing.JMenuItem();
         sm5 = new javax.swing.JMenuItem();
         sm6 = new javax.swing.JMenuItem();
-        sm7 = new javax.swing.JMenuItem();
-        sm8 = new javax.swing.JMenuItem();
         sm9 = new javax.swing.JMenuItem();
         sm10 = new javax.swing.JMenuItem();
-        Start = new javax.swing.JMenu();
-        Help = new javax.swing.JMenu();
+        jMenu2 = new javax.swing.JMenu();
+        sm1 = new javax.swing.JMenuItem();
+        sm4 = new javax.swing.JMenuItem();
+        sm7 = new javax.swing.JMenuItem();
+        sm8 = new javax.swing.JMenuItem();
+        jMenu3 = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
@@ -80,7 +81,7 @@ public class appWindow extends javax.swing.JFrame  {
         jMenuBar1.setForeground(new java.awt.Color(255, 255, 255));
 
         Options.setBackground(new java.awt.Color(0, 0, 0));
-        Options.setBorder(null);
+        Options.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255)));
         Options.setForeground(new java.awt.Color(204, 204, 204));
         Options.setText("Options");
 
@@ -108,14 +109,25 @@ public class appWindow extends javax.swing.JFrame  {
 
         jMenuBar1.add(Options);
 
+        Start.setBackground(new java.awt.Color(0, 0, 0));
+        Start.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255)));
+        Start.setForeground(new java.awt.Color(204, 204, 204));
+        Start.setText("Start");
+        Start.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                ApasatStart(evt);
+            }
+        });
+        jMenuBar1.add(Start);
+
         Scenario.setBackground(new java.awt.Color(0, 0, 0));
-        Scenario.setBorder(null);
+        Scenario.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255)));
         Scenario.setForeground(new java.awt.Color(204, 204, 204));
-        Scenario.setText("Scenario");
+        Scenario.setText("Complex Tests");
 
         Scenario1.setBackground(new java.awt.Color(0, 0, 0));
         Scenario1.setForeground(new java.awt.Color(204, 204, 204));
-        Scenario1.setText("Load Scenario 1");
+        Scenario1.setText("Complex Test Scenario 1");
         Scenario1.setBorder(null);
         Scenario1.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mousePressed(java.awt.event.MouseEvent evt) {
@@ -126,7 +138,7 @@ public class appWindow extends javax.swing.JFrame  {
 
         Scenario2.setBackground(new java.awt.Color(0, 0, 0));
         Scenario2.setForeground(new java.awt.Color(204, 204, 204));
-        Scenario2.setText("Load Scenario 2");
+        Scenario2.setText("Complex Test Scenario 2");
         Scenario2.setBorder(null);
         Scenario2.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mousePressed(java.awt.event.MouseEvent evt) {
@@ -135,21 +147,12 @@ public class appWindow extends javax.swing.JFrame  {
         });
         Scenario.add(Scenario2);
 
-        jSeparator1.setBackground(new java.awt.Color(0, 0, 0));
-        jSeparator1.setForeground(new java.awt.Color(0, 0, 0));
-        jSeparator1.setAlignmentX(0.0F);
-        jSeparator1.setAlignmentY(0.0F);
-        Scenario.add(jSeparator1);
+        jMenuBar1.add(Scenario);
 
-        sm1.setBackground(new java.awt.Color(0, 0, 0));
-        sm1.setForeground(new java.awt.Color(204, 204, 204));
-        sm1.setText("Indicator Test Scenario 1");
-        sm1.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mousePressed(java.awt.event.MouseEvent evt) {
-                IncarcaSM1(evt);
-            }
-        });
-        Scenario.add(sm1);
+        jMenu1.setBackground(new java.awt.Color(0, 0, 0));
+        jMenu1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255)));
+        jMenu1.setForeground(new java.awt.Color(204, 204, 204));
+        jMenu1.setText("Medium Functionality Tests");
 
         sm2.setBackground(new java.awt.Color(0, 0, 0));
         sm2.setForeground(new java.awt.Color(204, 204, 204));
@@ -159,7 +162,7 @@ public class appWindow extends javax.swing.JFrame  {
                 IncarcaSM2(evt);
             }
         });
-        Scenario.add(sm2);
+        jMenu1.add(sm2);
 
         sm3.setBackground(new java.awt.Color(0, 0, 0));
         sm3.setForeground(new java.awt.Color(204, 204, 204));
@@ -169,17 +172,7 @@ public class appWindow extends javax.swing.JFrame  {
                 IncarcaSM3(evt);
             }
         });
-        Scenario.add(sm3);
-
-        sm4.setBackground(new java.awt.Color(0, 0, 0));
-        sm4.setForeground(new java.awt.Color(204, 204, 204));
-        sm4.setText("Indicator Test Scenario2");
-        sm4.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mousePressed(java.awt.event.MouseEvent evt) {
-                IncarcaSM4(evt);
-            }
-        });
-        Scenario.add(sm4);
+        jMenu1.add(sm3);
 
         sm5.setBackground(new java.awt.Color(0, 0, 0));
         sm5.setForeground(new java.awt.Color(204, 204, 204));
@@ -189,7 +182,7 @@ public class appWindow extends javax.swing.JFrame  {
                 IncarcaSM5(evt);
             }
         });
-        Scenario.add(sm5);
+        jMenu1.add(sm5);
 
         sm6.setBackground(new java.awt.Color(0, 0, 0));
         sm6.setForeground(new java.awt.Color(204, 204, 204));
@@ -199,27 +192,7 @@ public class appWindow extends javax.swing.JFrame  {
                 IncarcaSM6(evt);
             }
         });
-        Scenario.add(sm6);
-
-        sm7.setBackground(new java.awt.Color(0, 0, 0));
-        sm7.setForeground(new java.awt.Color(204, 204, 204));
-        sm7.setText("Indicator Test Scenario3");
-        sm7.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mousePressed(java.awt.event.MouseEvent evt) {
-                IncarcaSM7(evt);
-            }
-        });
-        Scenario.add(sm7);
-
-        sm8.setBackground(new java.awt.Color(0, 0, 0));
-        sm8.setForeground(new java.awt.Color(204, 204, 204));
-        sm8.setText("Indicator Test Scenario4");
-        sm8.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mousePressed(java.awt.event.MouseEvent evt) {
-                IncarcaSM8(evt);
-            }
-        });
-        Scenario.add(sm8);
+        jMenu1.add(sm6);
 
         sm9.setBackground(new java.awt.Color(0, 0, 0));
         sm9.setForeground(new java.awt.Color(204, 204, 204));
@@ -229,7 +202,7 @@ public class appWindow extends javax.swing.JFrame  {
                 IncarcaSM9(evt);
             }
         });
-        Scenario.add(sm9);
+        jMenu1.add(sm9);
 
         sm10.setBackground(new java.awt.Color(0, 0, 0));
         sm10.setForeground(new java.awt.Color(204, 204, 204));
@@ -239,26 +212,62 @@ public class appWindow extends javax.swing.JFrame  {
                 IncarcaSM10(evt);
             }
         });
-        Scenario.add(sm10);
+        jMenu1.add(sm10);
 
-        jMenuBar1.add(Scenario);
+        jMenuBar1.add(jMenu1);
 
-        Start.setBackground(new java.awt.Color(0, 0, 0));
-        Start.setBorder(null);
-        Start.setForeground(new java.awt.Color(204, 204, 204));
-        Start.setText("Start");
-        Start.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                ApasatStart(evt);
+        jMenu2.setBackground(new java.awt.Color(51, 51, 51));
+        jMenu2.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255)));
+        jMenu2.setForeground(new java.awt.Color(204, 204, 204));
+        jMenu2.setText("Indicator Tests");
+
+        sm1.setBackground(new java.awt.Color(0, 0, 0));
+        sm1.setForeground(new java.awt.Color(204, 204, 204));
+        sm1.setText("Indicator Test Scenario 1");
+        sm1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                IncarcaSM1(evt);
             }
         });
-        jMenuBar1.add(Start);
+        jMenu2.add(sm1);
 
-        Help.setBackground(new java.awt.Color(0, 0, 0));
-        Help.setBorder(null);
-        Help.setForeground(new java.awt.Color(204, 204, 204));
-        Help.setText("Help");
-        jMenuBar1.add(Help);
+        sm4.setBackground(new java.awt.Color(0, 0, 0));
+        sm4.setForeground(new java.awt.Color(204, 204, 204));
+        sm4.setText("Indicator Test Scenario 2");
+        sm4.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                IncarcaSM4(evt);
+            }
+        });
+        jMenu2.add(sm4);
+
+        sm7.setBackground(new java.awt.Color(0, 0, 0));
+        sm7.setForeground(new java.awt.Color(204, 204, 204));
+        sm7.setText("Indicator Test Scenario 3");
+        sm7.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                IncarcaSM7(evt);
+            }
+        });
+        jMenu2.add(sm7);
+
+        sm8.setBackground(new java.awt.Color(0, 0, 0));
+        sm8.setForeground(new java.awt.Color(204, 204, 204));
+        sm8.setText("Indicator Test Scenario 4");
+        sm8.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                IncarcaSM8(evt);
+            }
+        });
+        jMenu2.add(sm8);
+
+        jMenuBar1.add(jMenu2);
+
+        jMenu3.setBackground(new java.awt.Color(0, 0, 0));
+        jMenu3.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255)));
+        jMenu3.setForeground(new java.awt.Color(204, 204, 204));
+        jMenu3.setText("Help");
+        jMenuBar1.add(jMenu3);
 
         setJMenuBar(jMenuBar1);
 
@@ -270,7 +279,7 @@ public class appWindow extends javax.swing.JFrame  {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 402, Short.MAX_VALUE)
+            .addGap(0, 404, Short.MAX_VALUE)
         );
 
         pack();
@@ -442,15 +451,16 @@ public class appWindow extends javax.swing.JFrame  {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JMenu Help;
     private javax.swing.JMenuItem Mute;
     private javax.swing.JMenu Options;
     private javax.swing.JMenu Scenario;
     private javax.swing.JMenuItem Scenario1;
     private javax.swing.JMenuItem Scenario2;
     public javax.swing.JMenu Start;
+    private javax.swing.JMenu jMenu1;
+    private javax.swing.JMenu jMenu2;
+    private javax.swing.JMenu jMenu3;
     private javax.swing.JMenuBar jMenuBar1;
-    private javax.swing.JPopupMenu.Separator jSeparator1;
     public javax.swing.JMenuItem sm1;
     public javax.swing.JMenuItem sm10;
     public javax.swing.JMenuItem sm2;
