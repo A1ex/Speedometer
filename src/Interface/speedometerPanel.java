@@ -278,7 +278,7 @@ public class speedometerPanel extends javax.swing.JPanel  implements KeyListener
         jLabel8.setBounds(120, 270, 60, 30);
         jLayeredPane1.add(jLabel8, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
-        jLabel9.setFont(new java.awt.Font("Times New Roman", 1, 24)); // NOI18N
+        jLabel9.setFont(new java.awt.Font("Times New Roman", 1, 24));
         jLabel9.setText("Revs");
         jLabel9.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         jLabel9.setBounds(180, 270, 60, 30);
@@ -348,11 +348,11 @@ public class speedometerPanel extends javax.swing.JPanel  implements KeyListener
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jLayeredPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 616, Short.MAX_VALUE)
+            .addComponent(jLayeredPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 615, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jLayeredPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 451, Short.MAX_VALUE)
+            .addComponent(jLayeredPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 403, Short.MAX_VALUE)
         );
     }// </editor-fold>//GEN-END:initComponents
 
