@@ -139,7 +139,7 @@ public class speedometerPanel extends javax.swing.JPanel  implements KeyListener
 
     @Override
     public void paintComponent(Graphics g){
-        if (firstTime) {                                        //Initializare imagine buffer
+        if (firstTime) {                                            //Initializare imagine buffer
           Dimension dim = getSize();
           int w = dim.width;
           int h = dim.height;
@@ -147,7 +147,8 @@ public class speedometerPanel extends javax.swing.JPanel  implements KeyListener
           buffer = (BufferedImage) createImage(w, h);
           gbuffer = buffer.createGraphics();
           gbuffer.setColor(Color.red);
-          gbuffer.setRenderingHint(RenderingHints.KEY_ANTIALIASING,RenderingHints.VALUE_ANTIALIAS_ON);
+          gbuffer.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
+                  RenderingHints.VALUE_ANTIALIAS_ON);
           firstTime = false;
         }
         Graphics2D g2=(Graphics2D) gbuffer;
