@@ -237,6 +237,7 @@ public class speedometerPanel extends javax.swing.JPanel  implements KeyListener
         far = new javax.swing.JLabel();
         usi = new javax.swing.JLabel();
         centura = new javax.swing.JLabel();
+        splashText = new javax.swing.JLabel();
 
         setPreferredSize(new java.awt.Dimension(616, 451));
 
@@ -345,15 +346,21 @@ public class speedometerPanel extends javax.swing.JPanel  implements KeyListener
         centura.setBounds(400, 340, 40, 40);
         jLayeredPane1.add(centura, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
+        splashText.setBackground(new java.awt.Color(0, 0, 0));
+        splashText.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        splashText.setForeground(new java.awt.Color(0, 204, 51));
+        splashText.setBounds(0, 0, 360, 20);
+        jLayeredPane1.add(splashText, javax.swing.JLayeredPane.DEFAULT_LAYER);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jLayeredPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 615, Short.MAX_VALUE)
+            .addComponent(jLayeredPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 616, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jLayeredPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 403, Short.MAX_VALUE)
+            .addComponent(jLayeredPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 418, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -467,6 +474,7 @@ public class speedometerPanel extends javax.swing.JPanel  implements KeyListener
     private javax.swing.JLabel jLabel9;
     private javax.swing.JLayeredPane jLayeredPane1;
     public javax.swing.JLabel pompa;
+    public javax.swing.JLabel splashText;
     public javax.swing.JLabel usi;
     // End of variables declaration//GEN-END:variables
 
