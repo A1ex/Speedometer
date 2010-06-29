@@ -72,6 +72,16 @@ public class appWindow extends javax.swing.JFrame  {
         it3 = new javax.swing.JMenuItem();
         it4 = new javax.swing.JMenuItem();
         Help = new javax.swing.JMenu();
+        jMenuItem1 = new javax.swing.JMenuItem();
+        jMenuItem2 = new javax.swing.JMenuItem();
+        jMenuItem3 = new javax.swing.JMenuItem();
+        jMenuItem4 = new javax.swing.JMenuItem();
+        jMenuItem5 = new javax.swing.JMenuItem();
+        jMenuItem6 = new javax.swing.JMenuItem();
+        jMenuItem7 = new javax.swing.JMenuItem();
+        jMenuItem8 = new javax.swing.JMenuItem();
+        jMenuItem9 = new javax.swing.JMenuItem();
+        jMenuItem10 = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
@@ -267,6 +277,59 @@ public class appWindow extends javax.swing.JFrame  {
         Help.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255)));
         Help.setForeground(new java.awt.Color(204, 204, 204));
         Help.setText("Help");
+
+        jMenuItem1.setBackground(new java.awt.Color(0, 0, 0));
+        jMenuItem1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/sageata.jpg"))); // NOI18N
+        jMenuItem1.setText(" Rularea in mod automat");
+        jMenuItem1.setEnabled(false);
+        Help.add(jMenuItem1);
+
+        jMenuItem2.setBackground(new java.awt.Color(0, 0, 0));
+        jMenuItem2.setText("      - Se alege optiunea de meniu \"Turn off manual control\"");
+        jMenuItem2.setEnabled(false);
+        Help.add(jMenuItem2);
+
+        jMenuItem3.setBackground(new java.awt.Color(0, 0, 0));
+        jMenuItem3.setText("      - Se selecteaza unul din scenarii din meniurile \"Complex");
+        jMenuItem3.setEnabled(false);
+        Help.add(jMenuItem3);
+
+        jMenuItem4.setBackground(new java.awt.Color(0, 0, 0));
+        jMenuItem4.setText("      Tests\", \"Warning Tests\" sau \"Indicator Tests\"");
+        jMenuItem4.setEnabled(false);
+        Help.add(jMenuItem4);
+
+        jMenuItem5.setBackground(new java.awt.Color(0, 0, 0));
+        jMenuItem5.setText("      -Se ruleaza scenariul de test apasand meniul \"Start\"");
+        jMenuItem5.setEnabled(false);
+        Help.add(jMenuItem5);
+
+        jMenuItem6.setBackground(new java.awt.Color(0, 0, 0));
+        jMenuItem6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/sageata.jpg"))); // NOI18N
+        jMenuItem6.setText(" Rularea in mod manual");
+        jMenuItem6.setEnabled(false);
+        Help.add(jMenuItem6);
+
+        jMenuItem7.setBackground(new java.awt.Color(0, 0, 0));
+        jMenuItem7.setText("      - Se porneste motorul prin click stanga pe butonul \"Start");
+        jMenuItem7.setEnabled(false);
+        Help.add(jMenuItem7);
+
+        jMenuItem8.setBackground(new java.awt.Color(0, 0, 0));
+        jMenuItem8.setText("      Engine\" din partea stanga jos a simulatorului");
+        jMenuItem8.setEnabled(false);
+        Help.add(jMenuItem8);
+
+        jMenuItem9.setBackground(new java.awt.Color(0, 0, 0));
+        jMenuItem9.setText("      - Se controleaza viteza si turatia prin sagetile sus/jos ale");
+        jMenuItem9.setEnabled(false);
+        Help.add(jMenuItem9);
+
+        jMenuItem10.setBackground(new java.awt.Color(0, 0, 0));
+        jMenuItem10.setText("      tastaturii");
+        jMenuItem10.setEnabled(false);
+        Help.add(jMenuItem10);
+
         jMenuBar1.add(Help);
 
         setJMenuBar(jMenuBar1);
@@ -352,7 +415,7 @@ public class appWindow extends javax.swing.JFrame  {
     private void IncarcaSM1(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_IncarcaSM1
         // TODO add your handling code here:
         if (apasatcontrol){
-            if (!incarcatscenariutest&&!incarcatscenariu){
+            if (/*!incarcatscenariutest&&*/!incarcatscenariu){
                 apasatsm1=true;
                 incarcatscenariutest=true;
             }
@@ -362,7 +425,7 @@ public class appWindow extends javax.swing.JFrame  {
     private void IncarcaSM2(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_IncarcaSM2
         // TODO add your handling code here:
         if (apasatcontrol){
-            if (!incarcatscenariutest&&!incarcatscenariu){
+            if (/*!incarcatscenariutest&&*/!incarcatscenariu){
                 apasatsm2=true;
                 incarcatscenariutest=true;
             }
@@ -372,7 +435,7 @@ public class appWindow extends javax.swing.JFrame  {
     private void IncarcaSM3(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_IncarcaSM3
         // TODO add your handling code here:
          if (apasatcontrol){
-            if (!incarcatscenariutest&&!incarcatscenariu){
+            if (/*!incarcatscenariutest&&*/!incarcatscenariu){
                 apasatsm3=true;
                 incarcatscenariutest=true;
             }
@@ -382,7 +445,7 @@ public class appWindow extends javax.swing.JFrame  {
     private void IncarcaSM4(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_IncarcaSM4
         // TODO add your handling code here:
         if (apasatcontrol){
-            if (!incarcatscenariutest&&!incarcatscenariu){
+            if (/*!incarcatscenariutest&&*/!incarcatscenariu){
                 apasatsm4=true;
                 incarcatscenariutest=true;
             }
@@ -392,7 +455,7 @@ public class appWindow extends javax.swing.JFrame  {
     private void IncarcaSM5(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_IncarcaSM5
         // TODO add your handling code here:
          if (apasatcontrol){
-            if (!incarcatscenariutest&&!incarcatscenariu){
+            if (/*!incarcatscenariutest&&*/!incarcatscenariu){
                 apasatsm5=true;
                 incarcatscenariutest=true;
             }
@@ -402,7 +465,7 @@ public class appWindow extends javax.swing.JFrame  {
     private void IncarcaSM6(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_IncarcaSM6
         // TODO add your handling code here:
         if (apasatcontrol){
-            if (!incarcatscenariutest&&!incarcatscenariu){
+            if (/*!incarcatscenariutest&&*/!incarcatscenariu){
                 apasatsm6=true;
                 incarcatscenariutest=true;
             }
@@ -412,7 +475,7 @@ public class appWindow extends javax.swing.JFrame  {
     private void IncarcaSM7(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_IncarcaSM7
         // TODO add your handling code here:
         if (apasatcontrol){
-            if (!incarcatscenariutest&&!incarcatscenariu){
+            if (/*!incarcatscenariutest&&*/!incarcatscenariu){
                 apasatsm7=true;
                 incarcatscenariutest=true;
             }
@@ -422,7 +485,7 @@ public class appWindow extends javax.swing.JFrame  {
     private void IncarcaSM8(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_IncarcaSM8
         // TODO add your handling code here:
          if (apasatcontrol){
-            if (!incarcatscenariutest&&!incarcatscenariu){
+            if (/*!incarcatscenariutest&&*/!incarcatscenariu){
                 apasatsm8=true;
                 incarcatscenariutest=true;
             }
@@ -432,7 +495,7 @@ public class appWindow extends javax.swing.JFrame  {
     private void IncarcaSM9(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_IncarcaSM9
         // TODO add your handling code here:
         if (apasatcontrol){
-            if (!incarcatscenariutest&&!incarcatscenariu){
+            if (/*!incarcatscenariutest&&*/!incarcatscenariu){
                 apasatsm9=true;
                 incarcatscenariutest=true;
             }
@@ -442,7 +505,7 @@ public class appWindow extends javax.swing.JFrame  {
     private void IncarcaSM10(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_IncarcaSM10
         // TODO add your handling code here:
          if (apasatcontrol){
-            if (!incarcatscenariutest&&!incarcatscenariu){
+            if (/*!incarcatscenariutest&&*/!incarcatscenariu){
                 apasatsm10=true;
                 incarcatscenariutest=true;
             }
@@ -465,6 +528,16 @@ public class appWindow extends javax.swing.JFrame  {
     public javax.swing.JMenuItem it3;
     public javax.swing.JMenuItem it4;
     private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JMenuItem jMenuItem1;
+    private javax.swing.JMenuItem jMenuItem10;
+    private javax.swing.JMenuItem jMenuItem2;
+    private javax.swing.JMenuItem jMenuItem3;
+    private javax.swing.JMenuItem jMenuItem4;
+    private javax.swing.JMenuItem jMenuItem5;
+    private javax.swing.JMenuItem jMenuItem6;
+    private javax.swing.JMenuItem jMenuItem7;
+    private javax.swing.JMenuItem jMenuItem8;
+    private javax.swing.JMenuItem jMenuItem9;
     private javax.swing.JMenuItem swich;
     public javax.swing.JMenuItem wt1;
     public javax.swing.JMenuItem wt2;

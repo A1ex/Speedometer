@@ -102,6 +102,7 @@ public class topClass {
                         aw.apasatstart=false;
                         t3.stop();
                         aw.incarcatscenariutest=false;
+                        p.splashText.setText("");
                     }
                 }
             } catch (SQLException ex) {
@@ -149,6 +150,7 @@ public class topClass {
             p.sac.pas4=3;
         }
         if (aw.apasatsc1){                                      //daca se apasa pe "Load Scenario 1"
+            p.splashText.setText(" Complex Test Scenario 1 Loaded");
             p.sac.yf=235;
             query="SELECT * FROM Scenario1";
             dbConnection (query);
@@ -160,7 +162,8 @@ public class topClass {
             i=0;
             j=0;
         }
-        if (aw.apasatsc2){                                      //daca se apasa pe "Load Scenario 1"            
+        if (aw.apasatsc2){                                      //daca se apasa pe "Load Scenario 1"
+            p.splashText.setText(" Complex Test Scenario 2 Loaded");
             query="SELECT * FROM Scenario2";
             dbConnection (query);
             sc2.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
@@ -172,63 +175,73 @@ public class topClass {
             j=0;
         }
          if (aw.apasatsm1){
+             p.splashText.setText(" Start/Stop Engine Test Loaded");
              query="SELECT * FROM sm1";
              dbConnection (query);
-             aw.incarcatscenariutest=true;
+//             aw.incarcatscenariutest=true;
              aw.apasatsm1=false;
          }
          if (aw.apasatsm2){
+             p.splashText.setText(" Open Doors Alarm Test Loaded");
              query="SELECT * FROM sm2";
              dbConnection (query);
-             aw.incarcatscenariutest=true;
+//             aw.incarcatscenariutest=true;
              aw.apasatsm2=false;
          }
         if (aw.apasatsm3){
+             p.splashText.setText(" Seatbelt Alarm Test Loaded");
              query="SELECT * FROM sm3";
              dbConnection (query);
-             aw.incarcatscenariutest=true;
+//             aw.incarcatscenariutest=true;
              aw.apasatsm3=false;
          }
         if (aw.apasatsm4){
+             p.splashText.setText(" Acceleration Test Loaded");
              query="SELECT * FROM sm4";
              dbConnection (query);
-             aw.incarcatscenariutest=true;
+//             aw.incarcatscenariutest=true;
              aw.apasatsm4=false;
          }
         if (aw.apasatsm5){
+             p.splashText.setText(" Fuel Level Alarm Test Loaded");
              query="SELECT * FROM sm5";
              dbConnection (query);
-             aw.incarcatscenariutest=true;
+//             aw.incarcatscenariutest=true;
              aw.apasatsm5=false;
          }
         if (aw.apasatsm6){
+             p.splashText.setText(" Battery Level Alarm Test Loaded");             
              query="SELECT * FROM sm6";
              dbConnection (query);
-             aw.incarcatscenariutest=true;
+//             aw.incarcatscenariutest=true;
              aw.apasatsm6=false;
          }
          if (aw.apasatsm7){
+             p.splashText.setText(" Brake Test Loaded");
              query="SELECT * FROM sm7";
              dbConnection (query);
-             aw.incarcatscenariutest=true;
+//             aw.incarcatscenariutest=true;
              aw.apasatsm7=false;
          }
         if (aw.apasatsm8){
+             p.splashText.setText(" Deceleration Test Loaded");
              query="SELECT * FROM sm8";
              dbConnection (query);
-             aw.incarcatscenariutest=true;
+//             aw.incarcatscenariutest=true;
              aw.apasatsm8=false;
          }
         if (aw.apasatsm9){
+             p.splashText.setText(" Lights Alarm Test Loaded");
              query="SELECT * FROM sm9";
              dbConnection (query);
-             aw.incarcatscenariutest=true;
+//             aw.incarcatscenariutest=true;
              aw.apasatsm9=false;
          }
         if (aw.apasatsm10){
+             p.splashText.setText(" Fuel & Battery Level Alarm Test Loaded");
              query="SELECT * FROM sm10";
              dbConnection (query);
-             aw.incarcatscenariutest=true;
+//             aw.incarcatscenariutest=true;
              aw.apasatsm10=false;
          }
         if (!sc1.isVisible()&&!sc2.isVisible()){                                  //daca se inchide fereastra scenariului
