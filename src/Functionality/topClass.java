@@ -66,7 +66,7 @@ public class topClass {
             Logger.getLogger(speedometerPanel.class.getName()).log(Level.SEVERE, null, ex);
         }
         Connection c = DriverManager.getConnection("jdbc:derby://localhost:1527/OBCDB");
-        Statement sql= c.createStatement();
+        Statement sql= c.createStatement();      
         rs=sql.executeQuery(s);
     }
 //-----------------------------------------------------------------------------------
